@@ -4,7 +4,9 @@ import cors from 'cors';
 const app = express();
 const PORT = 5000;
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173',  // React 개발 서버 주소
+}));
 app.use(express.json());
 
 app.get('/', (req, res) => {
