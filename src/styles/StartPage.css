@@ -28,6 +28,17 @@ html, body, #root {
     position: relative;
 }
 
+.background-image{
+    z-index: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: transparent;
+    width: 1800px;       /* 또는 min(30vw, 300px) 등 반응형 가능 */
+    height: auto;
+    object-fit: contain;
+}
 /* 가운데 이미지: 모든 화면에서 진짜로 정중앙에 고정 */
 .center-image {
     position: absolute;
@@ -41,6 +52,7 @@ html, body, #root {
 }
 
 .line-image {
+
     position: absolute;
     top: 65%; /* center-image보다 아래 */
     left: 50%;
@@ -52,6 +64,7 @@ html, body, #root {
 }
 
 .make-ticket-button-image {
+    z-index: 1;
     width: 500px;
     height: auto;
     background-color: transparent;
@@ -61,8 +74,46 @@ html, body, #root {
 }
 
 .see-ticket-button-image {
+    z-index: 1;
     width: 500px;
     height: auto;
     background-color: transparent;
     cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .center-image {
+        width: 60vw;
+        top: 35%;
+    }
+
+    .line-image {
+        width: 80%;
+        top: 60%;
+    }
+
+    .make-ticket-button-image,
+    .see-ticket-button-image {
+        width: 70vw;
+        margin-top: 40vh;  /* 화면 작을 때 너무 내려가는 걸 줄임 */
+    }
+}
+
+@media (max-width: 768px) {
+
+    .center-image {
+        width: 70vw;
+        top: 30%;
+    }
+
+    .line-image {
+        width: 85%;
+        top: 55%;
+    }
+
+    .make-ticket-button-image,
+    .see-ticket-button-image {
+        width: 80vw;
+        margin-top: 30vh;
+    }
 }
