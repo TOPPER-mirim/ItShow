@@ -3,6 +3,13 @@ import '../styles/StartPage.css'; // CSS 파일 임포트
 function StartPage() {
     return (
         <div className="start-page">
+
+            <img
+                src="/images/start-background-2.png"  
+                alt="Center"
+                className="background-image"
+            />
+
             <img
                 src="/images/logo.png"  
                 alt="Center"
