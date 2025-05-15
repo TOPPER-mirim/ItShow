@@ -41,6 +41,10 @@ const FilterPage = () => {
 
     return (
         <div className="all-container">
+            <div className="back-icon">
+                <img src="./images/filter-page-back-icon.svg" />
+                <img src="./images/filter-page-back-icon.svg" />
+            </div>
             <div className="filter-container">
                 <div className="title-container">
                     <h2 className="title">필터를 선택해 볼까요?</h2>
@@ -52,7 +56,9 @@ const FilterPage = () => {
                         name="감성 필터"
                         bgimage="./images/filter-card-감성.png"
                         image="./images/필터-감성.svg"
-                        description="감성 필터는 여러분의 이야기를 깊게 공감하여 위안, 감동을 줄 수 있는 필터에요."
+                        description={
+                            <>감성 필터는 여러분의 이야기를 깊게 공감하여 위안, <br />감동을 줄 수 있는 필터에요.</>
+                        }
                         example="ex) 오늘 너무 우울해 → 내일은 좀 더 너에게 희망적인 날이 되기를"
                         onClick={() => handleFilterClick("감성")}
                         className="filter-gamsung"
@@ -61,8 +67,12 @@ const FilterPage = () => {
                         name="가오 필터"
                         bgimage="./images/filter-card-가오.png"
                         image="./images/필터-가오.svg"
-                        description="가오 필터는 여러분의 이야기를 멋있고 든든한 말투로 위안 또는 이야기 해주는 필터에요."
-                        example="ex) 선우가 너무 보고싶은데 볼 수 없어 → 선우? 선우따위 필요없어. 잘생긴 사람 보고싶으면 거울 봐"
+                        description={
+                            <>가오 필터는 여러분의 이야기를 멋있고 든든한 말투로 위안 또는 <br />이야기 해주는 필터에요.</>
+                        }
+                        example={
+                            <>ex) 선우가 너무 보고싶은데 볼 수 없어 → 선우? 선우따위 필요없어. <br />잘생긴 사람 보고싶으면 거울 봐</>
+                        }
                         onClick={() => handleFilterClick("가오")}
                         className="filter-gao"
                     />
@@ -79,6 +89,7 @@ const FilterPage = () => {
 
                 {loading && <p className="loading-text">AI가 열심히 작성 중이에요...</p>}
             </div>
+            
         </div>
 
     );
