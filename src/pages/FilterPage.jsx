@@ -10,33 +10,15 @@ const FilterPage = () => {
 
     const [loading, setLoading] = useState(false);
 
-    const handleFilterClick = async (filter) => {
-        if (loading) return;
-
-        setLoading(true);
-        try {
-            const response = await fetch("https://your-backend.com/api/ai", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ nickname, content, filter }),
-            });
-
-            const data = await response.json();
-
-            navigate("/result", {
-                state: {
-                    nickname,
-                    originalContent: content,
-                    filter,
-                    aiResult: data.result,
-                },
-            });
-        } catch (error) {
-            console.error("AI 요청 실패:", error);
-            alert("AI 응답에 실패했습니다!");
-        } finally {
-            setLoading(false);
-        }
+    // make ticket에 넘겨주는 데이터
+    const handleFilterClick = (filter) => {
+        navigate("/make", {
+            state: {
+                nickname,
+                content,
+                filter,
+            },
+        });
     };
 
     return (
@@ -86,10 +68,8 @@ const FilterPage = () => {
                         className="filter-fun"
                     />
                 </div>
-
-                {loading && <p className="loading-text">AI가 열심히 작성 중이에요...</p>}
             </div>
-            
+
         </div>
 
     );
