@@ -6,6 +6,7 @@ import MakeTicketPage from "../pages/MakeTicketPage";
 import ResultPage from "../pages/ResultPage";
 import ViewTicketsPage from "../pages/ViewTicketsPage";
 import FilterPage from "../pages/FilterPage";
+import TestButton from "../pages/TestButton";
 
 const AppRoutes = () => {
   return (
@@ -15,6 +16,7 @@ const AppRoutes = () => {
       <Route path="/result" element={<ResultPage />} />
       <Route path="/tickets" element={<ViewTicketsPage />} />
       <Route path="/filter" element={<FilterPage />} />
+      <Route path="/testbutton" element={<TestButton />} />
     </Routes>
   );
 };
