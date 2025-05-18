@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 // import Button from "../components/Button";
 import '../styles/InputTicketPage.css'; 
 
@@ -9,6 +10,8 @@ function InputTicketPage() {
     const [nickname, setNickname] = useState("");
     const [popupMessage, setPopupMessage] = useState("");
     const [showPopup, setShowPopup] = useState(false);
+
+    const navigate = useNavigate(); 
 
     const handleSubmit = () => {
         if (!worryText.trim()) {
@@ -21,6 +24,8 @@ function InputTicketPage() {
             setShowPopup(true);
             return;
         }
+
+        navigate("/make");
 
     };
 
@@ -36,6 +41,12 @@ function InputTicketPage() {
                 src="/images/input-ticket.png"
                 alt="샘플 이미지"
                 className="main-image"
+            />
+
+            <img
+                src="/images/input-ticket-ipad.png"
+                alt="샘플 이미지"
+                className="main-image-ipad"
             />
 
             
@@ -71,6 +82,13 @@ function InputTicketPage() {
                 onClick={handleSubmit}
                 style={{ cursor: "pointer" }} // 클릭 가능하도록 설정
             />
+
+            <img
+                src="/images/input-logo-ipad.png"
+                alt="로고"
+                className="logo-image"
+            />
+
 
             
 

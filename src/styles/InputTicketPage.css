@@ -130,3 +130,54 @@
     color: #333;
     margin-bottom: 16px;
 }
+
+.main-image-ipad{
+    display: none;
+}
+
+.logo-image{
+    display: none;
+}
+
+@media (max-width: 1024px) {
+    .main-image {
+      display: none;
+    }
+
+    .main-image-ipad{
+        display: block;
+        z-index: 1;
+        position: relative;
+        top: 50px;
+        width: 65%;
+        height: auto;
+        transform: translateX(27%);
+    }
+
+    .input-ticket-page {
+        padding-top: 100px;
+    }
+
+    .worry-input{
+        width: 43%;
+    }
+
+    .nickname-input{
+        width: 43%;
+        top: 410px;
+    }
+    .line-image {
+        display: none;
+      }
+
+      .button-image {
+        margin-top: 50px;
+    }
+
+    .logo-image{
+        margin-top: 20%;
+        display: block;
+    }
+    
+
+  }
