@@ -1,0 +1,132 @@
+@import "pretendard/dist/web/variable/pretendardvariable.css";
+
+.input-ticket-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+    margin: 0 auto;
+    text-align: center;
+    padding-top: 80px;
+}
+.ticket-wrapper {
+    position: relative;
+    width: 1300px; /* 이미지 크기에 맞게 조정 */
+    height: auto;
+}
+
+/* 제목 텍스트 크기 */
+.title {
+    position: absolute;
+    left: 30%;
+    transform: translateX(-50%);
+    z-index: 2;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    color: #333;
+
+}
+
+/* 메인 이미지 크기 */
+.main-image {
+    z-index: 1;
+    position: relative;
+    width: 150%;
+    height: auto;
+}
+
+.worry-input {
+    z-index: 3;
+    position: absolute;
+    top: 160px; /* 이미지 내에서 조절 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    padding: 30px 0px 30px 0px;
+    font-size: 24px;
+    border-radius: 8px;
+    border: none;
+}
+
+.nickname-input {
+    z-index: 3;
+    position: absolute;
+    top: 500px; /* 이미지 내에서 조절 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 75%;
+    padding: 10px;
+    font-size: 18px;
+    border-radius: 8px;
+    border: none;
+}
+
+.worry-input::placeholder,
+.nickname-input::placeholder {
+    color: #E7E7E7; /* 원하는 색상으로 바꿔주세요 */
+    opacity: 1;  /* 일부 브라우저에서 흐려지는 걸 방지 */
+}
+
+
+.button-image {
+    width: 400px;
+}
+
+.line-image {
+    position: absolute;
+    top: 490px; /* 원하는 위치로 조정 */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+}
+
+.custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-content {
+    background: white;
+    padding: 50px 90px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    align-items: center;
+}
+
+.popup-content button {
+    margin-top: 20px;
+    padding: 10px 150px;
+    border: none;
+    background-color: #69DA70;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.popup-image {
+    display: block;       /* ✅ 인라인에서 블록으로 변경 */
+    margin: 0 auto 16px; 
+    width: 60px;
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.popup-text {
+    font-size: 25px;
+    color: #333;
+    margin-bottom: 16px;
+}
