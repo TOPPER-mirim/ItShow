@@ -1,6 +1,12 @@
+import { useNavigate } from 'react-router-dom';
 import '../styles/StartPage.css'; // CSS 파일 임포트
 
 function StartPage() {
+    const navigate = useNavigate();
+
+    const handleMakeTicketClick = () => {
+        navigate('/input');
+    };
     return (
         <div className="start-page">
 
@@ -33,17 +39,20 @@ function StartPage() {
                 className="line-ipad-image"
             />
 
-
             <img
                 src="/images/ticket-make-button.png"  
-                alt="Center"
+                alt="Make Ticket"
                 className="make-ticket-button-image"
+                onClick={handleMakeTicketClick}
+                style={{ cursor: 'pointer' }}
             />
 
             <img
                 src="/images/ticket-make-button-ipad.png"  
-                alt=""
+                alt="Make Ticket iPad"
                 className="make-ticket-button-image-ipad"
+                onClick={handleMakeTicketClick}
+                style={{ cursor: 'pointer' }}
             />
             
             <img
