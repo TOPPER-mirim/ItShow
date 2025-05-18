@@ -79,3 +79,54 @@
     transform: translateX(-50%);
     z-index: 3;
 }
+
+.custom-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-content {
+    background: white;
+    padding: 50px 90px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-family: 'Pretendard Variable', sans-serif;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    align-items: center;
+}
+
+.popup-content button {
+    margin-top: 20px;
+    padding: 10px 150px;
+    border: none;
+    background-color: #69DA70;
+    color: white;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.popup-image {
+    display: block;       /* ✅ 인라인에서 블록으로 변경 */
+    margin: 0 auto 16px; 
+    width: 60px;
+    height: auto;
+    margin-bottom: 16px;
+}
+
+.popup-text {
+    font-size: 25px;
+    color: #333;
+    margin-bottom: 16px;
+}
