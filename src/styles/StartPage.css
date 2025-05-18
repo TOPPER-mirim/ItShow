@@ -76,7 +76,7 @@ html, body, #root {
     width: 600px;
     height: auto;
     background-color: transparent;
-    margin-top: 65vh;
+    margin-top: 60vh;
     margin-bottom: -20px;
     cursor: pointer;
 }
@@ -87,10 +87,10 @@ html, body, #root {
     height: auto;
     background-color: transparent;
     cursor: pointer;
-    
+    margin-top: 5vh;
 }
 
-.see-ticket-button-image-ipad,.see-ticket-button-image-ipad{
+.see-ticket-button-image-ipad,.make-ticket-button-image-ipad{
     display: none;
 }
 
