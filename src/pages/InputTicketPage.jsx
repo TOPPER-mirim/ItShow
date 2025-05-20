@@ -23,7 +23,7 @@ function InputTicketPage() {
       return;
     }
 
-    navigate("/make");
+    navigate("/filter");
   };
 
   return (
