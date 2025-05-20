@@ -26,3 +26,7 @@
     flex-direction: column;
     gap: 15px;
 }
+
+.filter-title {
+    font-size: 25px;
+}
