@@ -6,8 +6,8 @@ const FilterSelect = ({ title, subtitle, onFilterClick }) => {
     return (
         <div className="filter-container">
             <div className="title-container">
-                <h2 className="title">{title}</h2>
-                <p className="subtitle">{subtitle}</p>
+                <h2 className="filter-title">{title}</h2>
+                <p className="filter-subtitle">{subtitle}</p>
             </div>
 
             <div className="filter-list">

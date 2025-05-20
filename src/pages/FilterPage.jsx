@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import "../styles/reset.css";
 import "../styles/FilterPage.css";
-import FilterSelect from "../components/FIlterSelect";
+import FilterSelect from "../components/FilterSelect";
 
 const FilterPage = () => {
     const navigate = useNavigate();
