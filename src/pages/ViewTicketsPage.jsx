@@ -28,7 +28,7 @@ function ViewTicketsPage() {
             <img
                 src="/images/filter-page-back-icon.svg"
                 alt="Left Wing"
-                className="side-image left"
+                className="side-image-left"
             />
             <div className="center-box">
                 <FilterSelect
@@ -40,7 +40,7 @@ function ViewTicketsPage() {
             <img
                 src="/images/filter-page-back-icon.svg"
                 alt="Right Wing"
-                className="side-image right"
+                className="side-image-right"
             />
         </div>
     );
