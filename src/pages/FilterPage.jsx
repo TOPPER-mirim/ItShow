@@ -30,8 +30,8 @@ const FilterPage = () => {
             </div>
             <div className="filter-container">
                 <div className="title-container">
-                    <h2 className="title">필터를 선택해 볼까요?</h2>
-                    <p className="subtitle">설명을 읽고 어떤 필터를 사용할지 고민해 보세요!</p>
+                    <h2 className="filter-title">필터를 선택해 볼까요?</h2>
+                    <p className="filter-subtitle">설명을 읽고 어떤 필터를 사용할지 고민해 보세요!</p>
                 </div>
 
                 <div className="filter-list">

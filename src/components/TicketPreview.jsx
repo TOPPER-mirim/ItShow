@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "../styles/TicketPreview.css";
 
-function TicketPreview({ logoImgUrl, children }) {
+function TicketPreview({ logoImgUrl, children, filterColor }) {
     const [isClicked, setIsClicked] = useState(false);
 
     const handleToggleColor = () => {
@@ -26,9 +26,9 @@ function TicketPreview({ logoImgUrl, children }) {
                     xmlns="http://www.w3.org/2000/svg"
                     className="TicketFrame"
                 >
-                    <rect y="1" width="722.337" height="368.268" rx="30" fill={fillColor} />
+                    <rect y="1" width="722.337" height="368.268" rx="30" fill={filterColor} />
                     <path d="M722 52V317" stroke="white" strokeDasharray="23 23" />
-                    <rect x="722" width="227" height="369" rx="30" fill={fillColor} />
+                    <rect x="722" width="227" height="369" rx="30" fill={filterColor} />
                 </svg>
             </div>
 
