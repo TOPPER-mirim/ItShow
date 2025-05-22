@@ -1,0 +1,30 @@
+.ticket-preview-container {
+    /* background-color: white; */
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    margin: 0 auto;
+    align-items: center;
+    width: 900px;
+    padding: 40px 100px;
+    border-radius: 0 0 40px 40px;
+    /* position: fixed; */
+    /* z-index: 1; */
+}
+
+.preview-text {
+    font-size: 28px !important;
+    font-weight: 800;
+    color: black !important;
+}
+
+.preview-title-container {
+    display: flex;
+    gap: 17px;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.emoji-icon {
+    width: 40px;
+}
