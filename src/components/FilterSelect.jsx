@@ -21,6 +21,7 @@ const FilterSelect = ({ title, subtitle, onFilterClick }) => {
                     example="ex) 오늘 너무 우울해 → 내일은 좀 더 너에게 희망적인 날이 되기를"
                     onClick={() => onFilterClick("감성")}
                     className="filter-gamsung"
+                    style={{ width: "250px", transform: "scale(0.9)" }}
                 />
                 <FilterCard
                     name="가오 필터"

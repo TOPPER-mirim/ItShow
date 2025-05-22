@@ -65,3 +65,10 @@
     transform: translateY(-50%);
     z-index: 0;
 }
+
+@media (max-width: 1024px) {
+    .filter-card{
+        width: 420px;
+    }
+    
+}
