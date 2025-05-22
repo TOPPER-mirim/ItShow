@@ -59,12 +59,16 @@ function StartPage() {
              src="/images/see-ticket-button.png"  
                 alt="Center"
                 className="see-ticket-button-image"
+                onClick={() => navigate("/tickets")}
+                style={{ cursor: 'pointer' }}
             />
 
             <img
                 src="/images/see-ticket-button-ipad.png"  
                 alt="Center"
                 className="make-ticket-button-image-ipad"
+                onClick={() => navigate("/tickets")}
+                style={{ cursor: 'pointer' }}
             />
 
 
