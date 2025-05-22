@@ -15,7 +15,7 @@ function InputTicketPage() {
     if (!worryText.trim()) {
       setPopupMessage("고민 내용을 입력해주세요.");
       setShowPopup(true);
-      return;
+      return;   
     }
     if (!nickname.trim()) {
       setPopupMessage("닉네임을 입력해주세요.");
