@@ -1,10 +1,11 @@
 import React from "react";
+import "../styles/Paletter.css";
 
 function MakePaletter({title, children}) {
     
     return (
-        <div>
-            <p>{title}</p>
+        <div className="make-paletter-container">
+            <p className="make-title">{title}</p>
             <div className="paletters">
                 {children}
             </div>
