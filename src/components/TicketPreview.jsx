@@ -1,14 +1,31 @@
 import React, { useState } from "react";
 import "../styles/TicketPreview.css";
 
-function TicketPreview({ logoImgUrl, children, filterColor }) {
+import Frame1 from "../components/Frame1";
+import Frame2 from "../components/Frame2";
+import Frame3 from "../components/Frame3";
+
+function TicketPreview({ logoImgUrl, fillColor, frameIndex }) {
     const [isClicked, setIsClicked] = useState(false);
 
     const handleToggleColor = () => {
-        setIsClicked(!isClicked);
+        setIsClicked((prev) => !prev);
     };
 
-    const fillColor = isClicked ? "#FDD835" : "black"; // 클릭 시 노란색
+    const getFrameComponent = (index) => {
+        switch (index) {
+            case 1:
+                return <Frame1 fillColor={fillColor} />;
+            case 2:
+                return <Frame2 fillColor={fillColor} />;
+            case 3:
+                return <Frame3 fillColor={fillColor} />;
+            default:
+                return <Frame1 fillColor={fillColor} />;
+        }
+    };
+
+    const frameComponent = getFrameComponent(frameIndex);
 
     return (
         <div className="ticket-preview-container">
@@ -18,21 +35,12 @@ function TicketPreview({ logoImgUrl, children, filterColor }) {
             </div>
 
             <div className="ticket-frame" onClick={handleToggleColor}>
-                <svg
-                    width="949"
-                    height="370"
-                    viewBox="0 0 949 370"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="TicketFrame"
-                >
-                    <rect y="1" width="722.337" height="368.268" rx="30" fill={filterColor} />
-                    <path d="M722 52V317" stroke="white" strokeDasharray="23 23" />
-                    <rect x="722" width="227" height="369" rx="30" fill={filterColor} />
-                </svg>
+                {frameComponent}
             </div>
 
-            <div className="ticket-content">{children}</div>
+            {/* <div className="ticket-content">
+                {frameComponent}
+            </div> */}
         </div>
     );
 }

@@ -33,6 +33,7 @@ const FilterPage = () => {
                     <h2 className="filter-title">필터를 선택해 볼까요?</h2>
                     <p className="filter-subtitle">설명을 읽고 어떤 필터를 사용할지 고민해 보세요!</p>
                 </div>
+                {/* MYBABY 조지아 조지아 조지아 Can't take my eyes off you my hometown is only you */}
 
                 <div className="filter-list">
                     <FilterCard
