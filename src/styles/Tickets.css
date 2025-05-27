@@ -1,0 +1,53 @@
+body, html {
+    overflow: hidden;
+    height: 100%;
+}
+
+
+.emotion-page {
+    background-image: url('/images/emotionpage-background.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 40px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    font-family: 'Arial', sans-serif;
+
+    display: flex;
+    justify-content: center;  /* 가로 가운데 정렬 */
+    align-items: flex-start;  /* 세로 위 정렬 */
+    padding-top: 100px;       /* 위에서 얼마나 띄울지 조절 */
+}
+
+.funny-page{
+    background-image: url('/images/emotionpage-background.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 40px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    font-family: 'Arial', sans-serif;
+
+    display: flex;
+    justify-content: center;  /* 가로 가운데 정렬 */
+    align-items: flex-start;  /* 세로 위 정렬 */
+    padding-top: 100px;       /* 위에서 얼마나 띄울지 조절 */
+}
+
+.style-page{
+    background-image: url('/images/emotionpage-background.png');
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    padding: 40px;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+    font-family: 'Arial', sans-serif;
+
+    display: flex;
+    justify-content: center;  /* 가로 가운데 정렬 */
+    align-items: flex-start;  /* 세로 위 정렬 */
+    padding-top: 100px;       /* 위에서 얼마나 띄울지 조절 */
+}
