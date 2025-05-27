@@ -8,14 +8,19 @@ function ViewTicketsPage() {
 
     const handleFilterClick = (filterType) => {
         console.log(`선택한 필터: ${filterType}`);
-        // 필요 시 추가 기능
+        if (filterType === "감성") {
+            navigate("/tickets/emotion");
+        } else if (filterType === "가오") {
+            navigate("/tickets/style");
+        } else if (filterType === "개그") {
+            navigate("/tickets/funny");
+        }
     };
 
     const handleBackClick = () => {
-        navigate("/"); // 홈으로 이동
+        navigate("/");
     };
 
-    // title을 JSX로 만들어서 넘겨줌
     const titleWithBack = (
         <>
             <span className="back-arrow" onClick={handleBackClick}>&lt;</span>{" "}
