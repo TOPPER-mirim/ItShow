@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/Frame.css";
+// import "../styles/Frame.css";
 
 const Frame2 = ({ fillColor = "black" }) => {
 
