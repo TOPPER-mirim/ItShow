@@ -3,3 +3,9 @@
     flex-direction: column;
     /* align-items: center; */
 }
+
+.paletter-container {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 450px 0px 450px;
+}
