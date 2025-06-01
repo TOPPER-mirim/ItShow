@@ -39,23 +39,27 @@ const MakeTicketPage = () => {
                 frameIndex={selectedFrame}
             />
 
-            <MakePaletter title="프레임">
-                <SinglePaletter imageUrl="../images/프레임1.png" onClick={() => handleFrameClick(1)} />
-                <SinglePaletter imageUrl="../images/프레임2.png" onClick={() => handleFrameClick(2)} />
-                <SinglePaletter imageUrl="../images/프레임3.png" onClick={() => handleFrameClick(3)} />
-            </MakePaletter>
+            <div className="paletter-container">
 
-            <MakePaletter title="단색 배경">
-                <SinglePaletter imageUrl="../images/none.svg" onClick={() => setFillColor("#D9D9D9")} />
-                <SinglePaletter imageUrl="../images/pink.png" onClick={() => setFillColor("#FFC1C1")} />
-                <SinglePaletter imageUrl="../images/yellow.png" onClick={() => setFillColor("#FEC730")} />
-                <SinglePaletter imageUrl="../images/green.png" onClick={() => setFillColor("#9CD69D")} />
-                <SinglePaletter imageUrl="../images/babyblue.png" onClick={() => setFillColor("#DFECF2")} />
-                <SinglePaletter imageUrl="../images/blue.png" onClick={() => setFillColor("#225268")} />
-                <SinglePaletter imageUrl="../images/black.png" onClick={() => setFillColor("#000000")} />
-            </MakePaletter>
+                <MakePaletter title="프레임">
+                    <SinglePaletter imageUrl="../images/프레임1.png" onClick={() => handleFrameClick(1)} />
+                    <SinglePaletter imageUrl="../images/프레임2.png" onClick={() => handleFrameClick(2)} />
+                    <SinglePaletter imageUrl="../images/프레임3.png" onClick={() => handleFrameClick(3)} />
+                </MakePaletter>
 
-            <Button size="big">럭키 티켓 출력하기</Button>
+                <MakePaletter title="단색 배경">
+                    <SinglePaletter imageUrl="../images/none.svg" onClick={() => setFillColor("#D9D9D9")} />
+                    <SinglePaletter imageUrl="../images/pink.png" onClick={() => setFillColor("#FFC1C1")} />
+                    <SinglePaletter imageUrl="../images/yellow.png" onClick={() => setFillColor("#FEC730")} />
+                    <SinglePaletter imageUrl="../images/green.png" onClick={() => setFillColor("#9CD69D")} />
+                    <SinglePaletter imageUrl="../images/babyblue.png" onClick={() => setFillColor("#DFECF2")} />
+                    <SinglePaletter imageUrl="../images/blue.png" onClick={() => setFillColor("#225268")} />
+                    <SinglePaletter imageUrl="../images/black.png" onClick={() => setFillColor("#000000")} />
+                </MakePaletter>
+
+                <Button size="big">럭키 티켓 출력하기</Button>
+            </div>
+
 
         </div>
     );
