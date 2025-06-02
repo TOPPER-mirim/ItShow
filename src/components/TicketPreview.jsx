@@ -5,7 +5,7 @@ import Frame1 from "../components/Frame1";
 import Frame2 from "../components/Frame2";
 import Frame3 from "../components/Frame3";
 
-function TicketPreview({ logoImgUrl, fillColor, frameIndex }) {
+function TicketPreview({ logoImgUrl, fillColor, frameIndex, patternUrl }) {
     const [isClicked, setIsClicked] = useState(false);
 
     const handleToggleColor = () => {
@@ -13,15 +13,17 @@ function TicketPreview({ logoImgUrl, fillColor, frameIndex }) {
     };
 
     const getFrameComponent = (index) => {
+        const commonProps = { fillColor, patternUrl };
+    
         switch (index) {
             case 1:
-                return <Frame1 fillColor={fillColor} />;
+                return <Frame1 {...commonProps} />;
             case 2:
-                return <Frame2 fillColor={fillColor} />;
+                return <Frame2 {...commonProps} />;
             case 3:
-                return <Frame3 fillColor={fillColor} />;
+                return <Frame3 {...commonProps} />;
             default:
-                return <Frame1 fillColor={fillColor} />;
+                return <Frame1 {...commonProps} />;
         }
     };
 

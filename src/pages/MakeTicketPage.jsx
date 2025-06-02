@@ -7,9 +7,9 @@ import TicketPreview from "../components/TicketPreview";
 import MakePaletter from "../components/MakePalette";
 import SinglePaletter from "../components/SinglePaletter";
 
-import Frame1 from "../components/Frame1";
-import Frame2 from "../components/Frame2";
-import Frame3 from "../components/Frame3";
+// import Frame1 from "../components/Frame1";
+// import Frame2 from "../components/Frame2";
+// import Frame3 from "../components/Frame3";
 
 const MakeTicketPage = () => {
     const location = useLocation();
@@ -24,10 +24,18 @@ const MakeTicketPage = () => {
     const logoUrl = filterMap[filter];
     const [fillColor, setFillColor] = useState("#000000");
 
-    const [selectedFrame, setSelectedFrame] = useState(1); // default: Frame1
+    const [selectedFrame, setSelectedFrame] = useState(1);
+
+    const [patternUrl, setPatternUrl] = useState(null);
 
     const handleFrameClick = (frameNumber) => {
         setSelectedFrame(frameNumber);
+    };
+
+    const patternMap = {
+        감성: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/감성-패턴${i}.png`),
+        가오: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/가오-패턴${i}.png`),
+        재미: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/개그-패턴${i}.png`),
     };
 
     return (
@@ -37,6 +45,7 @@ const MakeTicketPage = () => {
                 logoImgUrl={logoUrl}
                 fillColor={fillColor}
                 frameIndex={selectedFrame}
+                patternUrl={patternUrl}
             />
 
             <div className="paletter-container">
@@ -55,6 +64,20 @@ const MakeTicketPage = () => {
                     <SinglePaletter imageUrl="../images/babyblue.png" onClick={() => setFillColor("#DFECF2")} />
                     <SinglePaletter imageUrl="../images/blue.png" onClick={() => setFillColor("#225268")} />
                     <SinglePaletter imageUrl="../images/black.png" onClick={() => setFillColor("#000000")} />
+                </MakePaletter>
+
+                <MakePaletter title="패턴 배경">
+                    <SinglePaletter imageUrl="../images/none.svg" onClick={() => setPatternUrl(null)} />
+                    {(filterMap[filter] ? patternMap[filter] : []).map((thumbUrl, idx) => {
+                        const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
+                        return (
+                            <SinglePaletter
+                                key={idx}
+                                imageUrl={thumbUrl}
+                                onClick={() => setPatternUrl(appliedUrl)}
+                            />
+                        );
+                    })}
                 </MakePaletter>
 
                 <Button size="big">럭키 티켓 출력하기</Button>
