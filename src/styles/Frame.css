@@ -1,0 +1,7 @@
+/* Frame.css */
+.responsive-svg {
+    width: 100%;
+    height: auto;
+    max-width: 670px;
+    /* 필요하면 최대 크기 지정 */
+}
