@@ -6,7 +6,7 @@ const Frame1 = ({ fillColor = "black", patternUrl }) => {
 
     return (
         <svg
-            width="900" height="400" viewBox="0 0 670 261" fill="none" xmlns="http://www.w3.org/2000/svg" className="responsive-svg">
+            viewBox="0 0 670 261" fill="none" xmlns="http://www.w3.org/2000/svg" className="responsive-svg">
             {hasPattern && (
                 <defs>
                     <pattern id="pattern-bg" patternUnits="userSpaceOnUse" width="670" height="261">

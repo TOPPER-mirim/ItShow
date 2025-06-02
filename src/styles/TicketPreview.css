@@ -1,15 +1,14 @@
 .ticket-preview-container {
-    /* background-color: white; */
+    position: sticky;
+    top: 0; /* 상단에 고정 */
+    z-index: 10;
+    background-color: white;
     display: flex;
     flex-direction: column;
-    background-color: white;
-    margin: 0 auto;
     align-items: center;
-    width: 900px;
-    padding: 40px 100px;
+    margin: 0 auto;
+    padding: 50px 100px;
     border-radius: 0 0 40px 40px;
-    /* position: fixed; */
-    /* z-index: 1; */
 }
 
 .preview-text {

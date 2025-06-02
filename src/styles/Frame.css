@@ -1,7 +1,6 @@
-/* Frame.css */
 .responsive-svg {
-    width: 100%;
+    width: 900px;
+    aspect-ratio: 670 / 261;
     height: auto;
-    max-width: 670px;
-    /* 필요하면 최대 크기 지정 */
+    display: block;
 }

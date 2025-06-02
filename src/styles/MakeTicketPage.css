@@ -1,11 +1,63 @@
 .makeTicket-container {
     display: flex;
     flex-direction: column;
-    /* align-items: center; */
+    align-items: center;
 }
 
 .paletter-container {
     display: flex;
     flex-direction: column;
+    align-items: start;
+    /* grid-area: 100px; */
+}
+
+.checkBox {
+    display: flex;
+    align-items: center !important;
+    gap: 12px;
+    font-size: 25px;
+    padding: 40px;
+    color: #414141;
+}
+
+.ticketConfirmBox {
+    display: flex;
+    flex-direction: column;
     align-items: center;
+}
+
+.customCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 20px;
+    user-select: none;
+    margin: 45px;
+}
+
+.customCheckbox input[type="checkbox"] {
+    display: none;
+}
+
+.customCheckbox .checkmark {
+    width: 32px;
+    height: 32px;
+    background-color: #cfcfcf;
+    border-radius: 5px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.customCheckbox input:checked+.checkmark {
+    background-color: #69DA70;
+}
+
+.customCheckbox input:checked+.checkmark::after {
+    content: "✔";
+    color: white;
+    font-size: 18px;
+    position: absolute;
+    top: 4px;
+    left: 8px;
 }
