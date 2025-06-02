@@ -38,8 +38,19 @@ const MakeTicketPage = () => {
         재미: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/개그-패턴${i}.png`),
     };
 
+    const bacco = filter === "감성"
+        ? "#BDDDF7"
+        : filter === "가오"
+            ? "#D9D9D9"
+            : "#FFE88E";
+
     return (
-        <div className="makeTicket-container">
+        <div className="makeTicket-container" style={{
+            width: "100vw",
+            height: "100vh",
+            background: `linear-gradient(to bottom, ${bacco}, transparent)`,
+            // backgroundColor: "#F8F8F8"
+        }}>
 
             <TicketPreview
                 logoImgUrl={logoUrl}
@@ -79,10 +90,17 @@ const MakeTicketPage = () => {
                         );
                     })}
                 </MakePaletter>
+            </div>
+
+            <div className="ticketConfirmBox">
+                <label className="customCheckbox">
+                    <input type="checkbox" name="ticketBookOk" />
+                    <span className="checkmark"></span>
+                    <p>티켓북에 저장하시겠습니까?</p>
+                </label>
 
                 <Button size="big">럭키 티켓 출력하기</Button>
             </div>
-
 
         </div>
     );
