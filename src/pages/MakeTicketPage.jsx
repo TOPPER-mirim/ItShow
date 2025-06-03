@@ -22,6 +22,7 @@ const MakeTicketPage = () => {
     };
 
     const logoUrl = filterMap[filter];
+
     const [fillColor, setFillColor] = useState("#000000");
 
     const [selectedFrame, setSelectedFrame] = useState(1);
@@ -44,6 +45,23 @@ const MakeTicketPage = () => {
             ? "#D9D9D9"
             : "#FFE88E";
 
+    const [selectedStickers, setSelectedStickers] = useState([]);
+
+    const stickerMap = {
+        감성: [1, 2, 3].map(i => `../images/Sticker/StickerPaletter/감성-스티커${i}.png`),
+        가오: [1, 2, 3].map(i => `../images/Sticker/StickerPaletter/가오-스티커${i}.png`),
+        재미: [1, 2, 3].map(i => `../images/Sticker/StickerPaletter/재미-스티커${i}.png`),
+    }
+
+    const handleStickerClick = (stickerUrl) => {
+        setSelectedStickers(prev => [...prev, {
+            id: Date.now(), // 고유 ID
+            url: stickerUrl,
+            x: 50, // 초기 위치
+            y: 50
+        }]);
+    };
+
     return (
         <div className="makeTicket-container" style={{
             width: "100vw",
@@ -55,8 +73,10 @@ const MakeTicketPage = () => {
             <TicketPreview
                 logoImgUrl={logoUrl}
                 fillColor={fillColor}
-                frameIndex={selectedFrame}
+                frameIndex={selectedFrame} // frameIndex -> selectedFrame으로 수정
                 patternUrl={patternUrl}
+                stickers={selectedStickers} // 스티커 배열 전달
+                onStickerUpdate={setSelectedStickers} // 스티커 업데이트 함수 전달
             />
 
             <div className="paletter-container">
@@ -79,7 +99,7 @@ const MakeTicketPage = () => {
 
                 <MakePaletter title="패턴 배경">
                     <SinglePaletter imageUrl="../images/none.svg" onClick={() => setPatternUrl(null)} />
-                    {(filterMap[filter] ? patternMap[filter] : []).map((thumbUrl, idx) => {
+                    {(filter && patternMap[filter] ? patternMap[filter] : []).map((thumbUrl, idx) => {
                         const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
                         return (
                             <SinglePaletter
@@ -88,6 +108,20 @@ const MakeTicketPage = () => {
                                 onClick={() => setPatternUrl(appliedUrl)}
                             />
                         );
+                    })}
+                </MakePaletter>
+
+                <MakePaletter title="스티커">
+                    <SinglePaletter imageUrl="../images/none.svg" onClick={() => alert("null")} />
+                    {(filter && stickerMap[filter] ? stickerMap[filter] : []).map((thumbUrl, idx) => {
+                        const appliedUrl = thumbUrl.replace("/StickerPaletter/", "/");
+                        return (
+                            <SinglePaletter
+                                key={idx}
+                                imageUrl={thumbUrl}
+                                onClick={() => handleStickerClick(appliedUrl)} // 클릭 핸들러 추가
+                            />
+                        )
                     })}
                 </MakePaletter>
             </div>

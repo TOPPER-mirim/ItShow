@@ -1,6 +1,7 @@
 .ticket-preview-container {
     position: sticky;
-    top: 0; /* 상단에 고정 */
+    top: 0;
+    /* 상단에 고정 */
     z-index: 10;
     background-color: white;
     display: flex;
@@ -26,4 +27,65 @@
 
 .emoji-icon {
     width: 40px;
+}
+
+.ticket-frame {
+    position: relative;
+    /* overflow: hidden 제거 - 드래그 중 스티커가 잘리는 것을 방지 */
+    overflow: visible;
+    min-height: 300px;
+    min-width: 200px;
+    /* 드래그 앤 드롭을 위한 기본 설정 */
+    touch-action: none;
+    /* 터치 스크롤 방지 */
+    cursor: default;
+}
+
+/* 드래그 중 드롭 영역 표시 */
+.ticket-frame.drag-over {
+    background-color: rgba(0, 123, 255, 0.1);
+    border: 2px dashed #007bff;
+    border-radius: 8px;
+}
+
+.ticket-sticker {
+    user-select: none;
+    pointer-events: auto;
+    /* 드래그 가능한 요소임을 명확히 표시 */
+    cursor: grab;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    /* 터치 디바이스 지원 */
+    touch-action: none;
+}
+
+/* 스티커 호버 효과 */
+.ticket-sticker:hover {
+    border-color: #007bff;
+    transform: scale(1.05);
+}
+
+/* 드래그 중인 스티커 */
+.ticket-sticker.dragging {
+    cursor: grabbing;
+    opacity: 0.7;
+    transform: scale(1.1);
+    z-index: 1001;
+    /* 드래그 중에는 transition 제거 */
+    transition: none;
+}
+
+/* 스티커 이미지 */
+.ticket-sticker img {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    user-select: none;
+    display: block;
+    /* 이미지 드래그 방지 */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
 }
