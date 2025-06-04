@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import "../styles/reset.css";
 import "../styles/MakeTicketPage.css";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,12 +7,14 @@ import TicketPreview from "../components/TicketPreview";
 import MakePaletter from "../components/MakePalette";
 import SinglePaletter from "../components/SinglePaletter";
 import CustomPopup from "../components/CustomPopup";
-import html2canvas from "html2canvas";
 
 const MakeTicketPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const { nickname, content, filter } = location.state || {};
+
+    // TicketPreview ref 추가
+    const ticketPreviewRef = useRef(null);
 
     /** 필터에 따른 기본 정보 설정 */
     const filterMap = {
@@ -46,6 +48,7 @@ const MakeTicketPage = () => {
     const [patternUrl, setPatternUrl] = useState(null);
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
+    const [saveToBook, setSaveToBook] = useState(false);
 
     const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
 
@@ -56,29 +59,47 @@ const MakeTicketPage = () => {
         ]);
     };
 
-    const handleSubmit = async () => {
-        if (saveToBook) {
-            await handleDownloadTicket();
+    // 티켓 다운로드 함수 (프레임만 저장)
+    const handleDownloadTicket = async () => {
+        if (!ticketPreviewRef.current) {
+            console.error("TicketPreview ref가 없습니다.");
+            return;
         }
+
+        try {
+            const dataUrl = await ticketPreviewRef.current.captureTicket();
+            if (dataUrl) {
+                const link = document.createElement("a");
+                link.href = dataUrl;
+                link.download = `${nickname || 'my'}_lucky_ticket.png`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                console.log("티켓이 성공적으로 저장되었습니다!");
+            } else {
+                console.error("티켓 캡처에 실패했습니다.");
+                alert("티켓 저장에 실패했습니다. 다시 시도해주세요.");
+            }
+        } catch (error) {
+            console.error("티켓 저장 중 오류:", error);
+            alert("티켓 저장 중 오류가 발생했습니다.");
+        }
+    };
+
+    const handleSubmit = async () => {
+        // 항상 티켓 다운로드 실행
+        await handleDownloadTicket();
+
+        // 체크박스 상태에 따라 티켓북 저장 여부 결정 (필요시 추가 로직)
+        if (saveToBook) {
+            console.log("티켓북에도 저장됩니다.");
+            // 여기에 티켓북 저장 로직 추가 가능
+        }
+
+        // 결과 페이지로 이동
         navigate("/result");
     };
-
-    const handleDownloadTicket = async () => {
-        const element = document.querySelector(".ticket-preview-wrapper");
-        if (!element) return;
-
-        const canvas = await html2canvas(element, { useCORS: true });
-        const image = canvas.toDataURL("image/png");
-
-        const link = document.createElement("a");
-        link.href = image;
-        link.download = "my_ticket.png";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
-    const [saveToBook, setSaveToBook] = useState(false);
 
     return (
         <div
@@ -90,6 +111,7 @@ const MakeTicketPage = () => {
         >
             <div className="ticket-preview-wrapper">
                 <TicketPreview
+                    ref={ticketPreviewRef}
                     logoImgUrl={logoUrl}
                     fillColor={fillColor}
                     frameIndex={selectedFrame}
@@ -171,17 +193,20 @@ const MakeTicketPage = () => {
                 </label>
 
                 <Button size="big" onClick={() => setShowPopup(true)}>
-                    럭키 티켓 출력하기 </Button>
+                    럭키 티켓 출력하기
+                </Button>
             </div>
 
             {showPopup && (
                 <CustomPopup message="정말 티켓을 발행하시겠습니까?">
                     <p className="popup-content-text">발행 이후로 변경하실 수 없어요!</p>
                     <div className="button-container">
-                        <Button size="mini" variant="green" onClick={handleSubmit} >
-                            티켓 발행하기 </Button>
-                        <Button size="mini" variant="empty" onClick={() => setShowPopup(false)} >
-                            좀 더 생각해보기 </Button>
+                        <Button size="mini" variant="green" onClick={handleSubmit}>
+                            티켓 발행하기
+                        </Button>
+                        <Button size="mini" variant="empty" onClick={() => setShowPopup(false)}>
+                            좀 더 생각해보기
+                        </Button>
                     </div>
                 </CustomPopup>
             )}

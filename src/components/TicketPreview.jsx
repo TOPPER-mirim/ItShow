@@ -1,4 +1,4 @@
-import React, { useState, useRef, useImperativeHandle, forwardRef } from "react";
+import React, { useState, useRef, useImperativeHandle, forwardRef, useEffect } from "react";
 import "../styles/TicketPreview.css";
 
 import Frame1 from "../components/Frame1";
@@ -11,11 +11,16 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
     const [isClicked, setIsClicked] = useState(false);
     const [draggedStickerId, setDraggedStickerId] = useState(null);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+    const [patternDataUrl, setPatternDataUrl] = useState(null);
 
     const frameRef = useRef(null);
 
     const getFrameComponent = (index) => {
-        const commonProps = { fillColor, patternUrl };
+        // 패턴이 있으면 data URL을 사용, 없으면 fillColor 사용
+        const commonProps = {
+            fillColor,
+            patternUrl: patternDataUrl || patternUrl
+        };
         switch (index) {
             case 1: return <Frame1 {...commonProps} />;
             case 2: return <Frame2 {...commonProps} />;
@@ -24,20 +29,83 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
         }
     };
 
+    // 패턴 이미지를 data URL로 변환
+    useEffect(() => {
+        const convertToDataURL = async () => {
+            if (!patternUrl) {
+                setPatternDataUrl(null);
+                return;
+            }
+
+            try {
+                const res = await fetch(patternUrl, {
+                    mode: "cors",
+                    headers: {
+                        'Accept': 'image/*'
+                    }
+                });
+
+                if (!res.ok) {
+                    throw new Error(`HTTP error! status: ${res.status}`);
+                }
+
+                const blob = await res.blob();
+                const reader = new FileReader();
+
+                reader.onloadend = () => {
+                    setPatternDataUrl(reader.result);
+                };
+
+                reader.onerror = () => {
+                    console.error("FileReader 에러");
+                    setPatternDataUrl(null);
+                };
+
+                reader.readAsDataURL(blob);
+            } catch (err) {
+                console.error("패턴 이미지 변환 실패:", err);
+                setPatternDataUrl(null);
+            }
+        };
+
+        convertToDataURL();
+    }, [patternUrl]);
+
     // 캡처 함수 외부에 노출
     useImperativeHandle(ref, () => ({
         captureTicket: async () => {
             if (!frameRef.current) return null;
 
             try {
+                // 캡처 전에 잠시 대기 (이미지 로딩 완료 대기)
+                await new Promise(resolve => setTimeout(resolve, 100));
+
                 const dataUrl = await htmlToImage.toPng(frameRef.current, {
                     cacheBust: true,
-                    backgroundColor: null
+                    backgroundColor: null,
+                    useCORS: true,
+                    allowTaint: true,
+                    width: frameRef.current.offsetWidth,
+                    height: frameRef.current.offsetHeight,
+                    pixelRatio: 2 // 고해상도 캡처
                 });
                 return dataUrl;
             } catch (err) {
                 console.error("티켓 저장 실패:", err);
-                return null;
+
+                // 대안 방법으로 다시 시도
+                try {
+                    const dataUrl = await htmlToImage.toJpeg(frameRef.current, {
+                        quality: 0.95,
+                        backgroundColor: '#ffffff',
+                        useCORS: true,
+                        allowTaint: true
+                    });
+                    return dataUrl;
+                } catch (secondErr) {
+                    console.error("두 번째 캡처 시도도 실패:", secondErr);
+                    return null;
+                }
             }
         }
     }));
