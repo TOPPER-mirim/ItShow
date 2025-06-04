@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/reset.css";
 import "../styles/InputTicketPage.css";
+import CustomPopup from "../components/CustomPopup";
 
 function InputTicketPage() {
   const [worryText, setWorryText] = useState("");
@@ -15,7 +16,7 @@ function InputTicketPage() {
     if (!worryText.trim()) {
       setPopupMessage("고민 내용을 입력해주세요.");
       setShowPopup(true);
-      return;   
+      return;
     }
     if (!nickname.trim()) {
       setPopupMessage("닉네임을 입력해주세요.");
@@ -85,17 +86,9 @@ function InputTicketPage() {
                 필터 선택 하러 가기
             </Button> */}
       {showPopup && (
-        <div className="custom-popup">
-          <div className="popup-content">
-            <img
-              src="/images/warning-icon.png"
-              alt="경고 아이콘"
-              className="popup-image"
-            />
-            <p className="popup-text">{popupMessage}</p>
-            <button onClick={() => setShowPopup(false)}>확인</button>
-          </div>
-        </div>
+        <CustomPopup message={popupMessage}>
+          <button onClick={() => setShowPopup(false)}>확인</button>
+        </CustomPopup>
       )}
     </div>
   );

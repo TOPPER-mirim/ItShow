@@ -1,105 +1,114 @@
 import React, { useState } from "react";
 import "../styles/reset.css";
 import "../styles/MakeTicketPage.css";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Button from "../components/Button";
 import TicketPreview from "../components/TicketPreview";
 import MakePaletter from "../components/MakePalette";
 import SinglePaletter from "../components/SinglePaletter";
-
-// import Frame1 from "../components/Frame1";
-// import Frame2 from "../components/Frame2";
-// import Frame3 from "../components/Frame3";
+import CustomPopup from "../components/CustomPopup";
 
 const MakeTicketPage = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const { nickname, content, filter } = location.state || {};
 
+    /** 필터에 따른 기본 정보 설정 */
     const filterMap = {
-        감성: "../images/필터-감성.svg",
-        가오: "../images/필터-가오.svg",
-        재미: "../images/필터-개그.svg"
+        감성: "/images/필터-감성.svg",
+        가오: "/images/필터-가오.svg",
+        재미: "/images/필터-개그.svg"
     };
-
     const logoUrl = filterMap[filter];
 
-    const [fillColor, setFillColor] = useState("#000000");
-
-    const [selectedFrame, setSelectedFrame] = useState(1);
-
-    const [patternUrl, setPatternUrl] = useState(null);
-
-    const handleFrameClick = (frameNumber) => {
-        setSelectedFrame(frameNumber);
-    };
-
     const patternMap = {
-        감성: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/감성-패턴${i}.png`),
-        가오: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/가오-패턴${i}.png`),
-        재미: [1, 2, 3].map(i => `../images/Pattern/PatternPaletter/개그-패턴${i}.png`),
+        감성: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/감성-패턴${i}.png`),
+        가오: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/가오-패턴${i}.png`),
+        재미: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/개그-패턴${i}.png`),
     };
-
-    const bacco = filter === "감성"
-        ? "#BDDDF7"
-        : filter === "가오"
-            ? "#D9D9D9"
-            : "#FFE88E";
-
-    const [selectedStickers, setSelectedStickers] = useState([]);
 
     const stickerMap = {
-        감성: [1, 2, 3].map(i => `../images/Sticker/StickerPaletter/감성-스티커${i}.png`),
-        가오: [1, 2, 3].map(i => `../images/Sticker/StickerPaletter/가오-스티커${i}.png`),
-        재미: [1, 2, 3].map(i => `../images/Sticker/StickerPaletter/재미-스티커${i}.png`),
-    }
+        감성: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/감성-스티커${i}.png`),
+        가오: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/가오-스티커${i}.png`),
+        재미: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/개그-스티커${i}.png`),
+    };
 
-    const handleStickerClick = (stickerUrl) => {
-        setSelectedStickers(prev => [...prev, {
-            id: Date.now(), // 고유 ID
-            url: stickerUrl,
-            x: 50, // 초기 위치
-            y: 50
-        }]);
+    const backgroundColorMap = {
+        감성: "#BDDDF7",
+        가오: "#D9D9D9",
+        재미: "#FFE88E",
+    };
+
+    /** 상태 설정 */
+    const [selectedFrame, setSelectedFrame] = useState(1);
+    const [fillColor, setFillColor] = useState("#000000");
+    const [patternUrl, setPatternUrl] = useState(null);
+    const [selectedStickers, setSelectedStickers] = useState([]);
+    const [showPopup, setShowPopup] = useState(false);
+
+    /** 핸들러 */
+    const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
+
+    const handleStickerClick = (url) => {
+        setSelectedStickers(prev => [
+            ...prev,
+            { id: Date.now(), url, x: 50, y: 50 }
+        ]);
+    };
+
+    const handleSubmit = () => {
+        navigate("/result");
     };
 
     return (
-        <div className="makeTicket-container" style={{
-            width: "100vw",
-            height: "100vh",
-            background: `linear-gradient(to bottom, ${bacco}, transparent)`,
-            // backgroundColor: "#F8F8F8"
-        }}>
-
+        <div
+            className="makeTicket-container"
+            style={{
+                width: "100vw",
+                background: `linear-gradient(to bottom, ${backgroundColorMap[filter]}, transparent)`
+            }}
+        >
             <TicketPreview
                 logoImgUrl={logoUrl}
                 fillColor={fillColor}
-                frameIndex={selectedFrame} // frameIndex -> selectedFrame으로 수정
+                frameIndex={selectedFrame}
                 patternUrl={patternUrl}
-                stickers={selectedStickers} // 스티커 배열 전달
-                onStickerUpdate={setSelectedStickers} // 스티커 업데이트 함수 전달
+                stickers={selectedStickers}
+                onStickerUpdate={setSelectedStickers}
             />
 
             <div className="paletter-container">
-
                 <MakePaletter title="프레임">
-                    <SinglePaletter imageUrl="../images/프레임1.png" onClick={() => handleFrameClick(1)} />
-                    <SinglePaletter imageUrl="../images/프레임2.png" onClick={() => handleFrameClick(2)} />
-                    <SinglePaletter imageUrl="../images/프레임3.png" onClick={() => handleFrameClick(3)} />
+                    {[1, 2, 3].map(i => (
+                        <SinglePaletter
+                            key={i}
+                            imageUrl={`/images/프레임${i}.png`}
+                            onClick={() => handleFrameClick(i)}
+                        />
+                    ))}
                 </MakePaletter>
 
                 <MakePaletter title="단색 배경">
-                    <SinglePaletter imageUrl="../images/none.svg" onClick={() => setFillColor("#D9D9D9")} />
-                    <SinglePaletter imageUrl="../images/pink.png" onClick={() => setFillColor("#FFC1C1")} />
-                    <SinglePaletter imageUrl="../images/yellow.png" onClick={() => setFillColor("#FEC730")} />
-                    <SinglePaletter imageUrl="../images/green.png" onClick={() => setFillColor("#9CD69D")} />
-                    <SinglePaletter imageUrl="../images/babyblue.png" onClick={() => setFillColor("#DFECF2")} />
-                    <SinglePaletter imageUrl="../images/blue.png" onClick={() => setFillColor("#225268")} />
-                    <SinglePaletter imageUrl="../images/black.png" onClick={() => setFillColor("#000000")} />
+                    {[
+                        { color: "#D9D9D9", img: "none.svg" },
+                        { color: "#FFC1C1", img: "pink.png" },
+                        { color: "#FEC730", img: "yellow.png" },
+                        { color: "#9CD69D", img: "green.png" },
+                        { color: "#DFECF2", img: "babyblue.png" },
+                        { color: "#225268", img: "blue.png" },
+                        { color: "#000000", img: "black.png" }
+                    ].map(({ color, img }) => (
+                        <SinglePaletter
+                            key={color}
+                            imageUrl={`/images/${img}`}
+                            onClick={() => setFillColor(color)}
+                        />
+                    ))}
                 </MakePaletter>
 
                 <MakePaletter title="패턴 배경">
-                    <SinglePaletter imageUrl="../images/none.svg" onClick={() => setPatternUrl(null)} />
-                    {(filter && patternMap[filter] ? patternMap[filter] : []).map((thumbUrl, idx) => {
+                    <SinglePaletter imageUrl="/images/none.svg" onClick={() => setPatternUrl(null)} />
+                    {(patternMap[filter] || []).map((thumbUrl, idx) => {
                         const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
                         return (
                             <SinglePaletter
@@ -112,20 +121,21 @@ const MakeTicketPage = () => {
                 </MakePaletter>
 
                 <MakePaletter title="스티커">
-                    <SinglePaletter imageUrl="../images/none.svg" onClick={() => alert("null")} />
-                    {(filter && stickerMap[filter] ? stickerMap[filter] : []).map((thumbUrl, idx) => {
+                    <SinglePaletter imageUrl="/images/none.svg" onClick={() => alert("스티커 제거는 추후 구현 예정입니다.")} />
+                    {(stickerMap[filter] || []).map((thumbUrl, idx) => {
                         const appliedUrl = thumbUrl.replace("/StickerPaletter/", "/");
                         return (
                             <SinglePaletter
                                 key={idx}
                                 imageUrl={thumbUrl}
-                                onClick={() => handleStickerClick(appliedUrl)} // 클릭 핸들러 추가
+                                onClick={() => handleStickerClick(appliedUrl)}
                             />
-                        )
+                        );
                     })}
                 </MakePaletter>
             </div>
 
+            {/* 하단 확인 박스 */}
             <div className="ticketConfirmBox">
                 <label className="customCheckbox">
                     <input type="checkbox" name="ticketBookOk" />
@@ -133,9 +143,21 @@ const MakeTicketPage = () => {
                     <p>티켓북에 저장하시겠습니까?</p>
                 </label>
 
-                <Button size="big">럭키 티켓 출력하기</Button>
+                <Button size="big" onClick={() => setShowPopup(true)}>
+                    럭키 티켓 출력하기 </Button>
             </div>
 
+            {showPopup && (
+                <CustomPopup message="정말 티켓을 발행하시겠습니까?">
+                    <p className="popup-text">발행 이후로 변경하실 수 없어요!</p>
+                    <div className="button-container">
+                        <Button size="mini" variant="green" onClick={handleSubmit} >
+                            티켓 발행하기 </Button>
+                        <Button size="mini" variant="empty" onClick={() => setShowPopup(false)} >
+                            좀 더 생각해보기 </Button>
+                    </div>
+                </CustomPopup>
+            )}
         </div>
     );
 };
