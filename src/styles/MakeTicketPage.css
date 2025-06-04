@@ -5,6 +5,12 @@
     /* margin-bottom: 40px; */
 }
 
+.ticket-preview-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
 .paletter-container {
     display: flex;
     flex-direction: column;
@@ -75,7 +81,8 @@
     height: 63px;
 }
 
-.popup-text {
+.popup-content-text {
     font-size: 20px;
+    /* font-weight: 100; */
     color: #595959;
 }

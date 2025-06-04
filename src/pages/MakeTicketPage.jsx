@@ -7,6 +7,7 @@ import TicketPreview from "../components/TicketPreview";
 import MakePaletter from "../components/MakePalette";
 import SinglePaletter from "../components/SinglePaletter";
 import CustomPopup from "../components/CustomPopup";
+import html2canvas from "html2canvas";
 
 const MakeTicketPage = () => {
     const location = useLocation();
@@ -46,7 +47,6 @@ const MakeTicketPage = () => {
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
 
-    /** 핸들러 */
     const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
 
     const handleStickerClick = (url) => {
@@ -56,9 +56,29 @@ const MakeTicketPage = () => {
         ]);
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
+        if (saveToBook) {
+            await handleDownloadTicket();
+        }
         navigate("/result");
     };
+
+    const handleDownloadTicket = async () => {
+        const element = document.querySelector(".ticket-preview-wrapper");
+        if (!element) return;
+
+        const canvas = await html2canvas(element, { useCORS: true });
+        const image = canvas.toDataURL("image/png");
+
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "my_ticket.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    };
+
+    const [saveToBook, setSaveToBook] = useState(false);
 
     return (
         <div
@@ -68,14 +88,16 @@ const MakeTicketPage = () => {
                 background: `linear-gradient(to bottom, ${backgroundColorMap[filter]}, transparent)`
             }}
         >
-            <TicketPreview
-                logoImgUrl={logoUrl}
-                fillColor={fillColor}
-                frameIndex={selectedFrame}
-                patternUrl={patternUrl}
-                stickers={selectedStickers}
-                onStickerUpdate={setSelectedStickers}
-            />
+            <div className="ticket-preview-wrapper">
+                <TicketPreview
+                    logoImgUrl={logoUrl}
+                    fillColor={fillColor}
+                    frameIndex={selectedFrame}
+                    patternUrl={patternUrl}
+                    stickers={selectedStickers}
+                    onStickerUpdate={setSelectedStickers}
+                />
+            </div>
 
             <div className="paletter-container">
                 <MakePaletter title="프레임">
@@ -138,7 +160,12 @@ const MakeTicketPage = () => {
             {/* 하단 확인 박스 */}
             <div className="ticketConfirmBox">
                 <label className="customCheckbox">
-                    <input type="checkbox" name="ticketBookOk" />
+                    <input
+                        type="checkbox"
+                        name="ticketBookOk"
+                        checked={saveToBook}
+                        onChange={(e) => setSaveToBook(e.target.checked)}
+                    />
                     <span className="checkmark"></span>
                     <p>티켓북에 저장하시겠습니까?</p>
                 </label>
@@ -149,7 +176,7 @@ const MakeTicketPage = () => {
 
             {showPopup && (
                 <CustomPopup message="정말 티켓을 발행하시겠습니까?">
-                    <p className="popup-text">발행 이후로 변경하실 수 없어요!</p>
+                    <p className="popup-content-text">발행 이후로 변경하실 수 없어요!</p>
                     <div className="button-container">
                         <Button size="mini" variant="green" onClick={handleSubmit} >
                             티켓 발행하기 </Button>
