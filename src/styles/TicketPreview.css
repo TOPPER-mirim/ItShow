@@ -33,8 +33,8 @@
     position: relative;
     /* overflow: hidden 제거 - 드래그 중 스티커가 잘리는 것을 방지 */
     overflow: visible;
-    min-height: 300px;
-    min-width: 200px;
+    /* min-height: 300px;
+    min-width: 200px; */
     /* 드래그 앤 드롭을 위한 기본 설정 */
     touch-action: none;
     /* 터치 스크롤 방지 */
@@ -60,7 +60,6 @@
     touch-action: none;
 }
 
-/* 스티커 호버 효과 */
 .ticket-sticker:hover {
     border-color: #007bff;
     transform: scale(1.05);
@@ -78,8 +77,8 @@
 
 /* 스티커 이미지 */
 .ticket-sticker img {
-    width: 100%;
-    height: 100%;
+    /* width: 100%;
+    height: 100%; */
     pointer-events: none;
     user-select: none;
     display: block;

@@ -1,11 +1,13 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useImperativeHandle, forwardRef } from "react";
 import "../styles/TicketPreview.css";
 
 import Frame1 from "../components/Frame1";
 import Frame2 from "../components/Frame2";
 import Frame3 from "../components/Frame3";
 
-function TicketPreview({ logoImgUrl, fillColor, frameIndex, patternUrl, stickers = [], onStickerUpdate }) {
+import * as htmlToImage from 'html-to-image';
+
+const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUrl, stickers = [], onStickerUpdate }, ref) => {
     const [isClicked, setIsClicked] = useState(false);
     const [draggedStickerId, setDraggedStickerId] = useState(null);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -21,6 +23,24 @@ function TicketPreview({ logoImgUrl, fillColor, frameIndex, patternUrl, stickers
             default: return <Frame1 {...commonProps} />;
         }
     };
+
+    // 캡처 함수 외부에 노출
+    useImperativeHandle(ref, () => ({
+        captureTicket: async () => {
+            if (!frameRef.current) return null;
+
+            try {
+                const dataUrl = await htmlToImage.toPng(frameRef.current, {
+                    cacheBust: true,
+                    backgroundColor: null
+                });
+                return dataUrl;
+            } catch (err) {
+                console.error("티켓 저장 실패:", err);
+                return null;
+            }
+        }
+    }));
 
     const handleToggleColor = (e) => {
         if (!e.target.closest('.ticket-sticker') && draggedStickerId === null) {
@@ -42,7 +62,7 @@ function TicketPreview({ logoImgUrl, fillColor, frameIndex, patternUrl, stickers
 
         const frameRect = frameRef.current.getBoundingClientRect();
         const x = e.clientX - frameRect.left - dragOffset.x;
-        const y = e.clientY - frameRect.top - dragOffset.y;
+        const y = e.clientY - frameRef.current.getBoundingClientRect().top - dragOffset.y;
 
         const boundedX = Math.max(0, Math.min(x, frameRect.width - 40));
         const boundedY = Math.max(0, Math.min(y, frameRect.height - 40));
@@ -117,8 +137,6 @@ function TicketPreview({ logoImgUrl, fillColor, frameIndex, patternUrl, stickers
                             position: "absolute",
                             left: `${sticker.x}px`,
                             top: `${sticker.y}px`,
-                            width: "40px",
-                            height: "40px",
                             cursor: "grab",
                             zIndex: 1000,
                             transform: `scale(${sticker.scale || 1})`,
@@ -143,6 +161,6 @@ function TicketPreview({ logoImgUrl, fillColor, frameIndex, patternUrl, stickers
             </div>
         </div>
     );
-}
+});
 
 export default TicketPreview;

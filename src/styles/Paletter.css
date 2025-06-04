@@ -5,7 +5,7 @@
 
 .paletters {
     display: flex;
-    gap: 22px;
+    gap: 25px;
 }
 
 .make-title {
@@ -15,6 +15,7 @@
 
 .single-paletter {
     margin-top: 30px;
-    width: 130px;
+    /* width: 130px; */
+    border-radius: 10px;
     box-shadow: 0px 86px 50px rgba(0, 0, 0, 0.05);
 }
