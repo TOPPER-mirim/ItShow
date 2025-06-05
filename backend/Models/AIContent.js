@@ -8,7 +8,7 @@ const defineAIContent = (sequelize) => {
       autoIncrement: true,
     },
     reContent: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(255),
       allowNull: false,
     },
     filterStr: {
