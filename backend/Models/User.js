@@ -17,10 +17,6 @@ const defineUser = (sequelize) => {
     },
   });
 
-  User.associate = (models) => {
-    User.hasMany(models.AIContent, { foreignKey: "contentId" });
-  };
-
   return User;
 };
 

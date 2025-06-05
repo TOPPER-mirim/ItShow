@@ -4,8 +4,6 @@ import { models } from './Models/index.js';
 import geminiRouter from "./Routers/gemini.js";
 import userRouter from "./Routers/user.js";
 
-
-
 const app = express();
 app.use(express.json());
 
@@ -23,7 +21,7 @@ app.use("/", userRouter);
   try {
     await models.sequelize.authenticate();
     console.log("DB 연결 성공");
-    await models.sequelize.sync(); // 테이블 없으면 생성됨
+    await models.sequelize.sync({ force: true }); // 테이블 없으면 생성됨
     console.log("테이블 동기화 완료");
   } catch (error) {
     console.error("DB 연결 실패:", error);
