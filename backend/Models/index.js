@@ -14,7 +14,6 @@ const sequelize = new Sequelize(
 );
 
 import defineUser  from './User.js';
-
 import ticketImage  from './Ticket_Image.js';
 const User = defineUser(sequelize);
 const Image = ticketImage(sequelize);

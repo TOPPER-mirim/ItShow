@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import models from './Models/index.js';
+import { models } from './Models/index.js';
 import geminiRouter from "./Routers/gemini.js";
 import userRouter from "./Routers/user.js";
 
