@@ -21,7 +21,9 @@ app.use("/", userRouter);
   try {
     await models.sequelize.authenticate();
     console.log("DB 연결 성공");
-    await models.sequelize.sync({ force: true }); // 테이블 없으면 생성됨
+    // force: false는 테이블이 없으면 새로 생성
+    // 테이블 구조가 변경된 경우 기존 테이블을 삭제하고 다시 만들고 싶다면 force: true 사용
+    await models.sequelize.sync({ force: false });
     console.log("테이블 동기화 완료");
   } catch (error) {
     console.error("DB 연결 실패:", error);
