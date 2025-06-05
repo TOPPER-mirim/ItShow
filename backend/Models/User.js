@@ -1,7 +1,7 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from "sequelize";
 
 const defineUser = (sequelize) => {
-  return sequelize.define('User', {
+  const User = sequelize.define("User", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -16,6 +16,12 @@ const defineUser = (sequelize) => {
       allowNull: false,
     },
   });
+
+  User.associate = (models) => {
+    User.hasMany(models.AIContent, { foreignKey: "contentId" });
+  };
+
+  return User;
 };
 
 export default defineUser;
