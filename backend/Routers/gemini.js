@@ -1,8 +1,8 @@
 import express from 'express';
-import { rewritingSentence } from '../Controllers/geminiController.js';
+import geminiController from '../Controllers/geminiController.js';
 
 const router = express.Router();
 
-router.post('/rewriting', rewritingSentence);
+router.get('/rewriting/:id', geminiController.rewritingSentence);
 
 export default router;
