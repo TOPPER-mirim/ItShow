@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import { models } from './Models/index.js';
 import geminiRouter from "./Routers/gemini.js";
+import userRouter from "./Routers/user.js";
+
+
 
 const app = express();
 app.use(express.json());
@@ -12,7 +15,8 @@ app.use(
   })
 );
 
-app.use("/gemini", geminiRouter);
+app.use("/", geminiRouter);
+app.use("/", userRouter);
 
 // DB 연결 및 테이블 동기화
 (async () => {
