@@ -27,13 +27,13 @@ const geminiController = {
       let prompt = '';
       switch (filter) {
         case '감성':
-          prompt = `"${originalContent}" 사용자의 감정을 INFP 스타일로 감성적으로 위로하거나 공감해줘. 따뜻하고 부드러운 20대 말투로. 문장은 20자 이내로 해줘.`;
+          prompt = `"${originalContent}" 사용자의 감정을 INFP 스타일로 감성적으로 위로하거나 공감해. 따뜻하고 부드러운 20대 말투로 해. 20자 이내로, 줄바꿈(\n) 없는 문장으로 만들어.`;
           break;
         case '가오':
-          prompt = `"${originalContent}" 사용자의 감정을 허세 섞인 말투로 멋있고 간지나게 바꿔줘. 자존감을 올려주는 위로, 츤데레 느낌으로. 폼, 자존심, 허세 강조. 문장은 20자 이내로 해줘.`;
+          prompt = `"${originalContent}" 사용자의 감정을 허세 섞인 말투로 멋있고 간지나게 바꿔. 자존감을 올려주는 위로, 츤데레 느낌으로. 폼, 자존심, 허세 강조. 20자 이내로, 줄바꿈(\n) 없는 문장으로 만들어.`;
           break;
         case '개그':
-          prompt = `"${originalContent}" 사용자의 감정을 유쾌하고 재밌게 바꿔줘. 무조건 웃기려고 하는 개그 스타일, 커뮤니케이션 느낌 강조. 문장은 50자 이내로 해줘.`;
+          prompt = `"${originalContent}" 사용자의 감정을 유쾌하고 재밌게 바꿔. 무조건 웃기려고 하는 개그 스타일, 커뮤니케이션 느낌 강조. 20자 이내로, 줄바꿈(\n) 없는 문장으로 만들어.`;
           break;
         default:
           return res.status(400).json({ error: "올바르지 않은 필터입니다." });
