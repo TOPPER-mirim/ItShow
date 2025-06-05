@@ -13,12 +13,17 @@ const sequelize = new Sequelize(
   }
 );
 
-import defineUser  from './User.js';
-import ticketImage  from './Ticket_Image.js';
+import defineUser from './User.js';
+import ticketImage from './Ticket_Image.js';
+import difineAIContent from './AIContent.js';
 const User = defineUser(sequelize);
 const Image = ticketImage(sequelize);
+const AIContent = difineAIContent(sequelize);
 
 User.hasMany(Image, { foreignKey: 'userId' });
 Image.belongsTo(User, { foreignKey: 'userId' });
 
-export const models = { sequelize, User, Image };
+User.hasMany(AIContent, { foreignKey: 'contentId' });
+AIContent.belongsTo(User, { foreignKey: 'contentId' });
+
+export const models = { sequelize, User, Image, AIContent };
