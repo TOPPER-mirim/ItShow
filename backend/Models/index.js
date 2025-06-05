@@ -14,6 +14,11 @@ const sequelize = new Sequelize(
 );
 
 import defineUser  from './User.js';
+import ticketImage  from './Ticket_Image.js';
 const User = defineUser(sequelize);
+const Image = ticketImage(sequelize);
 
-export const models = { sequelize, User };
+User.hasMany(Image, { foreignKey: 'userId' });
+Image.belongsTo(User, { foreignKey: 'userId' });
+
+export const models = { sequelize, User, Image };
