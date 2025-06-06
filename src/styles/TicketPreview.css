@@ -88,3 +88,85 @@
     -moz-user-drag: none;
     -o-user-drag: none;
 }
+
+.content-container {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    position: fixed;
+    z-index: 100;
+    justify-content: space-between;
+    /* width: 900px; */
+    height: 350px;
+    /* padding: 15px; */
+}
+
+.content-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    width: 665px;
+}
+
+.ticket-logo {
+    font-size: 25px;
+    margin-bottom: 25px;
+}
+
+.ai-text {
+    font-size: 28px;
+    width: 460px;
+    font-weight: 600;
+}
+
+.user-text {
+    font-size: 18px;
+    margin-top: 20px;
+}
+
+.name {
+    margin-left: auto;
+    padding-right: 50px;
+    font-size: 18px;
+}
+
+.content-right {
+    width: 234px;
+    display: flex;
+    align-items: center;
+    transform: rotate(90deg);
+    gap: 30px;
+    padding-top: 25px;
+}
+
+.month-day-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.month {
+    font-size: 18px;
+}
+
+.day {
+    font-size: 23px;
+    font-weight: 600;
+}
+
+.days {
+    font-size: 50px;
+    font-weight: bold;
+    color: white;
+    -webkit-text-stroke: 2px black;
+    paint-order: stroke fill;
+}
+
+.year-hour-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 18px;
+}

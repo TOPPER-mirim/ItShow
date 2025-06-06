@@ -29,7 +29,6 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
         }
     };
 
-    // 패턴 이미지를 data URL로 변환
     useEffect(() => {
         const convertToDataURL = async () => {
             if (!patternUrl) {
@@ -71,7 +70,6 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
         convertToDataURL();
     }, [patternUrl]);
 
-    // 캡처 함수 외부에 노출
     useImperativeHandle(ref, () => ({
         captureTicket: async () => {
             if (!frameRef.current) return null;
@@ -192,6 +190,30 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
                     backgroundColor: draggedStickerId ? "rgba(0, 123, 255, 0.1)" : "transparent"
                 }}
             >
+
+                <div className="content-container">
+                        <div className="content-left">
+                            <div className="ticket-logo">Lucky Ticket</div>
+                            <div className="ai-text">선우야, 이 감정... 숨긴다고 숨겨지냐? 보고 싶다는 말, 내가 한다. 지금 이 순간, 온 우주가 너를 외치고 있어.</div>
+                            <div className="user-text">선우야 진짜짅짜진짜 보고싶다</div>
+                            <div className="name">나지은</div>
+                        </div>
+
+                        <div className="content-right">
+                            <div className="month-day-container">
+                                <div className="month">FRIDAY</div>
+                                <div className="day">JUNE</div>
+                            </div>
+
+                            <div className="days">6</div>
+
+                            <div className="year-hour-container">
+                                <div className="year">2025</div>
+                                <div className="hour">20:47 PM</div>
+                            </div>
+                        </div>
+                </div>
+
                 <div style={{ position: "relative", zIndex: 1 }}>{frameComponent}</div>
 
                 {stickers.map((sticker) => (

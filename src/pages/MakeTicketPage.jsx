@@ -42,9 +42,8 @@ const MakeTicketPage = () => {
         재미: "#FFE88E",
     };
 
-    /** 상태 설정 */
     const [selectedFrame, setSelectedFrame] = useState(1);
-    const [fillColor, setFillColor] = useState("#000000");
+    const [fillColor, setFillColor] = useState(backgroundColorMap[filter]);
     const [patternUrl, setPatternUrl] = useState(null);
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
@@ -128,13 +127,14 @@ const MakeTicketPage = () => {
                             key={i}
                             imageUrl={`/images/프레임${i}.png`}
                             onClick={() => handleFrameClick(i)}
+                            isSelected={selectedFrame === i}
                         />
                     ))}
                 </MakePaletter>
 
                 <MakePaletter title="단색 배경">
                     {[
-                        { color: "#D9D9D9", img: "none.svg" },
+                        { color: backgroundColorMap[filter], img: "none.svg" },
                         { color: "#FFC1C1", img: "pink.png" },
                         { color: "#FEC730", img: "yellow.png" },
                         { color: "#9CD69D", img: "green.png" },
@@ -145,13 +145,21 @@ const MakeTicketPage = () => {
                         <SinglePaletter
                             key={color}
                             imageUrl={`/images/${img}`}
-                            onClick={() => setFillColor(color)}
+                            onClick={() => {
+                                setFillColor(color);
+                                setPatternUrl(null);
+                            }}
+                            isSelected={fillColor === color}  // 현재 선택된 색과 비교
                         />
                     ))}
                 </MakePaletter>
 
                 <MakePaletter title="패턴 배경">
-                    <SinglePaletter imageUrl="/images/none.svg" onClick={() => setPatternUrl(null)} />
+                    <SinglePaletter
+                        imageUrl="/images/none.svg"
+                        onClick={() => setPatternUrl(null)}
+                        isSelected={patternUrl === null}
+                    />
                     {(patternMap[filter] || []).map((thumbUrl, idx) => {
                         const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
                         return (
@@ -159,20 +167,27 @@ const MakeTicketPage = () => {
                                 key={idx}
                                 imageUrl={thumbUrl}
                                 onClick={() => setPatternUrl(appliedUrl)}
+                                isSelected={patternUrl === appliedUrl}
                             />
                         );
                     })}
                 </MakePaletter>
 
                 <MakePaletter title="스티커">
-                    <SinglePaletter imageUrl="/images/none.svg" onClick={() => alert("스티커 제거는 추후 구현 예정입니다.")} />
+                    <SinglePaletter
+                        imageUrl="/images/none.svg"
+                        onClick={() => setSelectedStickers([])}
+                        isSelected={selectedStickers.length === 0}
+                    />
                     {(stickerMap[filter] || []).map((thumbUrl, idx) => {
                         const appliedUrl = thumbUrl.replace("/StickerPaletter/", "/");
+                        const isSelected = selectedStickers.some(s => s.url === appliedUrl);
                         return (
                             <SinglePaletter
                                 key={idx}
                                 imageUrl={thumbUrl}
                                 onClick={() => handleStickerClick(appliedUrl)}
+                                isSelected={isSelected}
                             />
                         );
                     })}
