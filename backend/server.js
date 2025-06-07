@@ -1,8 +1,10 @@
 import express from "express";
 import cors from "cors";
+import path from 'path';
 import { models } from './Models/index.js';
 import geminiRouter from "./Routers/gemini.js";
 import userRouter from "./Routers/user.js";
+import qrcodeRouter from "./Routers/qrcode.js";
 
 const app = express();
 app.use(express.json());
@@ -13,8 +15,13 @@ app.use(
   })
 );
 
+// 클라이언트가 '/uploads/파일명'으로 접근하면 (db에 uploads/images/파일명으로 저장되어 있으니까)
+// 서버의 'backend/uploads' 폴더에 있는 실제 파일 제공
+app.use('/uploads', express.static(path.join(process.cwd(), 'backend', 'uploads'))); 
+
 app.use("/", geminiRouter);
 app.use("/", userRouter);
+app.use("/", qrcodeRouter);
 
 // DB 연결 및 테이블 동기화
 (async () => {
