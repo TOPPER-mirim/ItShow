@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveImage, getLatest, getAllImages, getImagesByFilterStr } from '../controllers/imageController.js';
+import { saveImage, getLatest, getAllImages, getFilterImages } from '../controllers/imageController.js';
 
 const router = express.Router();
 
@@ -13,6 +13,6 @@ router.get('/latest', getLatest);
 router.get('/allImages', getAllImages);
 
 // 필터 별 이미지 조회
-router.post('/filterImages', getImagesByFilterStr);
+router.post('/filterImages', getFilterImages);
 
 export default router;
