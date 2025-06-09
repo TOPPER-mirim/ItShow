@@ -126,14 +126,14 @@ export const getAllImages = async (req, res) => {
   }
 };
 
-// filterStr별 이미지 및 관련 사용자, 콘텐츠 조회
-export const getImagesByFilterStr = async (req, res) => {
+// filterStr별 이미지(아이디, 필터) 반환
+export const getFilterImages = async (req, res) => {
   try {
     const { filterStr } = req.body;
 
     // filterStr이 있으면 LIKE 검색 조건 생성
     const whereClause = filterStr
-      ? { filterStr: { [Op.like]: `%${filterStr}%` } }
+      ? { filterStr: { [Op.like]: `${filterStr}` } }
       : {};
 
     const contents = await AIContent.findAll({
