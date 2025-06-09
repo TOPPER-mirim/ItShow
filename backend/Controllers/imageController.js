@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import multer from 'multer';
+import { v4 as uuidv4 } from 'uuid';
 import { models } from '../Models/index.js';
 
 const { User, Image } = models;
@@ -17,9 +18,10 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const ext = path.extname(file.originalname);
         const basename = path.basename(file.originalname, ext);
-        const filename = `${Date.now()}_${basename}${ext}`;
+        const uniqueSuffix = uuidv4(); // 고유한 UUID
+        const filename = `${uniqueSuffix}_${basename}${ext}`;
         cb(null, filename);
-    }    
+    }       
 });
 
 // upload middleware (라우터에서 사용)
