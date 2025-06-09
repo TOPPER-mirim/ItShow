@@ -14,7 +14,7 @@ const sequelize = new Sequelize(
 );
 
 import defineUser from './User.js';
-import ticketImage from './Ticket_Image.js';
+import ticketImage from './ticketImage.js';
 import difineAIContent from './AIContent.js';
 const User = defineUser(sequelize);
 const Image = ticketImage(sequelize);
