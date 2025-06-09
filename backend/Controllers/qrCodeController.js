@@ -18,8 +18,8 @@ const qrCodeController = {
       // DB에 저장된 경로
       const dbImgPath = imgData.img; //img: Image 테이블의 컬럼 이름
 
-      // 실제 서버 경로로 변환
-      const actualImgPath = path.join(process.cwd(), "backend", dbImgPath);
+      // 실제 서버 경로 확인
+      const actualImgPath = path.join(process.cwd(), "backend", "uploads", dbImgPath);
 
       try {
         await fs.access(actualImgPath);
@@ -29,7 +29,7 @@ const qrCodeController = {
 
       // 서버 주소 포함해서 전체 URL 구성 (프론트에서도 접근 가능하게)
       // encodeURI: URL에 들어가면 안 되는 문자들을 인코딩해주는 함수 (한글 포함)
-      const imageURL = `${req.protocol}://${req.get("host")}/${encodeURI(dbImgPath)}`;
+      const imageURL = `${req.protocol}://${req.get("host")}/uploads/${encodeURI(dbImgPath)}`;
 
       // QR 코드 생성 (이미지가 생성)
       const qrcode = await QRCode.toDataURL(imageURL);
