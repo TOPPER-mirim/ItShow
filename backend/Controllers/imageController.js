@@ -142,7 +142,6 @@ export const getFilterImages = async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["id", "name"],
           include: [
             {
               model: Image,
@@ -151,7 +150,6 @@ export const getFilterImages = async (req, res) => {
           ],
         },
       ],
-      order: [["createdAt", "DESC"]],
     });
 
     if (contents.length === 0) {
