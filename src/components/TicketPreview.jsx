@@ -75,7 +75,6 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
             if (!frameRef.current) return null;
 
             try {
-                // 캡처 전에 잠시 대기 (이미지 로딩 완료 대기)
                 await new Promise(resolve => setTimeout(resolve, 100));
 
                 const dataUrl = await htmlToImage.toPng(frameRef.current, {
@@ -85,13 +84,12 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
                     allowTaint: true,
                     width: frameRef.current.offsetWidth,
                     height: frameRef.current.offsetHeight,
-                    pixelRatio: 2 // 고해상도 캡처
+                    pixelRatio: 2
                 });
                 return dataUrl;
             } catch (err) {
                 console.error("티켓 저장 실패:", err);
 
-                // 대안 방법으로 다시 시도
                 try {
                     const dataUrl = await htmlToImage.toJpeg(frameRef.current, {
                         quality: 0.95,
@@ -192,26 +190,26 @@ const TicketPreview = forwardRef(({ logoImgUrl, fillColor, frameIndex, patternUr
             >
 
                 <div className="content-container">
-                        <div className="content-left">
-                            <div className="ticket-logo">Lucky Ticket</div>
-                            <div className="ai-text">선우야, 이 감정... 숨긴다고 숨겨지냐? 보고 싶다는 말, 내가 한다. 지금 이 순간, 온 우주가 너를 외치고 있어.</div>
-                            <div className="user-text">선우야 진짜짅짜진짜 보고싶다</div>
-                            <div className="name">나지은</div>
+                    <div className="content-left">
+                        <div className="ticket-logo">Lucky Ticket</div>
+                        <div className="ai-text">지금 이 순간, 너에게 닿고 싶은 마음이 온 우주를 울려.</div>
+                        <div className="user-text">선우야, 나 진짜 많이 보고 싶어.</div>
+                        <div className="name">나지은</div>
+                    </div>
+
+                    <div className="content-right">
+                        <div className="month-day-container">
+                            <div className="month">FRIDAY</div>
+                            <div className="day">JUNE</div>
                         </div>
 
-                        <div className="content-right">
-                            <div className="month-day-container">
-                                <div className="month">FRIDAY</div>
-                                <div className="day">JUNE</div>
-                            </div>
+                        <div className="days">6</div>
 
-                            <div className="days">6</div>
-
-                            <div className="year-hour-container">
-                                <div className="year">2025</div>
-                                <div className="hour">20:47 PM</div>
-                            </div>
+                        <div className="year-hour-container">
+                            <div className="year">2025</div>
+                            <div className="hour">20:47 PM</div>
                         </div>
+                    </div>
                 </div>
 
                 <div style={{ position: "relative", zIndex: 1 }}>{frameComponent}</div>
