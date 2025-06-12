@@ -1,5 +1,6 @@
 import dotenv from 'dotenv';
 import path from 'path';
+dotenv.config({ path: path.resolve(process.cwd(), 'backend', '.env') });
 import express from "express";
 import cors from "cors";
 import { models } from './Models/index.js';
