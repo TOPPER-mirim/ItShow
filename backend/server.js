@@ -1,6 +1,7 @@
+import dotenv from 'dotenv';
+import path from 'path';
 import express from "express";
 import cors from "cors";
-import path from 'path';
 import { models } from './Models/index.js';
 import geminiRouter from "./Routers/gemini.js";
 import userRouter from "./Routers/user.js";
@@ -26,6 +27,10 @@ app.use("/", userRouter);
 app.use("/", qrcodeRouter);
 app.use("/", imageRouter);
 
+app.get('/', (req, res) => {
+  res.send('Hello from server!');
+});
+
 // DB 연결 및 테이블 동기화
 (async () => {
   try {
@@ -38,6 +43,6 @@ app.use("/", imageRouter);
   }
 })();
 
-app.listen(5000, () => {
-  console.log("서버가 http://localhost:5000 에서 실행 중입니다.");
+app.listen(443, '0.0.0.0', () => {
+  console.log("서버가 http://0.0.0.0:443 에서 실행 중입니다.");
 });
