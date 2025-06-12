@@ -17,10 +17,10 @@ const sequelize = new Sequelize(
 
 import defineUser from './User.js';
 import ticketImage from './ticketImage.js';
-import difineAIContent from './AIContent.js';
+import defineAIContent from './AIContent.js';
 const User = defineUser(sequelize);
 const Image = ticketImage(sequelize);
-const AIContent = difineAIContent(sequelize);
+const AIContent = defineAIContent(sequelize);
 
 User.hasMany(Image, { foreignKey: 'userId' });
 Image.belongsTo(User, { foreignKey: 'userId' });
