@@ -1,0 +1,23 @@
+.ResTicketView {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ResTicketView .ticketImg {
+    width: 711px;
+}
+
+.ticket-circle {
+    width: 1104px;
+    height: 350px;
+    background: linear-gradient(45deg,
+            rgba(130, 239, 137, 0.38),
+            rgba(13, 163, 78, 0.38));
+
+    border-radius: 100%;
+    transform: rotate(-17deg);
+}
