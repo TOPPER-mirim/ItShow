@@ -12,7 +12,7 @@ const defineUser = (sequelize) => {
       allowNull: false,
     },
     content: {
-      type: DataTypes.STRING(30),
+      type: DataTypes.STRING(1000),
       allowNull: false,
     },
   });
