@@ -3,6 +3,10 @@ import geminiController from "../Controllers/geminiController.js";
 
 const router = express.Router();
 
-router.get("/rewriting", geminiController.rewritingSentence);
+// 리라이팅한 글 디비에 저장
+router.post("/rewriting", geminiController.rewritingSentence);
+
+// 리라이팅한 글 반환
+router.get("/getRewriting", geminiController.getRewritingSentence);
 
 export default router;
