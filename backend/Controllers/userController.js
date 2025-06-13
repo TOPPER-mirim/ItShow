@@ -9,7 +9,11 @@ const userController = {
       res.status(201).json(newUser);
     } catch (error) {
       console.error('Error creating user:', error);
-      res.status(500).json({ error: 'Failed to create user' });
+      res.status(500).json({
+        error: 'Failed to create user',
+        message: error.message,
+        stack: process.env.NODE_ENV === 'production' ? undefined : error.stack
+      });
     }
   },
 
