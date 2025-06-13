@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";  // axios 임포트
 import "../styles/reset.css";
 import "../styles/InputTicketPage.css";
 import CustomPopup from "../components/CustomPopup";
@@ -12,7 +13,7 @@ function InputTicketPage() {
 
   const navigate = useNavigate();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!worryText.trim()) {
       setPopupMessage("고민 내용을 입력해주세요.");
       setShowPopup(true);
@@ -24,7 +25,20 @@ function InputTicketPage() {
       return;
     }
 
-    navigate("/filter");
+    try {
+      // 서버에 POST 요청
+      const response = await axios.post("http://54.180.152.171:3000/user", {
+        name: nickname,
+        content: worryText,
+      });
+
+      console.log("User created:", response.data);
+      navigate("/filter"); // 성공 시 필터 페이지로 이동
+    } catch (error) {
+      console.error("Error creating user:", error);
+      setPopupMessage("서버 오류가 발생했습니다. 다시 시도해주세요.");
+      setShowPopup(true);
+    }
   };
 
   return (
@@ -72,7 +86,7 @@ function InputTicketPage() {
         alt="샘플 이미지"
         className="button-image"
         onClick={handleSubmit}
-        style={{ cursor: "pointer" }} // 클릭 가능하도록 설정
+        style={{ cursor: "pointer" }}
       />
 
       <img
@@ -81,10 +95,6 @@ function InputTicketPage() {
         className="logo-image"
       />
 
-      {/*             
-            <Button onClick={handleButtonClick} size="small" variant="green">
-                필터 선택 하러 가기
-            </Button> */}
       {showPopup && (
         <CustomPopup message={popupMessage}>
           <button onClick={() => setShowPopup(false)}>확인</button>

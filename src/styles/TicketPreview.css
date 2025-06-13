@@ -1,3 +1,47 @@
+@font-face {
+    font-family: 'Cafe24ClassicType-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2210-2@1.0/Cafe24ClassicType-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'YClover-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/YClover-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'ghanachoco';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ghanachoco.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'LOTTERIACHAB';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/LOTTERIACHAB.woff2') format('woff2');
+    font-weight: 100;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'SeoulHangangM';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulHangangM.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'GothicA1-Light';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/GothicA1-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'YoonChildfundkoreaManSeh';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/YoonChildfundkoreaManSeh.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 .ticket-preview-container {
     position: sticky;
     top: 0;
@@ -89,85 +133,15 @@
     -o-user-drag: none;
 }
 
-.content-container {
-    display: flex;
-    /* flex-direction: column; */
-    align-items: center;
-    position: fixed;
-    z-index: 100;
-    justify-content: space-between;
-    /* width: 900px; */
-    height: 350px;
-    /* padding: 15px; */
-}
-
-.content-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 10px;
-    width: 665px;
-}
-
-.ticket-logo {
-    font-size: 25px;
-    margin-bottom: 25px;
-}
-
-.ai-text {
-    font-size: 28px;
-    width: 460px;
-    font-weight: 600;
-}
-
-.user-text {
-    font-size: 18px;
-    margin-top: 20px;
-}
-
-.name {
-    margin-left: auto;
-    padding-right: 50px;
-    font-size: 18px;
-}
-
-.content-right {
-    width: 250px;
-    display: flex;
-    align-items: center;
-    transform: rotate(90deg);
-    gap: 30px;
-    padding-top: 40px;
-}
-
-.month-day-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.month {
-    font-size: 18px;
-}
-
-.day {
-    font-size: 23px;
-    font-weight: 600;
-}
-
-.days {
-    font-size: 70px;
-    font-weight: bold;
-    color: white;
-    -webkit-text-stroke: 2px black;
-    paint-order: stroke fill;
-    margin-left: 10px;
-}
-
-.year-hour-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 18px;
+.resize-handle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border: 1px solid #1da1f2;
+    border-radius: 2px;
+    bottom: -6px;
+    right: -6px;
+    cursor: se-resize;
+    z-index: 1100;
 }
