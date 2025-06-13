@@ -7,7 +7,6 @@ dotenv.config();
 const geminiAPI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 // 사용자가 입력한 글을 user 테이블에서 가져와서 글을 재생성해서 저장해줌
-// 어떤 필터로 바꿀건지 쿼리스트링으로 프론트에서 넘겨줄거임
 const geminiController = {
   rewritingSentence: async (req, res) => {
     try {
@@ -55,12 +54,29 @@ const geminiController = {
         contentId: userId.id, // 외래키로 저장
       });
 
-      res.json({ result: text });
+      res.status(201).json(text);
     } catch (err) {
       console.error("Error during Gemini API call:", err);
       res.status(500).json({ error: "Gemini API 호출 중 오류 발생" });
     }
   },
+
+  // 리라이팅한 글 반환
+  getRewritingSentence: async (req, res) => {
+    try {
+      const reContent = await models.AIContent.findOne({
+        order: [["id", "DESC"]],
+        attributes: ["id", "reContent"],
+      });
+      if (!reContent || !reContent.reContent) {
+        return res.status(404).json({ error: "다시 생성한 글이 없습니다." });
+      }
+      res.status(200).json(reContent);
+    } catch (error) {
+      console.error('Error fetching AIContent:', error);
+      res.status(500).json({ error: 'AIContent를 불러오는 데 실패했습니다.' });
+    }
+  },  
 };
 
 export default geminiController;
