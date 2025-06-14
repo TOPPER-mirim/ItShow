@@ -4,36 +4,42 @@
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'YClover-Bold';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_231029@1.1/YClover-Bold.woff2') format('woff2');
     font-weight: 700;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'ghanachoco';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@1.0/ghanachoco.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'LOTTERIACHAB';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2302@1.0/LOTTERIACHAB.woff2') format('woff2');
     font-weight: 100;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'SeoulHangangM';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/SeoulHangangM.woff') format('woff');
     font-weight: normal;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'GothicA1-Light';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2205@1.0/GothicA1-Light.woff2') format('woff2');
     font-weight: 300;
     font-style: normal;
 }
+
 @font-face {
     font-family: 'YoonChildfundkoreaManSeh';
     src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2408@1.0/YoonChildfundkoreaManSeh.woff2') format('woff2');
@@ -144,4 +150,19 @@
     right: -6px;
     cursor: se-resize;
     z-index: 1100;
+}
+
+.ticket-frame-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.content-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    width: 100%;
+    height: 100%;
 }
