@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";  // react-responsive 추가
 import "../styles/reset.css";
 import "../styles/FilterPage.css";
 import FilterCard from "../components/FilterCard";
@@ -7,6 +8,9 @@ import FilterCard from "../components/FilterCard";
 const FilterPage = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+
+    // 아이패드 크기 체크 (가로 768px ~ 1024px)
+    const isIpad = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
 
     const handleFilterClick = async (filter) => {
         try {
@@ -47,8 +51,8 @@ const FilterPage = () => {
     return (
         <div className="all-container">
             <div className="back-icon">
-                <img src="./images/filter-page-back-icon.svg" />
-                <img src="./images/filter-page-back-icon.svg" />
+                <img src="./images/filter-page-back-icon.svg" alt="back icon 1" />
+                <img src="./images/filter-page-back-icon.svg" alt="back icon 2" />
             </div>
             <div className="filter-container">
                 <div className="title-container">
@@ -109,6 +113,20 @@ const FilterPage = () => {
                     />
                 </div>
             </div>
+
+            {/* 아이패드 화면에서만 보이는 이미지 */}
+            {isIpad && (
+                <img
+                    src="./images/filter-row.png"  // 원하는 이미지 경로로 변경하세요
+                    alt="아이패드 전용 이미지"
+                    style={{
+                        width: "90%",
+                        maxWidth: "600px",
+                        display: "block",
+                        borderRadius: "12px",
+                    }}
+                />
+            )}
         </div>
     );
 };
