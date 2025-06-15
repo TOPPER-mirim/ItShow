@@ -61,7 +61,7 @@ const MakeTicketPage = () => {
         "가오-패턴1": {
             image: "/images/Pattern/가오-패턴1.png",
             textColor: "#FFFFFF",
-            fontFamily: "LOTTERIACHAB",
+            fontFamily: "LOTTERIADDAG",
         },
         "가오-패턴2": {
             image: "/images/Pattern/가오-패턴2.png",
