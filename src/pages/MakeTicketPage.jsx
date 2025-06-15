@@ -20,31 +20,27 @@ const MakeTicketPage = () => {
     const filterMap = {
         감성: "/images/필터-감성.svg",
         가오: "/images/필터-가오.svg",
-        재미: "/images/필터-개그.svg"
+        개그: "/images/필터-개그.svg"
     };
     const logoUrl = filterMap[filter];
 
     const patternMap = {
         감성: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/감성-패턴${i}.png`),
         가오: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/가오-패턴${i}.png`),
-        재미: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/개그-패턴${i}.png`),
+        개그: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/개그-패턴${i}.png`),
     };
 
     const stickerMap = {
         감성: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/감성-스티커${i}.png`),
         가오: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/가오-스티커${i}.png`),
-        재미: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/개그-스티커${i}.png`),
+        개그: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/개그-스티커${i}.png`),
     };
 
     const backgroundColorMap = {
         감성: "#BDDDF7",
         가오: "#D9D9D9",
-        재미: "#FFE88E",
+        개그: "#FFE88E",
     };
-
-    const patternLayoutStyleMap = {
-        
-    }
 
     const patternStyleMap = {
         "감성-패턴1": {
@@ -77,17 +73,17 @@ const MakeTicketPage = () => {
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
         },
-        "재미-패턴1": {
+        "개그-패턴1": {
             image: "/images/Pattern/개그-패턴1.png",
             textColor: "#000000",
             fontFamily: "GothicA1-Light",
         },
-        "재미-패턴2": {
+        "개그-패턴2": {
             image: "/images/Pattern/개그-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "YoonChildfundkoreaManSeh",
         },
-        "재미-패턴3": {
+        "개그-패턴3": {
             image: "/images/Pattern/개그-패턴3.png",
             textColor: "#E14F36",
             fontFamily: "GothicA1-Light",
@@ -115,6 +111,7 @@ const MakeTicketPage = () => {
     // 패턴 클릭 핸들러 수정
     const handlePatternClick = (thumbUrl, idx) => {
         const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
+        // console.log(filter)
         const patternKey = `${filter}-패턴${idx + 1}`;
         const patternStyle = patternStyleMap[patternKey];
 
@@ -134,6 +131,9 @@ const MakeTicketPage = () => {
         // 단색 배경 선택 시 기본 텍스트 스타일로 초기화
         setTextColor("#000000");
         setFontFamily("Pretendard");
+
+        const isDarkColor = ["#000000", "#225268"].includes(color);
+        setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
     };
 
     const handleSubmit = async () => {
@@ -149,7 +149,7 @@ const MakeTicketPage = () => {
             // 2. 로컬 다운로드 (기존 기능 유지)
             const link = document.createElement("a");
             link.href = dataUrl;
-            link.download = `${nickname || 'my'}_lucky_ticket.png`;
+            // link.download = `${nickname || 'my'}_lucky_ticket.png`;
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -177,6 +177,8 @@ const MakeTicketPage = () => {
         }
     };
 
+    // console.log(layoutStyleMap[filter]);
+
     return (
         <div
             className="makeTicket-container"
@@ -196,6 +198,7 @@ const MakeTicketPage = () => {
                     fontFamily={fontFamily} // 글꼴 prop 추가
                     stickers={selectedStickers}
                     onStickerUpdate={setSelectedStickers}
+                    filter={filter}
                 />
             </div>
 
@@ -236,6 +239,7 @@ const MakeTicketPage = () => {
                         onClick={() => {
                             setPatternUrl(null);
                             setTextColor("#000000");
+                            setFillColor(backgroundColorMap[filter]);
                             setFontFamily("Pretendard");
                         }}
                         isSelected={patternUrl === null}

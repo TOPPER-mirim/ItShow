@@ -17,7 +17,8 @@ const TicketPreview = forwardRef(({
 	textColor = "#000000",
 	fontFamily = "Pretendard",
 	stickers = [],
-	onStickerUpdate
+	onStickerUpdate,
+	filter
 }, ref) => {
 	// State 선언
 	const [selectedStickerId, setSelectedStickerId] = useState(null);
@@ -40,6 +41,12 @@ const TicketPreview = forwardRef(({
 			default: return <Frame1 {...commonProps} />;
 		}
 	};
+
+	const filterLayoutMap = {
+		감성: "../images/LayOutImg/감성-레이아웃.svg",
+		가오: "../images/LayOutImg/가오-레이아웃.svg",
+		개그: "../images/LayOutImg/개그-레이아웃.svg"
+	}
 
 	// 패턴 URL을 Data URL로 변환
 	useEffect(() => {
@@ -129,10 +136,23 @@ const TicketPreview = forwardRef(({
 				if (!frameRef.current) return null;
 
 				const contentContainer = frameRef.current.querySelector('.content-container');
-				const originalPosition = contentContainer?.style.position || '';
+				let originalStyle = {};
 
 				if (contentContainer) {
-					contentContainer.style.position = 'relative';
+					originalStyle = {
+						position: contentContainer.style.position,
+						top: contentContainer.style.top,
+						left: contentContainer.style.left,
+						width: contentContainer.style.width,
+						height: contentContainer.style.height
+					};
+
+					const frameRect = frameRef.current.getBoundingClientRect();
+					contentContainer.style.position = "absolute";
+					contentContainer.style.top = "0px";
+					contentContainer.style.left = "0px";
+					contentContainer.style.width = `${frameRect.width}px`;
+					contentContainer.style.height = `${frameRect.height}px`;
 				}
 
 				await new Promise(r => setTimeout(r, 300));
@@ -154,7 +174,9 @@ const TicketPreview = forwardRef(({
 					pixelRatio: 2
 				});
 
-				if (contentContainer) contentContainer.style.position = originalPosition || 'fixed';
+				if (contentContainer) {
+					Object.assign(contentContainer.style, originalStyle);
+				}
 
 				return dataUrl;
 			} catch (err) {
@@ -163,7 +185,7 @@ const TicketPreview = forwardRef(({
 			}
 		},
 
-		captureAndNavigate: async (userName = "현서") => {
+		captureAndNavigate: async (userName = "사용자") => {
 			try {
 				const dataUrl = await this.captureTicket();
 				if (dataUrl) {
@@ -287,30 +309,100 @@ const TicketPreview = forwardRef(({
 					{frameComponent}
 
 					<div className="content-container">
-						<div className="content-left">
-							<img src="../images/Ticketlogo.png" alt="LuckTicket" className="logo" />
-							<div className="ai-text" style={textStyle}>
-								{aiText}
-							</div>
-							<div className="user-text" style={textStyle}>
-								{userInfo?.content || "로딩 중..."}
-							</div>
-							<div className="name" style={textStyle}>
-								{userInfo?.name || "로딩 중..."}
+						<div className="content-left" style={{ position: 'relative' }} >
+							{filter !== "개그" && filterLayoutMap[filter] && (
+								<img
+									src={filterLayoutMap[filter]}
+									alt={`${filter} 레이아웃 가이드`}
+									className="layout-guide-image"
+								/>
+							)}
+
+							<div className="left-content-container">
+								{filter !== "개그" && (
+									<div className="lucky-ticket-text" style={textStyle}>
+										Lucky Ticket
+									</div>
+								)}
+
+								{filter !== "개그" && (
+									<p className="topper" style={textStyle}>
+										TOPPER
+									</p>
+								)}
+
+								{filter === "가오" && (
+									<img src="../images/Ticketlogo.png" alt="LuckTicket" className="logo" />
+								)}
+
+								<div className="ai-text" style={textStyle}>
+									{aiText}
+								</div>
+
+								<div className="user-info">
+									{filter === "감성" && (
+										<div className="concept" style={textStyle}>
+											concept.{filter}
+										</div>
+									)}
+									<div className="user-text" style={textStyle}>
+										{userInfo?.content || "로딩 중..."}
+									</div>
+								</div>
+
+								<div className="ticket-info">
+									<div className="name" style={textStyle}>
+										{userInfo?.name || "로딩 중..."}
+									</div>
+
+									{filter !== "개그" && (
+										<div className="date-container-left">
+											<div className="month-day-container">
+												<div className="month" style={textStyle}>{dateTime.dayOfWeek}</div>
+												<div className="day" style={textStyle}>{dateTime.month}</div>
+											</div>
+											<div className="days" style={textStyle}>{dateTime.day}</div>
+											<div className="year-hour-container">
+												<div className="year" style={textStyle}>{dateTime.year}</div>
+												<div className="hour" style={textStyle}>{dateTime.time}</div>
+											</div>
+										</div>
+									)}
+								</div>
 							</div>
 						</div>
+
+						{/* content-right */}
 						<div className="content-right">
-							<div className="month-day-container">
-								<div className="month" style={textStyle}>{dateTime.dayOfWeek}</div>
-								<div className="day" style={textStyle}>{dateTime.month}</div>
-							</div>
-							<div className="days" style={textStyle}>{dateTime.day}</div>
-							<div className="year-hour-container">
-								<div className="year" style={textStyle}>{dateTime.year}</div>
-								<div className="hour" style={textStyle}>{dateTime.time}</div>
-							</div>
+							{filter === "개그" && filterLayoutMap[filter] && (
+								<img
+									src={filterLayoutMap[filter]}
+									alt={`${filter} 레이아웃 가이드`}
+									className="layout-guide-image-right"
+								/>
+							)}
+
+							{filter === "개그" && (
+								<>
+									<div className="month-day-container">
+										<div className="month" style={textStyle}>{dateTime.dayOfWeek}</div>
+										<div className="day" style={textStyle}>{dateTime.month}</div>
+									</div>
+									<div className="days" style={textStyle}>{dateTime.day}</div>
+									<div className="year-hour-container">
+										<div className="year" style={textStyle}>{dateTime.year}</div>
+										<div className="hour" style={textStyle}>{dateTime.time}</div>
+									</div>
+								</>
+							)}
+
+							{filter === "감성" && (
+								<img src="../images/Ticketlogo.png" alt="LuckTicket" className="ticket-logo"
+									style={{ transform: "rotate(90deg)" }} />
+							)}
 						</div>
 					</div>
+
 				</div>
 
 				{stickers.map((sticker) => {
@@ -329,8 +421,8 @@ const TicketPreview = forwardRef(({
 								top: `${sticker.y}px`,
 								transform: `scale(${sticker.scale || 1})`,
 								transformOrigin: "center center",
-								width: "40px",
-								height: "40px",
+								// width: "40px",
+								// height: "40px",
 								userSelect: "none",
 								touchAction: "none",
 								zIndex: 1000,

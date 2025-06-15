@@ -104,7 +104,7 @@ const FilterPage = () => {
                         image="./images/필터-개그.svg"
                         description="개그 필터는 여러분의 이야기를 즐거움과 웃음으로 바꿔주는 필터에요."
                         example="ex) 배고파..집 가고싶어. → 앞에 있는 노트북 부앙부앙 씹어먹자"
-                        onClick={() => handleFilterClick("재미")}
+                        onClick={() => handleFilterClick("개그")}
                         className="filter-fun"
                     />
                 </div>
