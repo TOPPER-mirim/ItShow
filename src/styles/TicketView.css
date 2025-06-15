@@ -135,3 +135,46 @@ body {
   bottom: 0;
   left: 0;
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ticketImg {
+    top: -21%;
+    width: 70vw; /* 화면 너비 기준으로 줄임 */
+    height: auto;
+  }
+
+  .ticket-circle {
+   width: 750px;
+  height: 250px;
+    margin: 0 auto; /* 가운데 정렬 */
+  }
+ .sparkle.sparkle-left {
+    position: absolute;
+    left: -9%;
+    top: -10%;
+
+  }
+
+  .sparkle.sparkle-right{
+       position: absolute;
+    left: 90%;
+    top: 55%;
+  }
+
+ 
+  .sparkle-left, .sparkle-right {
+    width: 80px;
+    height: auto;
+  }
+
+  .complete-msg {
+    font-family: 'Pretendard', sans-serif;
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.back-btn{
+      padding: 15px 70px;
+}
+}
