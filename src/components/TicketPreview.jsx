@@ -7,6 +7,11 @@ import Frame1 from "../components/Frame1";
 import Frame2 from "../components/Frame2";
 import Frame3 from "../components/Frame3";
 
+import GamLayout from "../components/GamLayout";
+import GaoLayout from "../components/GaoLayout";
+import FunnyLayout from "../components/FunnyLayout";
+
+
 import * as htmlToImage from 'html-to-image';
 
 const TicketPreview = forwardRef(({
@@ -308,100 +313,36 @@ const TicketPreview = forwardRef(({
 				<div className="ticket-frame-inner">
 					{frameComponent}
 
-					<div className="content-container">
-						<div className="content-left" style={{ position: 'relative' }} >
-							{filter !== "개그" && filterLayoutMap[filter] && (
-								<img
-									src={filterLayoutMap[filter]}
-									alt={`${filter} 레이아웃 가이드`}
-									className="layout-guide-image"
-								/>
-							)}
-
-							<div className="left-content-container">
-								{filter !== "개그" && (
-									<div className="lucky-ticket-text" style={textStyle}>
-										Lucky Ticket
-									</div>
-								)}
-
-								{filter !== "개그" && (
-									<p className="topper" style={textStyle}>
-										TOPPER
-									</p>
-								)}
-
-								{filter === "가오" && (
-									<img src="../images/Ticketlogo.png" alt="LuckTicket" className="logo" />
-								)}
-
-								<div className="ai-text" style={textStyle}>
-									{aiText}
-								</div>
-
-								<div className="user-info">
-									{filter === "감성" && (
-										<div className="concept" style={textStyle}>
-											concept.{filter}
-										</div>
-									)}
-									<div className="user-text" style={textStyle}>
-										{userInfo?.content || "로딩 중..."}
-									</div>
-								</div>
-
-								<div className="ticket-info">
-									<div className="name" style={textStyle}>
-										{userInfo?.name || "로딩 중..."}
-									</div>
-
-									{filter !== "개그" && (
-										<div className="date-container-left">
-											<div className="month-day-container">
-												<div className="month" style={textStyle}>{dateTime.dayOfWeek}</div>
-												<div className="day" style={textStyle}>{dateTime.month}</div>
-											</div>
-											<div className="days" style={textStyle}>{dateTime.day}</div>
-											<div className="year-hour-container">
-												<div className="year" style={textStyle}>{dateTime.year}</div>
-												<div className="hour" style={textStyle}>{dateTime.time}</div>
-											</div>
-										</div>
-									)}
-								</div>
-							</div>
-						</div>
-
-						{/* content-right */}
-						<div className="content-right">
-							{filter === "개그" && filterLayoutMap[filter] && (
-								<img
-									src={filterLayoutMap[filter]}
-									alt={`${filter} 레이아웃 가이드`}
-									className="layout-guide-image-right"
-								/>
-							)}
-
-							{filter === "개그" && (
-								<>
-									<div className="month-day-container">
-										<div className="month" style={textStyle}>{dateTime.dayOfWeek}</div>
-										<div className="day" style={textStyle}>{dateTime.month}</div>
-									</div>
-									<div className="days" style={textStyle}>{dateTime.day}</div>
-									<div className="year-hour-container">
-										<div className="year" style={textStyle}>{dateTime.year}</div>
-										<div className="hour" style={textStyle}>{dateTime.time}</div>
-									</div>
-								</>
-							)}
-
-							{filter === "감성" && (
-								<img src="../images/Ticketlogo.png" alt="LuckTicket" className="ticket-logo"
-									style={{ transform: "rotate(90deg)" }} />
-							)}
-						</div>
-					</div>
+					{filter === "감성" && (
+						<GamLayout
+							filter={filter}
+							textStyle={textStyle}
+							filterLayout={filterLayoutMap["감성"]}
+							aiText={aiText}
+							userInfo={userInfo}
+							dateTime={dateTime}
+						/>
+					)}
+					{filter === "가오" && (
+						<GaoLayout
+							filter={filter}
+							textStyle={textStyle}
+							filterLayout={filterLayoutMap["가오"]}
+							aiText={aiText}
+							userInfo={userInfo}
+							dateTime={dateTime}
+						/>
+					)}
+					{filter === "개그" && (
+						<FunnyLayout
+							filter={filter}
+							textStyle={textStyle}
+							filterLayout={filterLayoutMap["개그"]}
+							aiText={aiText}
+							userInfo={userInfo}
+							dateTime={dateTime}
+						/>
+					)}
 
 				</div>
 
