@@ -3,37 +3,34 @@ body, html {
     height: 100%;
 }
 
-
 .emotion-page {
     background-image: url('/images/emotionpage-background.png');
     background-size: cover;
     background-position: center;
     min-height: 100vh;
-    padding: 40px;
     color: white;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
     font-family: 'Arial', sans-serif;
 
     display: flex;
-    justify-content: center;  /* 가로 가운데 정렬 */
-    align-items: flex-start;  /* 세로 위 정렬 */
-    padding-top: 100px;       /* 위에서 얼마나 띄울지 조절 */
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 100px;
 }
 
 .funny-page{
     background-image: url('/images/funnypage-background.png');
-    background-size: cover;
+   background-size: cover;
     background-position: center;
     min-height: 100vh;
-    padding: 40px;
     color: white;
     text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
     font-family: 'Arial', sans-serif;
 
     display: flex;
-    justify-content: center;  /* 가로 가운데 정렬 */
-    align-items: flex-start;  /* 세로 위 정렬 */
-    padding-top: 100px;       /* 위에서 얼마나 띄울지 조절 */
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 100px;
 }
 
 .style-page{
@@ -66,4 +63,43 @@ body, html {
     justify-content: center;  /* 가로 가운데 정렬 */
     align-items: flex-start;  /* 세로 위 정렬 */
     padding-top: 100px;       /* 위에서 얼마나 띄울지 조절 */
+}
+
+.content-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.emotion-font-image {
+    margin: 100px;
+}
+
+.funny-font-image {
+    margin: 100px;
+}
+
+.style-font-image {
+    margin: 100px;
+}
+
+.ticket-image-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    max-width: 2000px;
+}
+
+.ticket-image-item {
+    flex: 0 0 600px;  /* ✅ 각 티켓 고정 크기 */
+    display: flex;
+    justify-content: center;
+}
+
+.ticket-image-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.25);
 }
