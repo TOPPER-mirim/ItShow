@@ -8,9 +8,10 @@ const GamLayout = ({
     aiText,
     userInfo,
     dateTime,
+    ticketLogoImg
 }) => {
     return (
-        <div className="content-container">
+        <div className="T-content-container">
             <div className="content-left" style={{ position: "relative" }}>
                 <div className="gam-left-content-wrapper">
 
@@ -73,7 +74,7 @@ const GamLayout = ({
 
             <div className="content-right">
                 <img
-                    src="../images/Ticketlogo.png"
+                    src={ticketLogoImg}
                     alt="LuckyTicket"
                     className="gam-ticket-logo"
                     style={{ transform: "rotate(90deg)" }}

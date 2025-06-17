@@ -39,10 +39,11 @@
   left: 50%;
   transform: translateX(-50%);
   width: 75%;
+  height: 35%;
   padding: 30px 0px 30px 0px;
   font-size: 24px;
   border-radius: 8px;
-  border: none;
+   border: none;
 }
 
 .nickname-input {
