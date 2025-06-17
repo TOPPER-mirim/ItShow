@@ -10,13 +10,13 @@ const FunnyLayout = ({
     dateTime,
 }) => {
     return (
-        <div className="content-container" style={textStyle}>
+        <div className="T-content-container" style={textStyle}>
             <div className="content-left" style={{ position: "relative" }}>
-                <div className="gam-left-content-wrapper">
+                <div className="left-content-wrapper">
                     <img
                         src="../images/Ticketlogo.png"
                         alt="LuckyTicket"
-                        className="gam-ticket-logo"
+                        className="ticket-logo"
                     />
                     <div className="ai-text">
                         {aiText}
@@ -34,7 +34,7 @@ const FunnyLayout = ({
                 <img
                     src={filterLayout}
                     alt={`${filter} 레이아웃 가이드`}
-                    className="layout-guide-image"
+                    className="fun-layout-guide-image"
                 />
 
                 <div className="right-container">

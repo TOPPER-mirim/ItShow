@@ -130,7 +130,7 @@ const MakeTicketPage = () => {
         setPatternUrl(null);
         // 단색 배경 선택 시 기본 텍스트 스타일로 초기화
         setTextColor("#000000");
-        setFontFamily("Pretendard");
+        // setFontFamily("Pretendard");
 
         const isDarkColor = ["#000000", "#225268"].includes(color);
         setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
@@ -138,42 +138,53 @@ const MakeTicketPage = () => {
 
     const handleSubmit = async () => {
         try {
-            // 1. 먼저 티켓 캡처
             const dataUrl = await ticketPreviewRef.current?.captureTicket();
-
             if (!dataUrl) {
-                alert("티켓 캡처에 실패했습니다. 다시 시도해주세요.");
+                alert("티켓 캡처에 실패했습니다.");
                 return;
             }
 
-            // 2. 로컬 다운로드 (기존 기능 유지)
-            const link = document.createElement("a");
-            link.href = dataUrl;
-            // link.download = `${nickname || 'my'}_lucky_ticket.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // base64 데이터URL에서 헤더 제거하고 pure base64만 추출
+            const base64Data = dataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
 
-            // 3. sessionStorage에 저장 (ResultPage에서 사용할 수 있도록)
-            sessionStorage.setItem('capturedTicket', dataUrl);
-            sessionStorage.setItem('userName', nickname || '사용자');
+            // JSON 형태로 전송
+            const response = await fetch("http://54.180.152.171:3000/upload", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: base64Data  // 헤더 제거된 순수 base64 데이터
+                }),
+            });
 
-            // 4. 티켓북 저장 처리 (필요시)
-            if (saveToBook) {
-                console.log("티켓북에도 저장됩니다.");
-                // 여기에 티켓북 저장 로직 추가 가능
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            console.log("티켓이 성공적으로 저장되었습니다!");
+            const result = await response.json();
+            console.log("업로드 성공:", result);
 
-            // 5. 잠시 대기 후 결과 페이지로 이동 (sessionStorage 저장 완료 보장)
-            setTimeout(() => {
-                navigate("/result");
-            }, 500);
+            // 성공 처리 로직 추가
+            // alert("티켓이 성공적으로 업로드되었습니다!");
 
+            // console.log(nickname);
+
+            navigate('/result', {
+                state: {
+                    nickname: nickname,
+                    content,
+                    filter,
+                    ticketData: result,
+                    saveToBook,
+                    ticketImage: dataUrl
+                }
+            });
+
+            // 이후 로컬 다운로드 및 세션 저장 등은 생략
         } catch (error) {
-            console.error("티켓 저장 중 오류:", error);
-            alert("티켓 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+            console.error("백엔드 업로드 중 오류:", error);
+            alert("티켓 업로드에 실패했습니다.");
         }
     };
 
