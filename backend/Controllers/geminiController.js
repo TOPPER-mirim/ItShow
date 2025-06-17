@@ -11,13 +11,14 @@ const geminiController = {
   rewritingSentence: async (req, res) => {
     try {
       const filter = req.body.filter?.trim();
-      if (!filter) {
-        return res.status(400).json({ error: "필터가 전달되지 않았습니다." });
+      const id = req.body.id;
+      if (!filter || !id) {
+        return res.status(400).json({ error: "필터와 아이디가 전달되지 않았습니다." });
       }
 
-      // 가장 최근 content 1개 가져오기
+      // 프론트에서 보낸 아이디 값인 유저의 글을 찾기
       const userId = await models.User.findOne({
-        order: [["id", "DESC"]],
+        where: { id },
         attributes: ["id", "content"],
       });
       if (!userId || !userId.content) {
@@ -64,8 +65,9 @@ const geminiController = {
   // 리라이팅한 글 반환
   getRewritingSentence: async (req, res) => {
     try {
+      const { contentId } = req.params;
       const reContent = await models.AIContent.findOne({
-        order: [["id", "DESC"]],
+        where: { contentId },
         attributes: ["id", "reContent"],
       });
       if (!reContent || !reContent.reContent) {
