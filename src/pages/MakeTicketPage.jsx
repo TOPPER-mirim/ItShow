@@ -47,46 +47,55 @@ const MakeTicketPage = () => {
             image: "/images/Pattern/감성-패턴1.png",
             textColor: "#C10100",
             fontFamily: "Cafe24ClassicType-Regular",
+            ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png",
         },
         "감성-패턴2": {
             image: "/images/Pattern/감성-패턴2.png",
             textColor: "#05361A",
             fontFamily: "YClover-Bold",
+            ticketLogoImg: "/images/LogoImg/감성-logo2(그린).png",
         },
         "감성-패턴3": {
             image: "/images/Pattern/감성-패턴3.png",
             textColor: "#73A8D3",
             fontFamily: "ghanachoco",
+            ticketLogoImg: "/images/LogoImg/감성-logo3(골드).png",
         },
         "가오-패턴1": {
             image: "/images/Pattern/가오-패턴1.png",
             textColor: "#FFFFFF",
             fontFamily: "LOTTERIADDAG",
+            ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
         },
         "가오-패턴2": {
             image: "/images/Pattern/가오-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
+            ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
         },
         "가오-패턴3": {
             image: "/images/Pattern/가오-패턴3.png",
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
+            ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
         },
         "개그-패턴1": {
             image: "/images/Pattern/개그-패턴1.png",
             textColor: "#000000",
             fontFamily: "GothicA1-Light",
+            ticketLogoImg: "/images/LogoImg/개그-logo1(노랑).png",
         },
         "개그-패턴2": {
             image: "/images/Pattern/개그-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "YoonChildfundkoreaManSeh",
+            ticketLogoImg: "/images/LogoImg/개그-logo1(노랑).png",
         },
         "개그-패턴3": {
             image: "/images/Pattern/개그-패턴3.png",
             textColor: "#E14F36",
             fontFamily: "GothicA1-Light",
+            ticketLogoImg: "/images/LogoImg/개그-logo2(오렌지).png",
         },
     };
 
@@ -98,6 +107,7 @@ const MakeTicketPage = () => {
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [saveToBook, setSaveToBook] = useState(false);
+    const [ticketLogoImg, setTicketLogoImg] = useState(null);
 
     const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
 
@@ -110,8 +120,6 @@ const MakeTicketPage = () => {
 
     // 패턴 클릭 핸들러 수정
     const handlePatternClick = (thumbUrl, idx) => {
-        const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
-        // console.log(filter)
         const patternKey = `${filter}-패턴${idx + 1}`;
         const patternStyle = patternStyleMap[patternKey];
 
@@ -119,18 +127,17 @@ const MakeTicketPage = () => {
             setPatternUrl(patternStyle.image);
             setTextColor(patternStyle.textColor);
             setFontFamily(patternStyle.fontFamily);
-            // 패턴 선택 시 단색 배경 해제
+            setTicketLogoImg(patternStyle.ticketLogoImg);
+
             setFillColor("transparent");
         }
     };
 
-    // 단색 배경 클릭 핸들러 수정
-    const handleColorClick = (color) => {
+    const handleColorClick = (color, logoImg) => {
         setFillColor(color);
         setPatternUrl(null);
-        // 단색 배경 선택 시 기본 텍스트 스타일로 초기화
-        setTextColor("#000000");
-        // setFontFamily("Pretendard");
+        setFontFamily(null);
+        setTicketLogoImg(logoImg);
 
         const isDarkColor = ["#000000", "#225268"].includes(color);
         setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
@@ -164,11 +171,6 @@ const MakeTicketPage = () => {
 
             const result = await response.json();
             console.log("업로드 성공:", result);
-
-            // 성공 처리 로직 추가
-            // alert("티켓이 성공적으로 업로드되었습니다!");
-
-            // console.log(nickname);
 
             navigate('/result', {
                 state: {
@@ -210,6 +212,7 @@ const MakeTicketPage = () => {
                     stickers={selectedStickers}
                     onStickerUpdate={setSelectedStickers}
                     filter={filter}
+                    ticketLogoImg={ticketLogoImg}
                 />
             </div>
 
@@ -227,18 +230,18 @@ const MakeTicketPage = () => {
 
                 <MakePaletter title="단색 배경">
                     {[
-                        { color: backgroundColorMap[filter], img: "none.svg" },
-                        { color: "#FFC1C1", img: "pink.png" },
-                        { color: "#FEC730", img: "yellow.png" },
-                        { color: "#9CD69D", img: "green.png" },
-                        { color: "#DFECF2", img: "babyblue.png" },
-                        { color: "#225268", img: "blue.png" },
-                        { color: "#000000", img: "black.png" }
-                    ].map(({ color, img }) => (
+                        { color: backgroundColorMap[filter], img: "none.svg", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#FFC1C1", img: "pink.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#FEC730", img: "yellow.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#9CD69D", img: "green.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#DFECF2", img: "babyblue.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#225268", img: "blue.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#000000", img: "black.png", ticketLogoImg: "/images/Ticketlogo.png" }
+                    ].map(({ color, img, ticketLogoImg }) => (
                         <SinglePaletter
                             key={color}
                             imageUrl={`/images/${img}`}
-                            onClick={() => handleColorClick(color)}
+                            onClick={() => handleColorClick(color, ticketLogoImg)}
                             isSelected={fillColor === color && patternUrl === null}
                         />
                     ))}

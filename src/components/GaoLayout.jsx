@@ -9,6 +9,7 @@ const GaoLayout = ({
     aiText,
     userInfo,
     dateTime,
+    ticketLogoImg
 }) => {
     return (
         <div className="T-content-container" style={textStyle}>
@@ -32,7 +33,7 @@ const GaoLayout = ({
                     <div className="gao-logo-ai-user">
                         <div className="logo-container">
                             <img
-                                src="../images/Ticketlogo.png"
+                                src={ticketLogoImg}
                                 alt="LuckyTicket"
                                 className="gao-ticket-logo"
                             />
