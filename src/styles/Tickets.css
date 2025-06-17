@@ -57,23 +57,14 @@ html {
     align-items: center;
 }
 
-.emotion-font-image {
-    margin-top: 70px;
-}
-
-.funny-font-image {
-    margin-top: 70px;
-}
-
-.style-font-image {
+.emotion-font-image,.funny-font-image,.style-font-image {
     margin-top: 70px;
 }
 
 .ticket-image-list {
     display: grid;
-    grid-template-columns: repeat(5, 590px); 
-    gap: 32px;
-    width: 2500px; /* 가운데 3개 + 좌우 살짝씩만 보이도록 */
+    grid-template-columns: repeat(5, 550px); 
+    gap: 32px;  
     overflow: hidden;
     margin: 40px auto 0 auto; /* 가운데 정렬 */
     position: relative;
@@ -113,3 +104,9 @@ html {
 .dot.active {
     background-color: #80FF00;
 }
+
+@media (max-width: 1024px) {
+    .emotion-font-image,.funny-font-image,.style-font-image {
+    margin-right: 250px;
+}
+} 
