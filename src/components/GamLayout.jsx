@@ -1,25 +1,23 @@
 import React from "react";
 import "../styles/GamLayout.css";
+import Layout from "./Layout";
 
 const GamLayout = ({
     filter,
     textStyle,
-    filterLayout,
+    // filterLayout,
     aiText,
     userInfo,
     dateTime,
-    ticketLogoImg
+    ticketLogoImg,
+    layoutColor
 }) => {
     return (
         <div className="T-content-container">
             <div className="content-left" style={{ position: "relative" }}>
                 <div className="gam-left-content-wrapper">
 
-                    <img
-                        src={filterLayout}
-                        alt={`${filter} 레이아웃 가이드`}
-                        className="layout-guide-image"
-                    />
+                    <Layout filter={filter} layoutColor={layoutColor} className="layout-guide-image" />
 
                     <div className="gam-lucky-ticket-text" style={textStyle}>
                         Lucky Ticket

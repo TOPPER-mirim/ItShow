@@ -16,7 +16,6 @@ const MakeTicketPage = () => {
     // TicketPreview ref 추가
     const ticketPreviewRef = useRef(null);
 
-    /** 필터에 따른 기본 정보 설정 */
     const filterMap = {
         감성: "/images/필터-감성.svg",
         가오: "/images/필터-가오.svg",
@@ -48,66 +47,76 @@ const MakeTicketPage = () => {
             textColor: "#C10100",
             fontFamily: "Cafe24ClassicType-Regular",
             ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png",
+            layoutColor: "#C10100"
         },
         "감성-패턴2": {
             image: "/images/Pattern/감성-패턴2.png",
             textColor: "#05361A",
             fontFamily: "YClover-Bold",
             ticketLogoImg: "/images/LogoImg/감성-logo2(그린).png",
+            layoutColor: "#05361A"
         },
         "감성-패턴3": {
             image: "/images/Pattern/감성-패턴3.png",
             textColor: "#73A8D3",
             fontFamily: "ghanachoco",
             ticketLogoImg: "/images/LogoImg/감성-logo3(골드).png",
+            layoutColor: "#73A8D3"
         },
         "가오-패턴1": {
             image: "/images/Pattern/가오-패턴1.png",
             textColor: "#FFFFFF",
             fontFamily: "LOTTERIADDAG",
             ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
+            layoutColor: "#FFFFFF"
         },
         "가오-패턴2": {
             image: "/images/Pattern/가오-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
             ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
+            layoutColor: "#FFFFFF"
         },
         "가오-패턴3": {
             image: "/images/Pattern/가오-패턴3.png",
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
             ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
+            layoutColor: "#FFFFFF"
         },
         "개그-패턴1": {
             image: "/images/Pattern/개그-패턴1.png",
             textColor: "#000000",
             fontFamily: "GothicA1-Light",
             ticketLogoImg: "/images/LogoImg/개그-logo1(노랑).png",
+            layoutColor: "#000000"
         },
         "개그-패턴2": {
             image: "/images/Pattern/개그-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "YoonChildfundkoreaManSeh",
             ticketLogoImg: "/images/LogoImg/개그-logo1(노랑).png",
+            layoutColor: "#FFFFFF"
         },
         "개그-패턴3": {
             image: "/images/Pattern/개그-패턴3.png",
             textColor: "#E14F36",
             fontFamily: "GothicA1-Light",
             ticketLogoImg: "/images/LogoImg/개그-logo2(오렌지).png",
+            layoutColor: "#E14F36"
         },
     };
 
     const [selectedFrame, setSelectedFrame] = useState(1);
     const [fillColor, setFillColor] = useState(backgroundColorMap[filter]);
     const [patternUrl, setPatternUrl] = useState(null);
-    const [textColor, setTextColor] = useState("#000000"); // 텍스트 색상 상태 추가
-    const [fontFamily, setFontFamily] = useState("Pretendard"); // 글꼴 상태 추가
+    const [textColor, setTextColor] = useState("#324400"); // 텍스트 색상 상태 추가
+    const [fontFamily, setFontFamily] = useState("Pretendard-Regular"); // 글꼴 상태 추가
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [saveToBook, setSaveToBook] = useState(false);
-    const [ticketLogoImg, setTicketLogoImg] = useState(null);
+    const [ticketLogoImg, setTicketLogoImg] = useState("/images/Ticketlogo.png");
+    const [layoutColor, setLayoutColor] = useState("#324400");
 
     const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
 
@@ -118,7 +127,7 @@ const MakeTicketPage = () => {
         ]);
     };
 
-    // 패턴 클릭 핸들러 수정
+    // 패턴
     const handlePatternClick = (thumbUrl, idx) => {
         const patternKey = `${filter}-패턴${idx + 1}`;
         const patternStyle = patternStyleMap[patternKey];
@@ -128,19 +137,24 @@ const MakeTicketPage = () => {
             setTextColor(patternStyle.textColor);
             setFontFamily(patternStyle.fontFamily);
             setTicketLogoImg(patternStyle.ticketLogoImg);
+            setLayoutColor(patternStyle.layoutColor);
 
             setFillColor("transparent");
         }
     };
 
-    const handleColorClick = (color, logoImg) => {
+    // 단색
+    const handleColorClick = (color, ticketLogoImg, layoutColor, textColor) => {
         setFillColor(color);
         setPatternUrl(null);
         setFontFamily(null);
-        setTicketLogoImg(logoImg);
+        setTicketLogoImg(ticketLogoImg);
+        setLayoutColor(layoutColor);
+        setTextColor(textColor);
+        // console.log(ticketLogoImg);
 
-        const isDarkColor = ["#000000", "#225268"].includes(color);
-        setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
+        // const isDarkColor = ["#000000", "#225268"].includes(color);
+        // setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
     };
 
     const handleSubmit = async () => {
@@ -153,14 +167,16 @@ const MakeTicketPage = () => {
 
             // base64 데이터URL에서 헤더 제거하고 pure base64만 추출
             const base64Data = dataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
+            const id = sessionStorage.getItem("userId");
 
-            // JSON 형태로 전송
+            // JSON 형태로 전송 id도 보내기
             const response = await fetch("http://54.180.152.171:3000/upload", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    userId: id,
                     image: base64Data  // 헤더 제거된 순수 base64 데이터
                 }),
             });
@@ -190,8 +206,6 @@ const MakeTicketPage = () => {
         }
     };
 
-    // console.log(layoutStyleMap[filter]);
-
     return (
         <div
             className="makeTicket-container"
@@ -213,6 +227,7 @@ const MakeTicketPage = () => {
                     onStickerUpdate={setSelectedStickers}
                     filter={filter}
                     ticketLogoImg={ticketLogoImg}
+                    layoutColor={layoutColor}
                 />
             </div>
 
@@ -230,18 +245,18 @@ const MakeTicketPage = () => {
 
                 <MakePaletter title="단색 배경">
                     {[
-                        { color: backgroundColorMap[filter], img: "none.svg", ticketLogoImg: "/images/Ticketlogo.png" },
-                        { color: "#FFC1C1", img: "pink.png", ticketLogoImg: "/images/Ticketlogo.png" },
-                        { color: "#FEC730", img: "yellow.png", ticketLogoImg: "/images/Ticketlogo.png" },
-                        { color: "#9CD69D", img: "green.png", ticketLogoImg: "/images/Ticketlogo.png" },
-                        { color: "#DFECF2", img: "babyblue.png", ticketLogoImg: "/images/Ticketlogo.png" },
-                        { color: "#225268", img: "blue.png", ticketLogoImg: "/images/Ticketlogo.png" },
-                        { color: "#000000", img: "black.png", ticketLogoImg: "/images/Ticketlogo.png" }
-                    ].map(({ color, img, ticketLogoImg }) => (
+                        { color: backgroundColorMap[filter], img: "none.svg", ticketLogoImg: "/images/Ticketlogo.png", layoutColor: "#324400", textColor: "#324400" },
+                        { color: "#FFC1C1", img: "pink.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
+                        { color: "#FEC730", img: "yellow.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
+                        { color: "#9CD69D", img: "green.png", ticketLogoImg: "/images/LogoImg/감성-logo2(그린).png", layoutColor: "#324400", textColor: "#324400" },
+                        { color: "#DFECF2", img: "babyblue.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
+                        { color: "#225268", img: "blue.png", ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png", layoutColor: "#FFFCF7", textColor: "#FFFCF7" },
+                        { color: "#000000", img: "black.png", ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png", layoutColor: "#FFFCF7", textColor: "#FFFCF7" }
+                    ].map(({ color, img, ticketLogoImg, layoutColor, textColor }) => (
                         <SinglePaletter
                             key={color}
                             imageUrl={`/images/${img}`}
-                            onClick={() => handleColorClick(color, ticketLogoImg)}
+                            onClick={() => handleColorClick(color, ticketLogoImg, layoutColor, textColor)}
                             isSelected={fillColor === color && patternUrl === null}
                         />
                     ))}
@@ -255,6 +270,7 @@ const MakeTicketPage = () => {
                             setTextColor("#000000");
                             setFillColor(backgroundColorMap[filter]);
                             setFontFamily("Pretendard");
+                            setLayoutColor(layoutColor);
                         }}
                         isSelected={patternUrl === null}
                     />

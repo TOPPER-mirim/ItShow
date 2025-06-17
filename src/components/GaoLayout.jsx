@@ -1,25 +1,23 @@
 import React from "react";
 
 import "../styles/GaoLayout.css";
+import Layout from "./Layout";
 
 const GaoLayout = ({
     filter,
     textStyle,
-    filterLayout,
+    // filterLayout,
     aiText,
     userInfo,
     dateTime,
-    ticketLogoImg
+    ticketLogoImg,
+    layoutColor
 }) => {
     return (
         <div className="T-content-container" style={textStyle}>
             <div className="content-left" style={{ position: "relative" }}>
                 <div className="gao-left-content-container">
-                    <img
-                        src={filterLayout}
-                        alt={`${filter} 레이아웃 가이드`}
-                        className="layout-guide-image"
-                    />
+                    <Layout filter={filter} layoutColor={layoutColor} className="layout-guide-image" />
 
                     <div className="gao-logo-concept">
                         <p className="gao-lucky-ticket-text" style={textStyle}>

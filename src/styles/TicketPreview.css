@@ -145,8 +145,8 @@
     background: #fff;
     border: 1px solid #1da1f2;
     border-radius: 2px;
-    bottom: -6px;
-    right: -6px;
+    bottom: -3px;
+    right: -3px;
     cursor: se-resize;
     z-index: 1100;
 }
