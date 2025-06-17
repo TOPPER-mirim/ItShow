@@ -16,19 +16,21 @@ const FilterPage = () => {
         try {
             setLoading(true);
 
-            // filter만 POST
+            const id = sessionStorage.getItem("userId");
+
+            // filter랑 id(로컬에서 꺼내오기) POST
             const res = await fetch("http://54.180.152.171:3000/rewriting", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ filter }),
+                body: JSON.stringify({ id, filter }),
             });
 
             if (!res.ok) throw new Error("필터 요청 실패");
 
             // 변환 결과 GET
-            const getRes = await fetch("http://54.180.152.171:3000/getRewriting");
+            const getRes = await fetch(`http://54.180.152.171:3000/getRewriting/${id}`);
             if (!getRes.ok) throw new Error("변환된 문장 불러오기 실패");
 
             const { rewriting } = await getRes.json();

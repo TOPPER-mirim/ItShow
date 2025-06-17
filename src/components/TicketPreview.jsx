@@ -24,7 +24,8 @@ const TicketPreview = forwardRef(({
 	stickers = [],
 	onStickerUpdate,
 	filter,
-	ticketLogoImg = "/"
+	ticketLogoImg,
+	layoutColor
 }, ref) => {
 	// State 선언
 	const [selectedStickerId, setSelectedStickerId] = useState(null);
@@ -54,6 +55,8 @@ const TicketPreview = forwardRef(({
 		개그: "../images/LayOutImg/개그-레이아웃.svg"
 	}
 
+	const id = sessionStorage.getItem("userId");
+
 	// 패턴 URL을 Data URL로 변환
 	useEffect(() => {
 		const convertToDataURL = async () => {
@@ -79,7 +82,7 @@ const TicketPreview = forwardRef(({
 	useEffect(() => {
 		const fetchAiText = async () => {
 			try {
-				const response = await fetch("http://54.180.152.171:3000/getRewriting");
+				const response = await fetch(`http://54.180.152.171:3000/getRewriting/${id}`);
 				if (!response.ok) throw new Error("서버 응답 오류");
 
 				const data = await response.json();
@@ -96,7 +99,6 @@ const TicketPreview = forwardRef(({
 
 	// 사용자 정보 가져오기
 	useEffect(() => {
-		const id = sessionStorage.getItem("userId");
 		console.log("sessionStorage에서 가져온 userId:", id);
 		if (!id) return;
 
@@ -323,6 +325,7 @@ const TicketPreview = forwardRef(({
 							userInfo={userInfo}
 							dateTime={dateTime}
 							ticketLogoImg={ticketLogoImg}
+							layoutColor={layoutColor}
 						/>
 					)}
 					{filter === "가오" && (
@@ -334,6 +337,7 @@ const TicketPreview = forwardRef(({
 							userInfo={userInfo}
 							dateTime={dateTime}
 							ticketLogoImg={ticketLogoImg}
+							layoutColor={layoutColor}
 						/>
 					)}
 					{filter === "개그" && (
@@ -345,6 +349,7 @@ const TicketPreview = forwardRef(({
 							userInfo={userInfo}
 							dateTime={dateTime}
 							ticketLogoImg={ticketLogoImg}
+							layoutColor={layoutColor}
 						/>
 					)}
 

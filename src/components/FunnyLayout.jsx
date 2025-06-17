@@ -1,14 +1,16 @@
 import React from "react";
 import "../styles/FunnyLayout.css";
+import Layout from "./Layout";
 
 const FunnyLayout = ({
     filter,
     textStyle,
-    filterLayout,
+    // filterLayout,
     aiText,
     userInfo,
     dateTime,
-    ticketLogoImg
+    ticketLogoImg,
+    layoutColor
 }) => {
     return (
         <div className="T-content-container" style={textStyle}>
@@ -32,11 +34,7 @@ const FunnyLayout = ({
             </div>
 
             <div className="content-right">
-                <img
-                    src={filterLayout}
-                    alt={`${filter} 레이아웃 가이드`}
-                    className="fun-layout-guide-image"
-                />
+                <Layout filter={filter} layoutColor={layoutColor} className="fun-layout-guide-image"/>
 
                 <div className="right-container">
                     <div className="day-month">

@@ -7,10 +7,12 @@ function TicketView() {
   const [capturedImageUrl, setCapturedImageUrl] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const id = sessionStorage.getItem("userId");
+
   useEffect(() => {
     const fetchLatestTicket = async () => {
       try {
-        const response = await fetch('http://54.180.152.171:3000/latest');
+        const response = await fetch(`http://54.180.152.171:3000/userImage/${id}`);
         if (response.ok) {
           const data = await response.json();
           setCapturedImageUrl(data.imageUrl);
@@ -61,11 +63,12 @@ function TicketView() {
 function QRCodeSection() {
   const [qrCodeUrl, setQrCodeUrl] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const id = sessionStorage.getItem("userId");
+  
   useEffect(() => {
     const fetchQRCode = async () => {
       try {
-        const response = await fetch('http://54.180.152.171:3000/qrcode');
+        const response = await fetch(`http://54.180.152.171:3000/qrcode/${id}`);
         if (response.ok) {
           const data = await response.json();
           setQrCodeUrl(data.qrCode);
