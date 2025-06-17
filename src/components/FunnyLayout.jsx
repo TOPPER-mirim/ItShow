@@ -8,13 +8,14 @@ const FunnyLayout = ({
     aiText,
     userInfo,
     dateTime,
+    ticketLogoImg
 }) => {
     return (
         <div className="T-content-container" style={textStyle}>
             <div className="content-left" style={{ position: "relative" }}>
                 <div className="left-content-wrapper">
                     <img
-                        src="../images/Ticketlogo.png"
+                        src={ticketLogoImg}
                         alt="LuckyTicket"
                         className="ticket-logo"
                     />

@@ -36,6 +36,9 @@ function InputTicketPage() {
       console.log("User ID:", response.data.id);
       
       sessionStorage.setItem("userId", response.data.id);
+
+      sessionStorage.setItem("nickname", nickname);
+      
       navigate("/filter");
 
     } catch (error) {

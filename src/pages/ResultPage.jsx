@@ -100,23 +100,16 @@ function QRCodeSection() {
 }
 
 function DownloadSection() {
-  const [userName, setUserName] = useState('');
 
   const handleGoBack = () => {
     window.location.href = '/';
   };
 
-  useEffect(() => {
-    // 🔥 여기가 문제였어요! storedName이 정의되지 않았는데 사용했었네요
-    const storedName = sessionStorage.getItem('userName');
-    if (storedName) {
-      setUserName(storedName);
-    }
-  }, []);
+  const nickname = sessionStorage.getItem("nickname");
 
   return (
     <div className="download-section">
-      <p className="complete-msg">🍀 {userName}님의 티켓이 완성 되었어요! 🍀</p>
+      <p className="complete-msg">🍀 {nickname}님의 티켓이 완성 되었어요! 🍀</p>
       <QRCodeSection />
       <button className="back-btn" onClick={handleGoBack}>
         돌아가기

@@ -23,7 +23,8 @@ const TicketPreview = forwardRef(({
 	fontFamily = "Pretendard",
 	stickers = [],
 	onStickerUpdate,
-	filter
+	filter,
+	ticketLogoImg = "/"
 }, ref) => {
 	// State 선언
 	const [selectedStickerId, setSelectedStickerId] = useState(null);
@@ -321,6 +322,7 @@ const TicketPreview = forwardRef(({
 							aiText={aiText}
 							userInfo={userInfo}
 							dateTime={dateTime}
+							ticketLogoImg={ticketLogoImg}
 						/>
 					)}
 					{filter === "가오" && (
@@ -331,6 +333,7 @@ const TicketPreview = forwardRef(({
 							aiText={aiText}
 							userInfo={userInfo}
 							dateTime={dateTime}
+							ticketLogoImg={ticketLogoImg}
 						/>
 					)}
 					{filter === "개그" && (
@@ -341,6 +344,7 @@ const TicketPreview = forwardRef(({
 							aiText={aiText}
 							userInfo={userInfo}
 							dateTime={dateTime}
+							ticketLogoImg={ticketLogoImg}
 						/>
 					)}
 
