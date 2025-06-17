@@ -4,127 +4,148 @@ import "../styles/reset.css";
 import "../styles/TicketView.css";
 
 function TicketView() {
-    const [capturedImageUrl, setCapturedImageUrl] = useState(null);
-    const [loading, setLoading] = useState(true);
+  const [capturedImageUrl, setCapturedImageUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const imageData = sessionStorage.getItem('capturedTicket');
-
-        if (imageData) {
-            setCapturedImageUrl(imageData);
-        } else {
-            console.warn('캡처된 티켓 이미지를 찾을 수 없습니다.');
+  useEffect(() => {
+    const fetchLatestTicket = async () => {
+      try {
+        const response = await fetch('http://54.180.152.171:3000/latest');
+        if (response.ok) {
+          const data = await response.json();
+          setCapturedImageUrl(data.imageUrl);
         }
+      } catch (error) {
+        console.error('티켓 이미지 로딩 중 오류:', error);
+      } finally {
         setLoading(false);
-    }, []);
+      }
+    };
 
-    if (loading) {
-        return <div>티켓을 불러오는 중...</div>;
-    }
+    fetchLatestTicket();
+  }, []);
 
-    return (
-        <div className="ResTicketView">
-            <img src="../images/연두색별.png" alt="green star left"/>
-            <div className="ticket-circle"></div>
-            {capturedImageUrl ? (
-                <img src={capturedImageUrl} alt="captured ticket"  className="ticketImg" />
-            ) : (
-                <div>
-                    <p>티켓을 불러올 수 없습니다.</p>
-                    <button onClick={() => window.location.href = '/make'}>
-                        다시 만들기
-                    </button>
-                </div>
-            )}
-            <img src="../images/연두색빈별.png" alt="green star right" />
+  if (loading) return <div>티켓을 불러오는 중...</div>;
+
+  return (
+    <div className="ResTicketView">
+      <img
+        src="/images/연두색별.png"
+        alt="왼쪽 별"
+        className="sparkle sparkle-left"
+      />
+      <div className="ticket-circle" />
+      {capturedImageUrl ? (
+        <img
+          src={capturedImageUrl}
+          alt="captured ticket"
+          className="ticketImg"
+        />
+      ) : (
+        <div>
+          <p>티켓을 불러올 수 없습니다.</p>
+          <button onClick={() => window.location.href = '/make'}>
+            다시 만들기
+          </button>
         </div>
-    );
+      )}
+      <img
+        src="/images/연두색빈별.png"
+        alt="오른쪽 별"
+        className="sparkle sparkle-right"
+      />
+    </div>
+  );
+}
+
+function QRCodeSection() {
+  const [qrCodeUrl, setQrCodeUrl] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQRCode = async () => {
+      try {
+        const response = await fetch('http://54.180.152.171:3000/qrcode');
+        if (response.ok) {
+          const data = await response.json();
+          setQrCodeUrl(data.qrCode);
+        }
+      } catch (error) {
+        console.error('QR 코드 로딩 중 오류:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchQRCode();
+  }, []);
+
+  if (loading) return <div>QR 코드를 불러오는 중...</div>;
+
+  return (
+    <div className="qr-section">
+      <p style={{ textAlign: "center" }}>QR 코드로 티켓 확인하기</p>
+      {qrCodeUrl ? (
+        <img
+          src={qrCodeUrl}
+          alt="QR Code"
+          className="qr-code-img"
+          style={{ maxWidth: '200px', maxHeight: '200px', borderRadius: "10px", padding: "10px" }}
+        />
+      ) : (
+        <p>QR 코드를 불러올 수 없습니다.</p>
+      )}
+    </div>
+  );
 }
 
 function DownloadSection() {
-    const [userName, setUserName] = useState("현서");
-    const [capturedImageUrl, setCapturedImageUrl] = useState(null);
 
-    useEffect(() => {
-        // sessionStorage에서 데이터 가져오기
-        const imageData = sessionStorage.getItem('capturedTicket');
-        const name = sessionStorage.getItem('userName');
+  const handleGoBack = () => {
+    window.location.href = '/';
+  };
 
-        if (imageData) {
-            setCapturedImageUrl(imageData);
-        }
-        if (name) {
-            setUserName(name);
-        }
-    }, []);
+  const nickname = sessionStorage.getItem("nickname");
 
-    const handleDownload = () => {
-        if (!capturedImageUrl) {
-            alert('다운로드할 이미지가 없습니다.');
-            return;
-        }
-
-        try {
-            // 캡처된 이미지 다운로드
-            const link = document.createElement('a');
-            link.href = capturedImageUrl;
-            link.download = `${userName}_lucky_ticket.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            console.log('티켓 다운로드 완료');
-        } catch (error) {
-            console.error('다운로드 오류:', error);
-            alert('다운로드 중 오류가 발생했습니다.');
-        }
-    };
-
-    const handleGoBack = () => {
-        // sessionStorage 정리
-        sessionStorage.removeItem('capturedTicket');
-        sessionStorage.removeItem('userName');
-        window.location.href = '/';
-    };
-
-    return (
-        <div className="download-section">
-            <p className="complete-msg">🍀 {userName}님의 티켓이 완성 되었어요! 🍀</p>
-
-            <div className="download-box">
-                <p>티켓 다운로드 받기</p>
-                <button
-                    onClick={handleDownload}
-                    style={{
-                        background: 'none',
-                        border: 'none',
-                        cursor: 'pointer',
-                        padding: '10px'
-                    }}
-                    disabled={!capturedImageUrl}
-                >
-                    <img src="../images/qr.png" alt="다운로드" className="qr-img" />
-                </button>
-            </div>
-
-            <button className="back-btn" onClick={handleGoBack}>
-                돌아가기
-            </button>
-        </div>
-    );
+  return (
+    <div className="download-section">
+      <p className="complete-msg">🍀 {nickname}님의 티켓이 완성 되었어요! 🍀</p>
+      <QRCodeSection />
+      <button className="back-btn" onClick={handleGoBack}>
+        돌아가기
+      </button>
+    </div>
+  );
 }
 
 function ResultPage() {
-    return (
-        <div className="result-page">
-            <ResultAnimation />
+  const [animationDone, setAnimationDone] = useState(false);
 
-            <div className="ticketResContainer">
-                <TicketView />
-                <DownloadSection />
-            </div>
-        </div>
-    );
+  return (
+    <div className="result-page">
+      {!animationDone && (
+        <ResultAnimation onComplete={() => setAnimationDone(true)} />
+      )}
+      {animationDone && (
+        <>
+          <img
+            src="/images/right-circle.png"
+            alt="오른쪽 위 원"
+            className="corner-img right-circle"
+          />
+          <img
+            src="/images/left-circle.png"
+            alt="왼쪽 아래 원"
+            className="corner-img left-circle"
+          />
+          <div className="ticketResContainer">
+            <TicketView />
+            <DownloadSection />
+          </div>
+        </>
+      )}
+    </div>
+  );
 }
 
 export default ResultPage;

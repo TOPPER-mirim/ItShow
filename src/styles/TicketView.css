@@ -1,23 +1,196 @@
-.ResTicketView {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+@font-face {
+  font-family: 'Pretendard';
+  src: url('/fonts/Pretendard-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
 }
 
-.ResTicketView .ticketImg {
-    width: 711px;
+body {
+  font-family: 'Pretendard', sans-serif;
+}
+
+.result-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: relative;
+}
+
+.ticketResContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.ResTicketView {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  width: 100%;
 }
 
 .ticket-circle {
-    width: 1104px;
-    height: 350px;
-    background: linear-gradient(45deg,
-            rgba(130, 239, 137, 0.38),
-            rgba(13, 163, 78, 0.38));
+  width: 1104px;
+  height: 350px;
+  background: linear-gradient(45deg, rgba(130, 239, 137, 0.38), rgba(13, 163, 78, 0.38));
+  border-radius: 100%;
+  transform: rotate(-17deg);
+  position: absolute;
+  top: 0;
+  z-index: 0;
+}
 
-    border-radius: 100%;
-    transform: rotate(-17deg);
+.ticketImg {
+  width: 711px;
+  position: relative;
+  z-index: 1;
+  /* box-shadow: 0px 0px 5px #444; */
+}
+
+.download-section {
+  margin-top: 60px;
+  /* 중앙보다 아래 */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.complete-msg {
+  font-family: 'Pretendard', sans-serif;
+  font-size: 30px;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.download-box {
+  font-family: 'Pretendard', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.qr-img {
+  width: 100px;
+  height: auto;
+}
+
+.back-btn {
+  font-family: 'Pretendard', sans-serif;
+  color: white;
+  margin-top: 10px;
+  padding: 15px 100px;
+  background-color: #69DA70;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.sparkle.sparkle-left {
+  z-index: 5;
+  position: absolute;
+  left: -20%;
+  top: 10%;
+  /* 여기 값을 조절 */
+  transform: translateY(-50%);
+}
+
+.sparkle.sparkle-right {
+  z-index: 5;
+  position: absolute;
+  right: -20%;
+  top: 70%;
+  /* 여기 값을 조절 */
+  transform: translateY(-50%);
+}
+
+.ticketImg {
+  width: 711px;
+  border-radius: 0 0 60px 0;
+  clip-path: polygon(0 0,
+      100% 0,
+      100% 55%,
+      85% 75%,
+      70% 90%,
+      59% 100%,
+      0 100%);
+}
+
+.corner-img {
+  position: absolute;
+  width: 100px;
+  /* 필요에 따라 조절 */
+  height: auto;
+  z-index: 1;
+}
+
+.right-circle {
+  width: 10%;
+  top: 0;
+  right: 0;
+}
+
+.left-circle {
+  width: 20%;
+  bottom: 0;
+  left: 0;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ticketImg {
+    top: -21%;
+    width: 70vw;
+    /* 화면 너비 기준으로 줄임 */
+    height: auto;
+    clip-path: polygon(0 0,
+        100% 0,
+        100% 55%,
+        85% 77%,
+        75% 90%,
+        65% 100%,
+        0 100%);
+  }
+
+  .ticket-circle {
+    width: 750px;
+    height: 250px;
+    margin: 0 auto;
+    /* 가운데 정렬 */
+  }
+
+  .sparkle.sparkle-left {
+    position: absolute;
+    left: -9%;
+    top: -10%;
+
+  }
+
+  .sparkle.sparkle-right {
+    position: absolute;
+    left: 90%;
+    top: 55%;
+  }
+
+
+  .sparkle-left,
+  .sparkle-right {
+    width: 80px;
+    height: auto;
+  }
+
+  .complete-msg {
+    font-family: 'Pretendard', sans-serif;
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  .back-btn {
+    padding: 15px 70px;
+  }
 }

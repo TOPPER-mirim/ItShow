@@ -7,9 +7,14 @@ const qrCodeController = {
   // 큐알 코드 반환
   returnQRCode: async (req, res) => {
     try {
-      // 가장 최신 이미지(아이디) 1개 가져오기
+      const { userId } = req.params;
+      if (!userId) {
+        return res.status(400).send("userId가 없습니다.");
+      }
+
+      // 이미지 테이블 userId에 저장되어 있는 아이디 (사용자 아이디) 불러오기
       const imgData = await models.Image.findOne({
-        order: [["id", "DESC"]],
+        where: { userId },
       });
       if (!imgData) {
         return res.status(404).send("아이디(이미지)가 존재하지 않습니다.");

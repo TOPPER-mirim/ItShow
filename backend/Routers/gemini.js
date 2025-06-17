@@ -7,6 +7,6 @@ const router = express.Router();
 router.post("/rewriting", geminiController.rewritingSentence);
 
 // 리라이팅한 글 반환
-router.get("/getRewriting", geminiController.getRewritingSentence);
+router.get("/getRewriting/:contentId", geminiController.getRewritingSentence);
 
 export default router;

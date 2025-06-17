@@ -20,77 +20,82 @@ const MakeTicketPage = () => {
     const filterMap = {
         감성: "/images/필터-감성.svg",
         가오: "/images/필터-가오.svg",
-        재미: "/images/필터-개그.svg"
+        개그: "/images/필터-개그.svg"
     };
     const logoUrl = filterMap[filter];
 
     const patternMap = {
         감성: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/감성-패턴${i}.png`),
         가오: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/가오-패턴${i}.png`),
-        재미: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/개그-패턴${i}.png`),
+        개그: [1, 2, 3].map(i => `/images/Pattern/PatternPaletter/개그-패턴${i}.png`),
     };
 
     const stickerMap = {
         감성: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/감성-스티커${i}.png`),
         가오: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/가오-스티커${i}.png`),
-        재미: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/개그-스티커${i}.png`),
+        개그: [1, 2, 3].map(i => `/images/Sticker/StickerPaletter/개그-스티커${i}.png`),
     };
 
     const backgroundColorMap = {
         감성: "#BDDDF7",
         가오: "#D9D9D9",
-        재미: "#FFE88E",
+        개그: "#FFE88E",
     };
-
-    const patternLayoutStyleMap = {
-        
-    }
 
     const patternStyleMap = {
         "감성-패턴1": {
             image: "/images/Pattern/감성-패턴1.png",
             textColor: "#C10100",
             fontFamily: "Cafe24ClassicType-Regular",
+            ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png",
         },
         "감성-패턴2": {
             image: "/images/Pattern/감성-패턴2.png",
             textColor: "#05361A",
             fontFamily: "YClover-Bold",
+            ticketLogoImg: "/images/LogoImg/감성-logo2(그린).png",
         },
         "감성-패턴3": {
             image: "/images/Pattern/감성-패턴3.png",
             textColor: "#73A8D3",
             fontFamily: "ghanachoco",
+            ticketLogoImg: "/images/LogoImg/감성-logo3(골드).png",
         },
         "가오-패턴1": {
             image: "/images/Pattern/가오-패턴1.png",
             textColor: "#FFFFFF",
-            fontFamily: "LOTTERIACHAB",
+            fontFamily: "LOTTERIADDAG",
+            ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
         },
         "가오-패턴2": {
             image: "/images/Pattern/가오-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
+            ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
         },
         "가오-패턴3": {
             image: "/images/Pattern/가오-패턴3.png",
             textColor: "#FFFFFF",
             fontFamily: "SeoulHangangM",
+            ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png",
         },
-        "재미-패턴1": {
+        "개그-패턴1": {
             image: "/images/Pattern/개그-패턴1.png",
             textColor: "#000000",
             fontFamily: "GothicA1-Light",
+            ticketLogoImg: "/images/LogoImg/개그-logo1(노랑).png",
         },
-        "재미-패턴2": {
+        "개그-패턴2": {
             image: "/images/Pattern/개그-패턴2.png",
             textColor: "#FFFFFF",
             fontFamily: "YoonChildfundkoreaManSeh",
+            ticketLogoImg: "/images/LogoImg/개그-logo1(노랑).png",
         },
-        "재미-패턴3": {
+        "개그-패턴3": {
             image: "/images/Pattern/개그-패턴3.png",
             textColor: "#E14F36",
             fontFamily: "GothicA1-Light",
+            ticketLogoImg: "/images/LogoImg/개그-logo2(오렌지).png",
         },
     };
 
@@ -102,6 +107,7 @@ const MakeTicketPage = () => {
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [saveToBook, setSaveToBook] = useState(false);
+    const [ticketLogoImg, setTicketLogoImg] = useState(null);
 
     const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
 
@@ -114,7 +120,6 @@ const MakeTicketPage = () => {
 
     // 패턴 클릭 핸들러 수정
     const handlePatternClick = (thumbUrl, idx) => {
-        const appliedUrl = thumbUrl.replace("/PatternPaletter/", "/");
         const patternKey = `${filter}-패턴${idx + 1}`;
         const patternStyle = patternStyleMap[patternKey];
 
@@ -122,60 +127,70 @@ const MakeTicketPage = () => {
             setPatternUrl(patternStyle.image);
             setTextColor(patternStyle.textColor);
             setFontFamily(patternStyle.fontFamily);
-            // 패턴 선택 시 단색 배경 해제
+            setTicketLogoImg(patternStyle.ticketLogoImg);
+
             setFillColor("transparent");
         }
     };
 
-    // 단색 배경 클릭 핸들러 수정
-    const handleColorClick = (color) => {
+    const handleColorClick = (color, logoImg) => {
         setFillColor(color);
         setPatternUrl(null);
-        // 단색 배경 선택 시 기본 텍스트 스타일로 초기화
-        setTextColor("#000000");
-        setFontFamily("Pretendard");
+        setFontFamily(null);
+        setTicketLogoImg(logoImg);
+
+        const isDarkColor = ["#000000", "#225268"].includes(color);
+        setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
     };
 
     const handleSubmit = async () => {
         try {
-            // 1. 먼저 티켓 캡처
             const dataUrl = await ticketPreviewRef.current?.captureTicket();
-
             if (!dataUrl) {
-                alert("티켓 캡처에 실패했습니다. 다시 시도해주세요.");
+                alert("티켓 캡처에 실패했습니다.");
                 return;
             }
 
-            // 2. 로컬 다운로드 (기존 기능 유지)
-            const link = document.createElement("a");
-            link.href = dataUrl;
-            link.download = `${nickname || 'my'}_lucky_ticket.png`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            // base64 데이터URL에서 헤더 제거하고 pure base64만 추출
+            const base64Data = dataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
 
-            // 3. sessionStorage에 저장 (ResultPage에서 사용할 수 있도록)
-            sessionStorage.setItem('capturedTicket', dataUrl);
-            sessionStorage.setItem('userName', nickname || '사용자');
+            // JSON 형태로 전송
+            const response = await fetch("http://54.180.152.171:3000/upload", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    image: base64Data  // 헤더 제거된 순수 base64 데이터
+                }),
+            });
 
-            // 4. 티켓북 저장 처리 (필요시)
-            if (saveToBook) {
-                console.log("티켓북에도 저장됩니다.");
-                // 여기에 티켓북 저장 로직 추가 가능
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            console.log("티켓이 성공적으로 저장되었습니다!");
+            const result = await response.json();
+            console.log("업로드 성공:", result);
 
-            // 5. 잠시 대기 후 결과 페이지로 이동 (sessionStorage 저장 완료 보장)
-            setTimeout(() => {
-                navigate("/result");
-            }, 500);
+            navigate('/result', {
+                state: {
+                    nickname: nickname,
+                    content,
+                    filter,
+                    ticketData: result,
+                    saveToBook,
+                    ticketImage: dataUrl
+                }
+            });
 
+            // 이후 로컬 다운로드 및 세션 저장 등은 생략
         } catch (error) {
-            console.error("티켓 저장 중 오류:", error);
-            alert("티켓 저장 중 오류가 발생했습니다. 다시 시도해주세요.");
+            console.error("백엔드 업로드 중 오류:", error);
+            alert("티켓 업로드에 실패했습니다.");
         }
     };
+
+    // console.log(layoutStyleMap[filter]);
 
     return (
         <div
@@ -196,6 +211,8 @@ const MakeTicketPage = () => {
                     fontFamily={fontFamily} // 글꼴 prop 추가
                     stickers={selectedStickers}
                     onStickerUpdate={setSelectedStickers}
+                    filter={filter}
+                    ticketLogoImg={ticketLogoImg}
                 />
             </div>
 
@@ -213,18 +230,18 @@ const MakeTicketPage = () => {
 
                 <MakePaletter title="단색 배경">
                     {[
-                        { color: backgroundColorMap[filter], img: "none.svg" },
-                        { color: "#FFC1C1", img: "pink.png" },
-                        { color: "#FEC730", img: "yellow.png" },
-                        { color: "#9CD69D", img: "green.png" },
-                        { color: "#DFECF2", img: "babyblue.png" },
-                        { color: "#225268", img: "blue.png" },
-                        { color: "#000000", img: "black.png" }
-                    ].map(({ color, img }) => (
+                        { color: backgroundColorMap[filter], img: "none.svg", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#FFC1C1", img: "pink.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#FEC730", img: "yellow.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#9CD69D", img: "green.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#DFECF2", img: "babyblue.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#225268", img: "blue.png", ticketLogoImg: "/images/Ticketlogo.png" },
+                        { color: "#000000", img: "black.png", ticketLogoImg: "/images/Ticketlogo.png" }
+                    ].map(({ color, img, ticketLogoImg }) => (
                         <SinglePaletter
                             key={color}
                             imageUrl={`/images/${img}`}
-                            onClick={() => handleColorClick(color)}
+                            onClick={() => handleColorClick(color, ticketLogoImg)}
                             isSelected={fillColor === color && patternUrl === null}
                         />
                     ))}
@@ -236,6 +253,7 @@ const MakeTicketPage = () => {
                         onClick={() => {
                             setPatternUrl(null);
                             setTextColor("#000000");
+                            setFillColor(backgroundColorMap[filter]);
                             setFontFamily("Pretendard");
                         }}
                         isSelected={patternUrl === null}

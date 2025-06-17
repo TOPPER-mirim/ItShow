@@ -9,11 +9,18 @@ const { User, Image, AIContent } = models;
 // base64 이미지 저장 및 DB 기록
 export const saveImage = async (req, res) => {
   try {
-    const { image } = req.body;
+    const { userId, image } = req.body;
+
     if (!image) {
       return res
         .status(400)
         .json({ message: "base64 이미지 데이터가 필요합니다." });
+    }
+
+    if (!userId || !Number.isInteger(Number(userId))) {
+      return res
+        .status(400)
+        .json({ message: "유효한 사용자 ID가 필요합니다." });
     }
 
     // base64 헤더 제거 (예: data:image/png;base64,...)
@@ -35,19 +42,17 @@ export const saveImage = async (req, res) => {
     // base64 -> 바이너리로 변환 후 저장
     await fs.writeFile(filePath, base64Data, "base64");
 
-    // 가장 최근 사용자 조회
-    const latestUser = await User.findOne({
-      order: [["createdAt", "DESC"]],
-      attributes: ["id"],
-    });
-
-    if (!latestUser) {
-      return res.status(404).json({ message: "사용자가 없습니다." });
+    // 사용자 존재 여부 확인
+    const user = await User.findByPk(userId);
+    if (!user) {
+      // 파일이 이미 저장되었으므로 삭제
+      await fs.unlink(filePath).catch(console.error);
+      return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
     }
 
     // DB에 이미지 기록
     const savedImage = await Image.create({
-      userId: latestUser.id,
+      userId: Number(userId),
       img: filename,
     });
 
@@ -62,34 +67,37 @@ export const saveImage = async (req, res) => {
   }
 };
 
-// 가장 최근 사용자 및 이미지 조회
-export const getLatest = async (req, res) => {
+// 특정 사용자의 이미지 조회
+export const getImage = async (req, res) => {
   try {
-    const latestUser = await User.findOne({
-      order: [["createdAt", "DESC"]],
-      attributes: ["id"],
-    });
+    const { userId } = req.params;
 
-    if (!latestUser) {
-      return res.status(404).json({ message: "사용자가 없습니다." });
+    if (!userId || !Number.isInteger(Number(userId))) {
+      return res.status(400).json({ message: "유효한 사용자 ID가 필요합니다." });
     }
 
-    const latestImage = await Image.findOne({
-      where: { userId: latestUser.id },
-      order: [["createdAt", "DESC"]],
+    // 사용자 존재 여부 확인
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+    }
+
+    // 해당 사용자의 이미지 조회
+    const userImage = await Image.findOne({
+      where: { userId: Number(userId) },
       attributes: ["id", "img"],
     });
 
-    if (!latestImage) {
-      return res.status(404).json({ message: "이미지가 없습니다." });
+    if (!userImage) {
+      return res.status(404).json({ message: "해당 사용자의 이미지가 없습니다." });
     }
 
-    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${
-      latestImage.img
-    }`;
+    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${userImage.img
+      }`;
 
     res.status(200).json({
-      userId: latestUser.id,
+      imageId: userImage.id,
+      userId: Number(userId),
       imageUrl,
     });
   } catch (error) {
@@ -126,7 +134,7 @@ export const getAllImages = async (req, res) => {
   }
 };
 
-// filterStr별 이미지(아이디, 필터) 반환
+// filterStr별 이미지(아이디, 필터) 반환 - 최신순
 export const getFilterImages = async (req, res) => {
   try {
     const { filterStr } = req.body;
@@ -149,6 +157,9 @@ export const getFilterImages = async (req, res) => {
             },
           ],
         },
+      ],
+      order: [
+        [User, Image, "createdAt", "DESC"], // 이미지 생성일 기준 최신순
       ],
     });
 

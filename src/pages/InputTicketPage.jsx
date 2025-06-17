@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";  // axios 임포트
+import axios from "axios";
 import "../styles/reset.css";
 import "../styles/InputTicketPage.css";
 import CustomPopup from "../components/CustomPopup";
@@ -26,14 +26,18 @@ function InputTicketPage() {
     }
 
     try {
-      // 서버에 POST 요청
       const response = await axios.post("http://54.180.152.171:3000/user", {
         name: nickname,
         content: worryText,
       });
 
       console.log("User created:", response.data);
-      navigate("/filter"); // 성공 시 필터 페이지로 이동
+      console.log("User ID:", response.data.id);
+
+      sessionStorage.setItem("userId", response.data.id);
+      sessionStorage.setItem("nickname", nickname);
+
+      navigate("/filter");
     } catch (error) {
       console.error("Error creating user:", error);
       setPopupMessage("서버 오류가 발생했습니다. 다시 시도해주세요.");
@@ -58,12 +62,16 @@ function InputTicketPage() {
           className="main-image-ipad"
         />
 
-        <input
-          type="text"
+        {/* ✅ textarea로 변경 + 200자 제한 */}
+        <textarea
           placeholder="자신의 고민이나 하고 싶은 말을 적어주세요. (최대 200자)"
           className="worry-input"
           value={worryText}
-          onChange={(e) => setWorryText(e.target.value)}
+          onChange={(e) => {
+            if (e.target.value.length <= 200) {
+              setWorryText(e.target.value);
+            }
+          }}
         />
 
         <img
