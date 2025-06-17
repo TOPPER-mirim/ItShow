@@ -1,5 +1,5 @@
 import express from 'express';
-import { saveImage, getLatest, getAllImages, getFilterImages } from '../Controllers/imageController.js';
+import { saveImage, getImage, getAllImages, getFilterImages } from '../Controllers/imageController.js';
 
 const router = express.Router();
 
@@ -7,7 +7,7 @@ const router = express.Router();
 router.post('/upload', saveImage);
 
 // 최신 이미지 조회
-router.get('/latest', getLatest);
+router.get('/userImage/:userId', getImage);
 
 // 전체 이미지 조회
 router.get('/allImages', getAllImages);
