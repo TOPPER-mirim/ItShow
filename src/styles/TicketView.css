@@ -8,6 +8,7 @@
 body {
   font-family: 'Pretendard', sans-serif;
 }
+
 .result-page {
   display: flex;
   flex-direction: column;
@@ -48,24 +49,26 @@ body {
   width: 711px;
   position: relative;
   z-index: 1;
+  /* box-shadow: 0px 0px 5px #444; */
 }
 
 .download-section {
-  margin-top: 60px; /* 중앙보다 아래 */
+  margin-top: 60px;
+  /* 중앙보다 아래 */
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
 .complete-msg {
-    font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   font-size: 30px;
   margin-bottom: 15px;
   font-weight: 600;
 }
 
 .download-box {
-    font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -78,8 +81,8 @@ body {
 }
 
 .back-btn {
-    font-family: 'Pretendard', sans-serif;
-    color: white;
+  font-family: 'Pretendard', sans-serif;
+  color: white;
   margin-top: 10px;
   padding: 15px 100px;
   background-color: #69DA70;
@@ -89,49 +92,51 @@ body {
 }
 
 .sparkle.sparkle-left {
-    z-index: 5;
+  z-index: 5;
   position: absolute;
   left: -20%;
-  top: 10%; /* 여기 값을 조절 */
+  top: 10%;
+  /* 여기 값을 조절 */
   transform: translateY(-50%);
 }
 
 .sparkle.sparkle-right {
-    z-index: 5;
+  z-index: 5;
   position: absolute;
   right: -20%;
-  top: 70%; /* 여기 값을 조절 */
+  top: 70%;
+  /* 여기 값을 조절 */
   transform: translateY(-50%);
 }
 
 .ticketImg {
-      border-radius: 0 0 60px 0;
   width: 711px;
-  clip-path: polygon(
-    0 0,         /* 좌상 */
-    100% 0,      /* 우상 */
-    100% 56%,    /* 우하 (아래쪽 80% 지점) */
-    59% 100%,    /* 좌하 (오른쪽 80% 지점) */
-    0 100%       /* 좌하 */
-  );
-
+  border-radius: 0 0 60px 0;
+  clip-path: polygon(0 0,
+      100% 0,
+      100% 55%,
+      85% 75%,
+      70% 90%,
+      59% 100%,
+      0 100%);
 }
 
 .corner-img {
   position: absolute;
-  width: 100px; /* 필요에 따라 조절 */
+  width: 100px;
+  /* 필요에 따라 조절 */
   height: auto;
   z-index: 1;
 }
 
 .right-circle {
-    width: 10%;
+  width: 10%;
   top: 0;
   right: 0;
 }
 
 .left-circle {
-    width: 20%;
+  width: 20%;
   bottom: 0;
   left: 0;
 }
@@ -139,42 +144,53 @@ body {
 @media (min-width: 768px) and (max-width: 1024px) {
   .ticketImg {
     top: -21%;
-    width: 70vw; /* 화면 너비 기준으로 줄임 */
+    width: 70vw;
+    /* 화면 너비 기준으로 줄임 */
     height: auto;
+    clip-path: polygon(0 0,
+        100% 0,
+        100% 55%,
+        85% 77%,
+        75% 90%,
+        65% 100%,
+        0 100%);
   }
 
   .ticket-circle {
-   width: 750px;
-  height: 250px;
-    margin: 0 auto; /* 가운데 정렬 */
+    width: 750px;
+    height: 250px;
+    margin: 0 auto;
+    /* 가운데 정렬 */
   }
- .sparkle.sparkle-left {
+
+  .sparkle.sparkle-left {
     position: absolute;
     left: -9%;
     top: -10%;
 
   }
 
-  .sparkle.sparkle-right{
-       position: absolute;
+  .sparkle.sparkle-right {
+    position: absolute;
     left: 90%;
     top: 55%;
   }
 
- 
-  .sparkle-left, .sparkle-right {
+
+  .sparkle-left,
+  .sparkle-right {
     width: 80px;
     height: auto;
   }
 
   .complete-msg {
     font-family: 'Pretendard', sans-serif;
-  font-size: 20px;
-  margin-bottom: 15px;
-  font-weight: 600;
-}
+    font-size: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
 
-.back-btn{
-      padding: 15px 70px;
-}
+  .back-btn {
+    padding: 15px 70px;
+  }
 }

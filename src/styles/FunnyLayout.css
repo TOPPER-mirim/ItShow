@@ -1,66 +1,84 @@
-.gam-left-content-wrapper {
+.left-content-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* height: 80%; */
-    /* margin-top: 10PX; */
-    margin-right: 40px;
+    justify-content: center;
+    height: 100%;
+    /* margin-right: 1px; */
+    position: relative;
 }
 
-.gam-ticket-logo {
+.ticket-logo {
     margin-top: 20px;
 }
+
 .ai-text {
-    width: 400px;
-    /* 너비를 %로 변경해서 반응형 */
+    width: 80%;
+    max-width: 400px;
     font-size: clamp(18px, 3vw, 30px);
-    /* 글자 크기 반응형 */
-    margin-top: 3vh;
     font-weight: 600;
     text-align: center;
+    margin-top: 3vh;
 }
 
 .user-text {
-    width: 60%;
+    width: 80%;
+    max-width: 400px;
     font-size: clamp(16px, 2.5vw, 22px);
     text-align: center;
     margin-top: 1.5vh;
 }
 
 .name {
+    width: 80%;
+    /* max-width: 400px; */
     text-align: right;
     font-size: clamp(18px, 2.5vw, 25px);
-    width: 80%;
-    margin-top: 2vh;
-    margin-left: 100px;
+    margin-top: 3vh;
 }
 
-.layout-guide-image {
-    /* background-color: rgb(179, 179, 179); */
+/* 포지션, 크기 고정 */
+.fun-layout-guide-image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 101;
     width: 73px;
+    height: 85%;
+    padding: 26px 58px 21px 81px;
 }
 
+/* 회전된 날짜 표시 부분 */
 .right-container {
     display: flex;
-    /* gap: 5px; */
     transform: rotate(90deg);
-    /* justify-content: space-between; */
+    /* 유지! */
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform-origin: center;
+    translate: 0 -50%;
+    /* 정확히 세로 가운데 */
+    gap: 10px;
+    height: 160px;
+    /* background-color: aliceblue; */
 }
 
 /* 요일 + 월 */
-.day-month {
+.day-month,
+.year-time {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 5px;
     width: 80px;
-    /* background-color: aqua; */
-    margin-top: 10px;
 }
+
 .day {
     font-size: 14px;
     font-weight: 500;
 }
+
 .month {
     font-size: 18px;
     font-weight: 700;
@@ -71,26 +89,18 @@
     font-size: 50px;
     font-weight: 800;
     width: 120px;
-    /* background-color: blueviolet; */
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-bottom: 100px;
 }
 
 /* 연도 + 시간 */
-.year-time {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-    width: 80px;
-    /* background-color: aqua; */
-    margin-top: 10px;
-}
 .year {
     font-size: 14px;
     letter-spacing: 0.2em;
 }
+
 .time {
     font-size: 12px;
 }

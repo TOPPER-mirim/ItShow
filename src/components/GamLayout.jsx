@@ -10,7 +10,7 @@ const GamLayout = ({
     dateTime,
 }) => {
     return (
-        <div className="content-container">
+        <div className="T-content-container">
             <div className="content-left" style={{ position: "relative" }}>
                 <div className="gam-left-content-wrapper">
 

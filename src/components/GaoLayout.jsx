@@ -11,7 +11,7 @@ const GaoLayout = ({
     dateTime,
 }) => {
     return (
-        <div className="content-container" style={textStyle}>
+        <div className="T-content-container" style={textStyle}>
             <div className="content-left" style={{ position: "relative" }}>
                 <div className="gao-left-content-container">
                     <img
