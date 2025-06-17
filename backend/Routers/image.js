@@ -6,7 +6,7 @@ const router = express.Router();
 // base64 이미지 업로드
 router.post('/upload', saveImage);
 
-// 최신 이미지 조회
+// 사용자 이미지 조회
 router.get('/userImage/:userId', getImage);
 
 // 전체 이미지 조회
