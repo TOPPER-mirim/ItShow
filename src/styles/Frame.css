@@ -4,3 +4,9 @@
     height: auto;
     display: block;
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .responsive-svg {
+        filter: drop-shadow(0 4px 46px rgba(0, 0, 0, 0.1));
+    }
+}

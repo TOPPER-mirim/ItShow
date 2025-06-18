@@ -8,7 +8,7 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    gap: 5%;
+    /* gap: 40px; */
     background-color: #fff;
     border-radius: 20px;
     transition: box-shadow 0.3s ease;
@@ -68,7 +68,25 @@
 
 @media (max-width: 1024px) {
     .filter-card{
-        width: 420px;
+        width: 490px;
+        height: 200px;
+        padding: 20px 150px 20px 50px;
+    }
+    .filter-icon {
+        width: 35px;
+        height: 35px;
+        object-fit: contain;
+    }
+    .filter-name {
+        font-weight: 600;
+        font-size: 15px;
+    }
+    .filter-description-container {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        font-size: 15px;
+        z-index: 1;
     }
     
 }

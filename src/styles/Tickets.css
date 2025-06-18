@@ -12,7 +12,6 @@ html {
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-family: 'Arial', sans-serif;
-
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -26,12 +25,9 @@ html {
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-family: 'Arial', sans-serif;
-
     display: flex;
     justify-content: center;
-    /* 가로 가운데 정렬 */
     align-items: flex-start;
-    /* 세로 위 정렬 */
 }
 
 .emotion-page {
@@ -42,48 +38,79 @@ html {
     color: white;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
     font-family: 'Arial', sans-serif;
-
     display: flex;
     justify-content: center;
-    /* 가로 가운데 정렬 */
     align-items: flex-start;
-    /* 세로 위 정렬 */
- 
 }
 
 .content-container {
     display: flex;
     flex-direction: column;
     align-items: center;
+    width: 100%;
+    height: 100vh;
 }
 
-.emotion-font-image,.funny-font-image,.style-font-image {
+.emotion-font-image,
+.funny-font-image,
+.style-font-image {
     margin-top: 70px;
+    transition: transform 0.3s ease;
+    /* filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3)); */
+}
+
+.emotion-font-image:hover,
+.funny-font-image:hover,
+.style-font-image:hover {
+    transform: scale(1.05);
 }
 
 .ticket-image-list {
-    display: grid;
-    grid-template-columns: repeat(5, 550px); 
-    gap: 32px;  
-    overflow: hidden;
-    margin: 40px auto 0 auto; /* 가운데 정렬 */
-    position: relative;
+    display: flex;
+    gap: 32px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin: 40px 0 0 0;
+    padding: 20px 50px;
+    width: 100%;
+    height: calc(100vh - 300px);
+    align-items: flex-start;
+    justify-content: flex-start;
+    scroll-behavior: smooth;
 }
+
+/* 티켓이 적을 때 센터 정렬 */
+.ticket-image-list:has(.ticket-image-item:nth-child(-n+3)) {
+    justify-content: center;
+}
+
 .ticket-image-item {
+    flex-shrink: 0;
+    width: 550px;
     display: flex;
     justify-content: center;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.ticket-image-item:hover {
+    transform: translateY(-10px) scale(1.03);
+    z-index: 10;
 }
 
 .ticket-image-item img {
     width: 100%;
     height: auto;
     border-radius: 12px;
+    /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); */
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    /* border: 2px solid rgba(255, 255, 255, 0.1); */
 }
 
 .dot-container {
     position: fixed;
-    bottom: 30px; /* 화면 아래에서 띄우는 정도 */
+    bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
@@ -95,18 +122,145 @@ html {
     height: 12px;
     width: 12px;
     margin: 0 6px;
-    background-color: #ccc;
+    background-color: rgba(255, 255, 255, 0.4);
     border-radius: 50%;
     display: inline-block;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.dot:hover {
+    transform: scale(1.2);
+    background-color: rgba(128, 255, 0, 0.7);
 }
 
 .dot.active {
     background-color: #80FF00;
+    border-color: rgba(128, 255, 0, 0.8);
+    box-shadow: 0 0 15px rgba(128, 255, 0, 0.5);
 }
 
-@media (max-width: 1024px) {
-    .emotion-font-image,.funny-font-image,.style-font-image {
-    margin-right: 250px;
+/* 스크롤바 예쁘게 스타일링 */
+.ticket-image-list::-webkit-scrollbar {
+    height: 8px;
 }
-} 
+
+.ticket-image-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+}
+
+.ticket-image-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(90deg, rgba(128, 255, 0, 0.6), rgba(128, 255, 0, 0.8));
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.ticket-image-list::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(90deg, rgba(128, 255, 0, 0.8), rgba(128, 255, 0, 1));
+    transform: scaleY(1.2);
+}
+
+/* 반응형 */
+@media (max-width: 1024px) {
+
+    .emotion-font-image,
+    .funny-font-image,
+    .style-font-image {
+        margin-top: 50px;
+        transform: scale(0.9);
+    }
+
+    .ticket-image-item {
+        width: 450px;
+    }
+
+    .ticket-image-list {
+        gap: 25px;
+        padding: 20px 30px;
+        height: calc(100vh - 250px);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .emotion-font-image,
+    .funny-font-image,
+    .style-font-image {
+        margin-top: 30px;
+        transform: scale(0.8);
+    }
+
+    .ticket-image-item {
+        width: 350px;
+    }
+
+    .ticket-image-list {
+        gap: 20px;
+        padding: 15px 20px;
+        height: calc(100vh - 200px);
+    }
+
+    .dot {
+        height: 10px;
+        width: 10px;
+        margin: 0 4px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ticket-image-item {
+        width: 280px;
+    }
+
+    .ticket-image-list {
+        gap: 15px;
+        padding: 10px 15px;
+    }
+
+    .emotion-font-image,
+    .funny-font-image,
+    .style-font-image {
+        transform: scale(0.7);
+        margin-top: 20px;
+    }
+}
+
+/* 로딩 애니메이션 */
+.ticket-image-item {
+    animation: slideIn 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.ticket-image-item:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.ticket-image-item:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.ticket-image-item:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.ticket-image-item:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.ticket-image-item:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
