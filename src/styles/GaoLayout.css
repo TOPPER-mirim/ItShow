@@ -119,3 +119,78 @@
     align-items: center;
     justify-content: center;
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .gao-left-content-container {
+        width: 75%;
+        height: 80%;
+        margin: 20px 60px 15px 60px;
+        grid-template-columns: 9% 60% 25% 11%;
+        margin-left: 90px;
+    }
+
+    .gao-left-content-container .layout-guide-image {
+        width: 600px;
+        margin-left: -50px;
+    }
+
+    .gao-logo-concept,
+    .gao-name-date,
+    .gao-topper-month-time {
+        width: 220px;
+    }
+
+    .gao-logo-concept {
+        gap: 30px;
+        height: 35px;
+    }
+
+    .gao-ticket-logo {
+        width: 110px;
+        padding: 8px;
+    }
+
+    .gao-ai-text {
+        height: 80px;
+        font-size: clamp(12px, 2.8vw, 16px);
+        padding: 6px;
+    }
+
+    .gao-user-text {
+        font-size: 13px;
+    }
+
+    .gao-name {
+        width: 150px;
+        font-size: 28px;
+    }
+
+    .gao-year-days-day {
+        width: 95px;
+    }
+
+    .gao-days {
+        font-size: 33px;
+    }
+
+    .gao-topper {
+        width: 150px;
+        font-size: 9px;
+    }
+
+    .gao-month,
+    .gao-time {
+        font-size: 7px;
+    }
+
+    .gao-topper-month-time {
+        height: 20px;
+        gap: 8px;
+    }
+
+    .gao-day {
+        font-size: 12px;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+}

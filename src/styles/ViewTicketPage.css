@@ -7,11 +7,13 @@
     align-items: center;
 }
 
-.side-image-left,.side-image-right {
+.side-image-left,
+.side-image-right {
     position: fixed;
     top: 50%;
     transform: translateY(-50%);
-    width: 200px; /* 필요 시 조정 */
+    width: 200px;
+    /* 필요 시 조정 */
     height: auto;
     z-index: 10;
 }
@@ -51,7 +53,8 @@
 
 
 .title-container {
-    text-align: left; /* 중앙에서 왼쪽으로 */
+    text-align: left;
+    /* 중앙에서 왼쪽으로 */
     margin-bottom: 24px;
 }
 
@@ -68,28 +71,29 @@
 
 
 @media (max-width: 1024px) {
-   
-.center-box {
-    top: 50%;
-  margin-top: 10px;
-  width: 700px;
-  height: 700px;
- 
-}
-.filter-container {
-    margin-top: -150px;
-}
 
-.side-image-right{
-    display: none;
-}
+    .center-box {
+        top: 50%;
+        margin-top: 10px;
+        width: 790px;
+        height: 700px;
 
-.side-image-left{
-    display: none;
-}
+    }
 
-.filter-card{
-    width: 0px;
-}
+    .filter-container {
+        margin-top: -150px;
+    }
+
+    .side-image-right {
+        display: none;
+    }
+
+    .side-image-left {
+        display: none;
+    }
+
+    .filter-card {
+        width: 0px;
+    }
 
 }

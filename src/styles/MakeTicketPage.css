@@ -86,3 +86,36 @@
     /* font-weight: 100; */
     color: #595959;
 }
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .paletter-container {
+        position: fixed;
+        top: 400px;
+        left: 50%;
+        transform: translateX(-50%);
+
+        background-color: white;
+        border-radius: 60px 60px 0px 0px;
+        padding: 50px 25px;
+        box-shadow: 0px 4px 30px rgba(202, 201, 201, 0.4);
+        width: 768px;
+        max-width: 768px;
+
+        height: calc(100vh - 400px);
+        overflow-x: hidden;
+    }
+
+    .ticketConfirmBox {
+        margin-bottom: 100px;
+        width: 100%;
+    }
+
+    .singleColorPaletter {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        overflow-y: hidden;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+}

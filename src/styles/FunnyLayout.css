@@ -45,23 +45,20 @@
     z-index: 101;
     width: 73px;
     height: 85%;
-    padding: 26px 58px 21px 81px;
+    padding: 30px 58px 30px 75px;
 }
 
 /* 회전된 날짜 표시 부분 */
 .right-container {
     display: flex;
     transform: rotate(90deg);
-    /* 유지! */
     position: absolute;
     top: 50%;
     right: 10px;
     transform-origin: center;
     translate: 0 -50%;
-    /* 정확히 세로 가운데 */
-    gap: 10px;
+    gap: 15px;
     height: 160px;
-    /* background-color: aliceblue; */
 }
 
 /* 요일 + 월 */
@@ -92,7 +89,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-bottom: 100px;
+    margin-bottom: 110px;
 }
 
 /* 연도 + 시간 */
@@ -103,4 +100,80 @@
 
 .time {
     font-size: 12px;
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    .left-content-wrapper {
+        height: auto;
+        padding: 20px 0;
+    }
+
+    .ticket-logo {
+        margin-top: 12px;
+        width: 15%;
+        /* 로고가 너무 크지 않게 */
+    }
+
+    .ai-text {
+        font-size: clamp(16px, 2.5vw, 26px);
+        margin-top: 1.5vh;
+        margin-bottom: 10px;
+        width: 300px;
+    }
+
+    .user-text {
+        font-size: clamp(9px, 2.3vw, 14px);
+        margin-top: 0.6vh;
+    }
+
+    .name {
+        font-size: clamp(9px, 2.3vw, 13px);
+        margin-top: 1vh;
+        text-align: right;
+    }
+
+    .fun-layout-guide-image {
+        width: 60px;
+        height: 80%;
+        padding: 20px 48px 18px 45px;
+        display: flex;
+    }
+
+    .right-container {
+        right: 5px;
+        height: 150px;
+        width: 220px;
+        gap: 8px;
+        margin-right: 20px;
+    }
+
+    .day-month,
+    .year-time {
+        width: 70px;
+        gap: 4px;
+    }
+
+    .day {
+        font-size: 9px;
+    }
+
+    .month {
+        font-size: 14px;
+    }
+
+    .days {
+        font-size: 40px;
+        width: 100px;
+        margin-bottom: 110px;
+        margin-right: 10px;
+    }
+
+    .year {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+    }
+
+    .time {
+        font-size: 11px;
+    }
 }

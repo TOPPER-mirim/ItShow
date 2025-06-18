@@ -206,14 +206,34 @@ const MakeTicketPage = () => {
         }
     };
 
+    const getBackgroundOpacity = () => {
+        if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+            return '80'; // 태블릿에서만 80 (50% 투명도) 추가
+        }
+        return ''; // 데스크탑은 그대로
+    };
+
     return (
         <div
             className="makeTicket-container"
             style={{
                 width: "100vw",
-                background: `linear-gradient(to bottom, ${backgroundColorMap[filter]}, transparent)`
+                background: `linear-gradient(to bottom, ${backgroundColorMap[filter]}${getBackgroundOpacity()}, transparent)`
             }}
         >
+            {showPopup && (
+                <CustomPopup message="정말 티켓을 발행하시겠습니까?">
+                    <p className="popup-content-text">발행 이후로 변경하실 수 없어요!</p>
+                    <div className="button-container">
+                        <Button size="mini" variant="green" onClick={handleSubmit}>
+                            티켓 발행하기
+                        </Button>
+                        <Button size="mini" variant="empty" onClick={() => setShowPopup(false)}>
+                            좀 더 생각해보기
+                        </Button>
+                    </div>
+                </CustomPopup>
+            )}
             <div className="ticket-preview-wrapper">
                 <TicketPreview
                     ref={ticketPreviewRef}
@@ -243,23 +263,25 @@ const MakeTicketPage = () => {
                     ))}
                 </MakePaletter>
 
-                <MakePaletter title="단색 배경">
-                    {[
-                        { color: backgroundColorMap[filter], img: "none.svg", ticketLogoImg: "/images/Ticketlogo.png", layoutColor: "#324400", textColor: "#324400" },
-                        { color: "#FFC1C1", img: "pink.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
-                        { color: "#FEC730", img: "yellow.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
-                        { color: "#9CD69D", img: "green.png", ticketLogoImg: "/images/LogoImg/감성-logo2(그린).png", layoutColor: "#324400", textColor: "#324400" },
-                        { color: "#DFECF2", img: "babyblue.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
-                        { color: "#225268", img: "blue.png", ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png", layoutColor: "#FFFCF7", textColor: "#FFFCF7" },
-                        { color: "#000000", img: "black.png", ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png", layoutColor: "#FFFCF7", textColor: "#FFFCF7" }
-                    ].map(({ color, img, ticketLogoImg, layoutColor, textColor }) => (
-                        <SinglePaletter
-                            key={color}
-                            imageUrl={`/images/${img}`}
-                            onClick={() => handleColorClick(color, ticketLogoImg, layoutColor, textColor)}
-                            isSelected={fillColor === color && patternUrl === null}
-                        />
-                    ))}
+                <MakePaletter title="단색 배경" className="color-palette">
+                    <div className="singleColorPaletter">
+                        {[
+                            { color: backgroundColorMap[filter], img: "none.svg", ticketLogoImg: "/images/Ticketlogo.png", layoutColor: "#324400", textColor: "#324400" },
+                            { color: "#FFC1C1", img: "pink.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
+                            { color: "#FEC730", img: "yellow.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
+                            { color: "#9CD69D", img: "green.png", ticketLogoImg: "/images/LogoImg/감성-logo2(그린).png", layoutColor: "#324400", textColor: "#324400" },
+                            { color: "#DFECF2", img: "babyblue.png", ticketLogoImg: "/images/LogoImg/감성-logo1(갈색).png", layoutColor: "#B47037", textColor: "#B47037" },
+                            { color: "#225268", img: "blue.png", ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png", layoutColor: "#FFFCF7", textColor: "#FFFCF7" },
+                            { color: "#000000", img: "black.png", ticketLogoImg: "/images/LogoImg/가오-logo1(화이트).png", layoutColor: "#FFFCF7", textColor: "#FFFCF7" }
+                        ].map(({ color, img, ticketLogoImg, layoutColor, textColor }) => (
+                            <SinglePaletter
+                                key={color}
+                                imageUrl={`/images/${img}`}
+                                onClick={() => handleColorClick(color, ticketLogoImg, layoutColor, textColor)}
+                                isSelected={fillColor === color && patternUrl === null}
+                            />
+                        ))}
+                    </div>
                 </MakePaletter>
 
                 <MakePaletter title="패턴 배경">
@@ -267,10 +289,10 @@ const MakeTicketPage = () => {
                         imageUrl="/images/none.svg"
                         onClick={() => {
                             setPatternUrl(null);
-                            setTextColor("#000000");
+                            setTextColor("#324400");
                             setFillColor(backgroundColorMap[filter]);
-                            setFontFamily("Pretendard");
-                            setLayoutColor(layoutColor);
+                            setFontFamily("Pretendard-Regular");
+                            setLayoutColor("#324400");
                         }}
                         isSelected={patternUrl === null}
                     />
@@ -309,40 +331,26 @@ const MakeTicketPage = () => {
                         );
                     })}
                 </MakePaletter>
+                {/* 하단 확인 박스 */}
+                <div className="ticketConfirmBox">
+                    <label className="customCheckbox">
+                        <input
+                            type="checkbox"
+                            name="ticketBookOk"
+                            checked={saveToBook}
+                            onChange={(e) => setSaveToBook(e.target.checked)}
+                        />
+                        <span className="checkmark"></span>
+                        <p>티켓북에 저장하시겠습니까?</p>
+                    </label>
+
+                    <Button size="big" onClick={() => setShowPopup(true)}>
+                        럭키 티켓 출력하기
+                    </Button>
+                </div>
             </div>
-
-            {/* 하단 확인 박스 */}
-            <div className="ticketConfirmBox">
-                <label className="customCheckbox">
-                    <input
-                        type="checkbox"
-                        name="ticketBookOk"
-                        checked={saveToBook}
-                        onChange={(e) => setSaveToBook(e.target.checked)}
-                    />
-                    <span className="checkmark"></span>
-                    <p>티켓북에 저장하시겠습니까?</p>
-                </label>
-
-                <Button size="big" onClick={() => setShowPopup(true)}>
-                    럭키 티켓 출력하기
-                </Button>
-            </div>
-
-            {showPopup && (
-                <CustomPopup message="정말 티켓을 발행하시겠습니까?">
-                    <p className="popup-content-text">발행 이후로 변경하실 수 없어요!</p>
-                    <div className="button-container">
-                        <Button size="mini" variant="green" onClick={handleSubmit}>
-                            티켓 발행하기
-                        </Button>
-                        <Button size="mini" variant="empty" onClick={() => setShowPopup(false)}>
-                            좀 더 생각해보기
-                        </Button>
-                    </div>
-                </CustomPopup>
-            )}
         </div>
+
     );
 };
 
