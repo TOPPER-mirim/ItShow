@@ -26,7 +26,7 @@ function InputTicketPage() {
     }
 
     try {
-      const response = await axios.post("http://54.180.152.171:3000/user", {
+      const response = await axios.post("https://lucky-ticket.mirim-it-show.site/user", {
         name: nickname,
         content: worryText,
       });

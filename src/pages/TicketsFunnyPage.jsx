@@ -9,7 +9,7 @@ function TicketsFunnyPage() {
   useEffect(() => {
     const fetchEmotionTickets = async () => {
       try {
-        const res = await axios.post("http://54.180.152.171:3000/filterImages", {
+        const res = await axios.post("https://lucky-ticket.mirim-it-show.site/filterImages", {
           filterStr: "개그",
         });
         setImages(res.data);

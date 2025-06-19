@@ -12,7 +12,7 @@ function TicketView() {
   useEffect(() => {
     const fetchLatestTicket = async () => {
       try {
-        const response = await fetch(`http://54.180.152.171:3000/userImage/${id}`);
+        const response = await fetch(`https://lucky-ticket.mirim-it-show.site/userImage/${id}`);
         if (response.ok) {
           const data = await response.json();
           setCapturedImageUrl(data.imageUrl);
