@@ -68,7 +68,7 @@ function QRCodeSection() {
   useEffect(() => {
     const fetchQRCode = async () => {
       try {
-        const response = await fetch(`http://54.180.152.171:3000/qrcode/${id}`);
+        const response = await fetch(`https://lucky-ticket.mirim-it-show.site/qrcode/${id}`);
         if (response.ok) {
           const data = await response.json();
           setQrCodeUrl(data.qrCode);
