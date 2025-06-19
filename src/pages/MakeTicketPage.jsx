@@ -123,7 +123,10 @@ const MakeTicketPage = () => {
     const handleStickerClick = (url) => {
         setSelectedStickers(prev => [
             ...prev,
-            { id: Date.now(), url, x: 50, y: 50 }
+            {
+                id: Date.now(), url, x: 50, y: 50, scale: 1,
+                rotation: 0
+            }
         ]);
     };
 
