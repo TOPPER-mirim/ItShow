@@ -82,7 +82,7 @@ const TicketPreview = forwardRef(({
 	useEffect(() => {
 		const fetchAiText = async () => {
 			try {
-				const response = await fetch(`http://54.180.152.171:3000/getRewriting/${id}`);
+				const response = await fetch(`https://lucky-ticket.mirim-it-show.site/getRewriting/${id}`);
 				if (!response.ok) throw new Error("서버 응답 오류");
 
 				const data = await response.json();
@@ -102,7 +102,7 @@ const TicketPreview = forwardRef(({
 		console.log("sessionStorage에서 가져온 userId:", id);
 		if (!id) return;
 
-		fetch(`http://54.180.152.171:3000/user/${id}`)
+		fetch(`https://lucky-ticket.mirim-it-show.site/user/${id}`)
 			.then((res) => res.json())
 			.then((data) => setUserInfo(data))
 			.catch((err) => console.error("유저 정보 불러오기 실패:", err));
