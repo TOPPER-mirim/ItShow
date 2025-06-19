@@ -16,7 +16,7 @@ app.use(express.json({ limit: '10mb' }));
 
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://itshow-luckyticket.vercel.app"], // React 개발 서버 주소
+    origin: ["http://localhost:5173", "https://lucky-ticket.vercel.app"], // React 개발 서버 주소
     credentials: true,
   })
 );
