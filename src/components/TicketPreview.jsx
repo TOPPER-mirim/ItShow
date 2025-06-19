@@ -11,7 +11,6 @@ import GamLayout from "../components/GamLayout";
 import GaoLayout from "../components/GaoLayout";
 import FunnyLayout from "../components/FunnyLayout";
 
-
 import * as htmlToImage from 'html-to-image';
 
 const TicketPreview = forwardRef(({
@@ -32,6 +31,7 @@ const TicketPreview = forwardRef(({
 	const [draggedStickerId, setDraggedStickerId] = useState(null);
 	const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
 	const [resizingStickerId, setResizingStickerId] = useState(null);
+	const [rotatingStickerId, setRotatingStickerId] = useState(null);
 	const [patternDataUrl, setPatternDataUrl] = useState(null);
 	const [aiText, setAiText] = useState("ai생성글 입니다.");
 	const [userInfo, setUserInfo] = useState(null);
@@ -144,8 +144,23 @@ const TicketPreview = forwardRef(({
 				if (!frameRef.current) return null;
 
 				const contentContainer = frameRef.current.querySelector('.content-container');
-				let originalStyle = {};
 
+				// ✅ 스티커 테두리와 핸들 제거
+				const selectedStickers = frameRef.current.querySelectorAll('.ticket-sticker[style*="dashed"]');
+				const resizeHandles = frameRef.current.querySelectorAll('.resize-handle, .rotate-handle');
+				const originalBorders = [];
+
+				selectedStickers.forEach((el, i) => {
+					originalBorders[i] = el.style.border;
+					el.style.border = 'none';
+				});
+
+				resizeHandles.forEach(handle => {
+					handle.style.display = 'none';
+				});
+
+				// ✅ content-container 스타일 임시 수정
+				let originalStyle = {};
 				if (contentContainer) {
 					originalStyle = {
 						position: contentContainer.style.position,
@@ -154,7 +169,6 @@ const TicketPreview = forwardRef(({
 						width: contentContainer.style.width,
 						height: contentContainer.style.height
 					};
-
 					const frameRect = frameRef.current.getBoundingClientRect();
 					contentContainer.style.position = "absolute";
 					contentContainer.style.top = "0px";
@@ -182,9 +196,14 @@ const TicketPreview = forwardRef(({
 					pixelRatio: 2
 				});
 
-				if (contentContainer) {
-					Object.assign(contentContainer.style, originalStyle);
-				}
+				// ✅ 스타일 복원
+				if (contentContainer) Object.assign(contentContainer.style, originalStyle);
+				selectedStickers.forEach((el, i) => {
+					el.style.border = originalBorders[i];
+				});
+				resizeHandles.forEach(handle => {
+					handle.style.display = 'block';
+				});
 
 				return dataUrl;
 			} catch (err) {
@@ -231,8 +250,24 @@ const TicketPreview = forwardRef(({
 		const frameRect = frameRef.current.getBoundingClientRect();
 		const x = clientX - frameRect.left - dragOffset.x;
 		const y = clientY - frameRect.top - dragOffset.y;
-		const boundedX = Math.max(0, Math.min(x, frameRect.width - 40));
-		const boundedY = Math.max(0, Math.min(y, frameRect.height - 40));
+
+		// 스티커가 티켓 밖으로 절대 나가지 못하도록 엄격한 경계 설정
+		const currentSticker = stickers.find(s => s.id === draggedStickerId);
+
+		// 기본 이미지 크기 추정 (실제로는 이미지가 로드되어야 정확함)
+		let estimatedWidth = 50;  // 기본 추정 크기
+		let estimatedHeight = 50;
+
+		// scale 적용된 실제 크기 계산
+		const scale = currentSticker?.scale || 1;
+		const actualWidth = estimatedWidth * scale;
+		const actualHeight = estimatedHeight * scale;
+
+		// 여유분을 더 크게 설정하여 확실히 안쪽에 위치하도록
+		const margin = 10;
+		const boundedX = Math.max(0, Math.min(x, frameRect.width - actualWidth - margin));
+		const boundedY = Math.max(0, Math.min(y, frameRect.height - actualHeight - margin));
+
 		onStickerUpdate(prev =>
 			prev.map(sticker =>
 				sticker.id === draggedStickerId
@@ -243,24 +278,36 @@ const TicketPreview = forwardRef(({
 	};
 
 	const handleMouseMove = (e) => {
-		if (draggedStickerId) moveSticker(e.clientX, e.clientY);
-		if (resizingStickerId) handleResize(e.clientX);
+		if (draggedStickerId) {
+			moveSticker(e.clientX, e.clientY);
+		} else if (resizingStickerId) {
+			handleResize(e.clientX);
+		} else if (rotatingStickerId) {
+			handleRotate(e.clientX, e.clientY);
+		}
 	};
 
 	const handleTouchMove = (e) => {
 		const touch = e.touches[0];
-		if (draggedStickerId) moveSticker(touch.clientX, touch.clientY);
-		if (resizingStickerId) handleResize(touch.clientX);
+		if (draggedStickerId) {
+			moveSticker(touch.clientX, touch.clientY);
+		} else if (resizingStickerId) {
+			handleResize(touch.clientX);
+		} else if (rotatingStickerId) {
+			handleRotate(touch.clientX, touch.clientY);
+		}
 	};
 
 	const handleMouseUp = () => {
 		setDraggedStickerId(null);
 		setResizingStickerId(null);
+		setRotatingStickerId(null);
 	};
 
 	const handleTouchEnd = () => {
 		setDraggedStickerId(null);
 		setResizingStickerId(null);
+		setRotatingStickerId(null);
 	};
 
 	const handleStickerDoubleClick = (e, id) => {
@@ -268,6 +315,7 @@ const TicketPreview = forwardRef(({
 		onStickerUpdate(prev => prev.filter(sticker => sticker.id !== id));
 	};
 
+	// 리사이즈 핸들러 - 감도 개선
 	const startResizing = (e, id) => {
 		e.stopPropagation();
 		e.preventDefault();
@@ -278,17 +326,57 @@ const TicketPreview = forwardRef(({
 		if (!resizingStickerId) return;
 		const deltaX = currentX - resizingStickerId.startX;
 		const id = resizingStickerId.id;
+
+		// 감도 개선: 더 부드럽고 정밀한 조절
+		const scaleFactor = 0.005; // 감도를 더 세밀하게 조정
+
 		onStickerUpdate(prev =>
 			prev.map(sticker =>
 				sticker.id === id
 					? {
 						...sticker,
-						scale: Math.max(0.3, Math.min((sticker.scale || 1) + deltaX / 100, 2))
+						scale: Math.max(0.2, Math.min((sticker.scale || 1) + deltaX * scaleFactor, 3))
 					}
 					: sticker
 			)
 		);
 		setResizingStickerId({ ...resizingStickerId, startX: currentX });
+	};
+
+	// 회전 핸들러 - 새로 추가
+	const startRotating = (e, id) => {
+		e.stopPropagation();
+		e.preventDefault();
+		const sticker = stickers.find(s => s.id === id);
+		const stickerElement = e.target.closest('.ticket-sticker');
+		const rect = stickerElement.getBoundingClientRect();
+		const centerX = rect.left + rect.width / 2;
+		const centerY = rect.top + rect.height / 2;
+
+		setRotatingStickerId({
+			id,
+			centerX,
+			centerY,
+			startAngle: Math.atan2(e.clientY - centerY, e.clientX - centerX),
+			initialRotation: sticker.rotation || 0
+		});
+	};
+
+	const handleRotate = (currentX, currentY) => {
+		if (!rotatingStickerId) return;
+
+		const { id, centerX, centerY, startAngle, initialRotation } = rotatingStickerId;
+		const currentAngle = Math.atan2(currentY - centerY, currentX - centerX);
+		const deltaAngle = currentAngle - startAngle;
+		const newRotation = initialRotation + (deltaAngle * 180 / Math.PI);
+
+		onStickerUpdate(prev =>
+			prev.map(sticker =>
+				sticker.id === id
+					? { ...sticker, rotation: newRotation }
+					: sticker
+			)
+		);
 	};
 
 	// 스타일 객체
@@ -361,6 +449,7 @@ const TicketPreview = forwardRef(({
 						<div
 							key={sticker.id}
 							className="ticket-sticker"
+							data-sticker-id={sticker.id}
 							onMouseDown={(e) => handleMouseDown(e, sticker)}
 							onTouchStart={(e) => handleTouchStart(e, sticker)}
 							onClick={(e) => handleStickerClick(e, sticker.id)}
@@ -369,27 +458,66 @@ const TicketPreview = forwardRef(({
 								position: "absolute",
 								left: `${sticker.x}px`,
 								top: `${sticker.y}px`,
-								transform: `scale(${sticker.scale || 1})`,
+								transform: `scale(${sticker.scale || 1}) rotate(${sticker.rotation || 0}deg)`,
 								transformOrigin: "center center",
-								// width: "40px",
-								// height: "40px",
+								// width와 height를 제거하여 원본 크기 유지
 								userSelect: "none",
 								touchAction: "none",
 								zIndex: 1000,
-								border: isSelected ? "1px dashed #1da1f2" : "none"
+								border: isSelected ? "1px dashed #1da1f2" : "none",
+								cursor: draggedStickerId === sticker.id ? "grabbing" : "grab"
 							}}
 						>
 							<img
 								src={sticker.url}
 								alt="스티커"
-								style={{ width: "100%", height: "100%", pointerEvents: "none" }}
+								style={{
+									// width, height 제거하여 원본 크기 유지
+									pointerEvents: "none",
+									objectFit: "contain",
+									maxWidth: "none", // 최대 크기 제한 해제
+									maxHeight: "none"
+								}}
 								draggable={false}
 							/>
 							{isSelected && (
-								<div
-									className="resize-handle bottom-right"
-									onMouseDown={(e) => startResizing(e, sticker.id)}
-								/>
+								<>
+									{/* 리사이즈 핸들 */}
+									<div
+										className="resize-handle"
+										onMouseDown={(e) => startResizing(e, sticker.id)}
+										style={{
+											position: "absolute",
+											bottom: "-5px",
+											right: "-5px",
+											width: "12px",
+											height: "12px",
+											backgroundColor: "#1da1f2",
+											border: "2px solid white",
+											borderRadius: "50%",
+											cursor: "se-resize",
+											zIndex: 1001
+										}}
+									/>
+									{/* 회전 핸들 */}
+									<div
+										className="rotate-handle"
+										onMouseDown={(e) => startRotating(e, sticker.id)}
+										style={{
+											position: "absolute",
+											top: "-15px",
+											left: "50%",
+											transform: "translateX(-50%)",
+											width: "12px",
+											height: "12px",
+											backgroundColor: "#ff6b6b",
+											border: "2px solid white",
+											borderRadius: "50%",
+											cursor: "grab",
+											zIndex: 1001
+										}}
+									/>
+								</>
 							)}
 						</div>
 					);

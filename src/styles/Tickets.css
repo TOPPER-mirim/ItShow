@@ -66,16 +66,17 @@ html {
 }
 
 .ticket-image-list {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 2열 구성 */
     gap: 32px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    margin: 40px 0 0 0;
-    padding: 20px 50px;
+    padding: 40px 50px;
+    overflow-y: auto;
+    overflow-x: hidden;
     width: 100%;
-    height: calc(100vh - 300px);
-    align-items: flex-start;
-    justify-content: flex-start;
+    max-height: calc(100vh - 300px);
+    align-items: start;
+    justify-items: center;
     scroll-behavior: smooth;
 }
 
@@ -85,7 +86,7 @@ html {
 }
 
 .ticket-image-item {
-    flex-shrink: 0;
+    /* flex-shrink: 0; */
     width: 550px;
     display: flex;
     justify-content: center;
@@ -180,6 +181,9 @@ html {
         gap: 25px;
         padding: 20px 30px;
         height: calc(100vh - 250px);
+        display: grid;
+        width: 100%;
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
@@ -200,6 +204,7 @@ html {
         gap: 20px;
         padding: 15px 20px;
         height: calc(100vh - 200px);
+        position: relative;
     }
 
     .dot {
