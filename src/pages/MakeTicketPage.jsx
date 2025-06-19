@@ -173,7 +173,7 @@ const MakeTicketPage = () => {
             const id = sessionStorage.getItem("userId");
 
             // JSON 형태로 전송 id도 보내기
-            const response = await fetch("http://54.180.152.171:3000/upload", {
+            const response = await fetch("https://lucky-ticket.mirim-it-show.site/upload", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json',

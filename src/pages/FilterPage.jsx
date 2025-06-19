@@ -19,7 +19,7 @@ const FilterPage = () => {
             const id = sessionStorage.getItem("userId");
 
             // filter랑 id(로컬에서 꺼내오기) POST
-            const res = await fetch("http://54.180.152.171:3000/rewriting", {
+            const res = await fetch("https://lucky-ticket.mirim-it-show.site/rewriting", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -30,7 +30,7 @@ const FilterPage = () => {
             if (!res.ok) throw new Error("필터 요청 실패");
 
             // 변환 결과 GET
-            const getRes = await fetch(`http://54.180.152.171:3000/getRewriting/${id}`);
+            const getRes = await fetch(`https://lucky-ticket.mirim-it-show.site/getRewriting/${id}`);
             if (!getRes.ok) throw new Error("변환된 문장 불러오기 실패");
 
             const { rewriting } = await getRes.json();

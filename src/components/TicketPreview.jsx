@@ -273,7 +273,7 @@ const TicketPreview = forwardRef(({
 				sticker.id === draggedStickerId
 					? { ...sticker, x: boundedX, y: boundedY }
 					: sticker
-			)
+			) 
 		);
 	};
 
