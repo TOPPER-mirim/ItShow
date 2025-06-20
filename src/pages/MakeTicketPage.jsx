@@ -119,14 +119,13 @@ const MakeTicketPage = () => {
     const [layoutColor, setLayoutColor] = useState("#324400");
 
     // 이미지 압축 함수 추가
-    const compressImage = (dataUrl, quality = 0.7, maxWidth = 800) => {
+    const compressImage = (dataUrl, type = 'image/png', quality = 0.9, maxWidth = 800) => {
         return new Promise((resolve) => {
             const canvas = document.createElement('canvas');
             const ctx = canvas.getContext('2d');
             const img = new Image();
 
             img.onload = () => {
-                // 최대 크기 제한
                 let { width, height } = img;
                 if (width > maxWidth) {
                     height = (height * maxWidth) / width;
@@ -136,17 +135,18 @@ const MakeTicketPage = () => {
                 canvas.width = width;
                 canvas.height = height;
 
-                // 이미지 그리기
+                // PNG의 경우 배경을 투명하게 유지 (별도 처리 필요 없음)
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(img, 0, 0, width, height);
 
-                // 압축된 이미지 반환 (JPEG로 변환하여 용량 감소)
-                const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                const compressedDataUrl = canvas.toDataURL(type, quality);
                 resolve(compressedDataUrl);
             };
 
             img.src = dataUrl;
         });
     };
+
 
     // 데이터 크기 확인 함수
     const getDataSize = (base64String) => {
