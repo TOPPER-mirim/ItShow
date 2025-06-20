@@ -110,13 +110,52 @@ const MakeTicketPage = () => {
     const [selectedFrame, setSelectedFrame] = useState(1);
     const [fillColor, setFillColor] = useState(backgroundColorMap[filter]);
     const [patternUrl, setPatternUrl] = useState(null);
-    const [textColor, setTextColor] = useState("#324400"); // 텍스트 색상 상태 추가
-    const [fontFamily, setFontFamily] = useState("Pretendard-Regular"); // 글꼴 상태 추가
+    const [textColor, setTextColor] = useState("#324400");
+    const [fontFamily, setFontFamily] = useState("Pretendard-Regular");
     const [selectedStickers, setSelectedStickers] = useState([]);
     const [showPopup, setShowPopup] = useState(false);
     const [saveToBook, setSaveToBook] = useState(false);
     const [ticketLogoImg, setTicketLogoImg] = useState("/images/Ticketlogo.png");
     const [layoutColor, setLayoutColor] = useState("#324400");
+
+    // 이미지 압축 함수 추가
+    const compressImage = (dataUrl, quality = 0.7, maxWidth = 800) => {
+        return new Promise((resolve) => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const img = new Image();
+
+            img.onload = () => {
+                // 최대 크기 제한
+                let { width, height } = img;
+                if (width > maxWidth) {
+                    height = (height * maxWidth) / width;
+                    width = maxWidth;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+
+                // 이미지 그리기
+                ctx.drawImage(img, 0, 0, width, height);
+
+                // 압축된 이미지 반환 (JPEG로 변환하여 용량 감소)
+                const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                resolve(compressedDataUrl);
+            };
+
+            img.src = dataUrl;
+        });
+    };
+
+    // 데이터 크기 확인 함수
+    const getDataSize = (base64String) => {
+        // base64 문자열의 실제 바이트 크기 계산
+        const base64Length = base64String.length;
+        const sizeInBytes = (base64Length * 3) / 4;
+        const sizeInMB = sizeInBytes / (1024 * 1024);
+        return { bytes: sizeInBytes, mb: sizeInMB };
+    };
 
     const handleFrameClick = (frameNumber) => setSelectedFrame(frameNumber);
 
@@ -130,7 +169,6 @@ const MakeTicketPage = () => {
         ]);
     };
 
-    // 패턴
     const handlePatternClick = (thumbUrl, idx) => {
         const patternKey = `${filter}-패턴${idx + 1}`;
         const patternStyle = patternStyleMap[patternKey];
@@ -141,12 +179,10 @@ const MakeTicketPage = () => {
             setFontFamily(patternStyle.fontFamily);
             setTicketLogoImg(patternStyle.ticketLogoImg);
             setLayoutColor(patternStyle.layoutColor);
-
             setFillColor("transparent");
         }
     };
 
-    // 단색
     const handleColorClick = (color, ticketLogoImg, layoutColor, textColor) => {
         setFillColor(color);
         setPatternUrl(null);
@@ -154,25 +190,55 @@ const MakeTicketPage = () => {
         setTicketLogoImg(ticketLogoImg);
         setLayoutColor(layoutColor);
         setTextColor(textColor);
-        // console.log(ticketLogoImg);
-
-        // const isDarkColor = ["#000000", "#225268"].includes(color);
-        // setTextColor(isDarkColor ? "#FFFFFF" : "#000000");
     };
 
     const handleSubmit = async () => {
         try {
-            const dataUrl = await ticketPreviewRef.current?.captureTicket();
-            if (!dataUrl) {
+            // 원본 이미지 캡처
+            const originalDataUrl = await ticketPreviewRef.current?.captureTicket();
+            if (!originalDataUrl) {
                 alert("티켓 캡처에 실패했습니다.");
                 return;
             }
 
-            // base64 데이터URL에서 헤더 제거하고 pure base64만 추출
-            const base64Data = dataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
+            // 원본 크기 체크
+            const originalBase64 = originalDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
+            const originalSize = getDataSize(originalBase64);
+
+            console.log(`원본 이미지 크기: ${originalSize.mb.toFixed(2)}MB`);
+
+            // 무조건 압축 시작 (더 안전하게)
+            console.log("이미지 압축을 시작합니다.");
+
+            // 첫 번째 압축: 품질 0.5, 최대폭 600px
+            let finalDataUrl = await compressImage(originalDataUrl, 0.5, 600);
+            let compressedBase64 = finalDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
+            let compressedSize = getDataSize(compressedBase64);
+
+            console.log(`1차 압축: ${compressedSize.mb.toFixed(2)}MB (품질: 0.5, 최대폭: 600px)`);
+
+            // 여전히 1MB 이상이면 더 압축
+            if (compressedSize.mb > 1) {
+                console.log("추가 압축을 진행합니다.");
+                finalDataUrl = await compressImage(originalDataUrl, 0.3, 400);
+                compressedBase64 = finalDataUrl.replace(/^data:image\/[a-z]+;base64,/, "");
+                compressedSize = getDataSize(compressedBase64);
+                console.log(`2차 압축: ${compressedSize.mb.toFixed(2)}MB (품질: 0.3, 최대폭: 400px)`);
+            }
+
+            // 최종 base64 데이터 추출
+            const base64Data = compressedBase64;
+            const finalSize = getDataSize(base64Data);
+            console.log(`최종 전송 크기: ${finalSize.mb.toFixed(2)}MB`);
+
+            // 여전히 너무 크면 경고
+            if (finalSize.mb > 1.5) {
+                console.warn("이미지가 여전히 큽니다. 업로드가 실패할 수 있습니다.");
+            }
+
             const id = sessionStorage.getItem("userId");
 
-            // JSON 형태로 전송 id도 보내기
+            // 서버로 전송
             const response = await fetch("https://lucky-ticket.mirim-it-show.site/upload", {
                 method: "POST",
                 headers: {
@@ -180,11 +246,54 @@ const MakeTicketPage = () => {
                 },
                 body: JSON.stringify({
                     userId: id,
-                    image: base64Data  // 헤더 제거된 순수 base64 데이터
+                    image: base64Data
                 }),
             });
 
             if (!response.ok) {
+                // 413 에러 발생시 초압축 시도
+                if (response.status === 413) {
+                    console.log("413 에러 발생. 초압축을 시도합니다.");
+
+                    // 최강 압축 (품질 0.2, 최대폭 300px)
+                    const ultraCompressed = await compressImage(originalDataUrl, 0.2, 300);
+                    const ultraBase64 = ultraCompressed.replace(/^data:image\/[a-z]+;base64,/, "");
+                    const ultraSize = getDataSize(ultraBase64);
+
+                    console.log(`초압축 크기: ${ultraSize.mb.toFixed(2)}MB`);
+
+                    // 재시도
+                    const retryResponse = await fetch("https://lucky-ticket.mirim-it-show.site/upload", {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            userId: id,
+                            image: ultraBase64
+                        }),
+                    });
+
+                    if (!retryResponse.ok) {
+                        throw new Error(`HTTP error! status: ${retryResponse.status}`);
+                    }
+
+                    const result = await retryResponse.json();
+                    console.log("초압축 업로드 성공:", result);
+
+                    navigate('/result', {
+                        state: {
+                            nickname: nickname,
+                            content,
+                            filter,
+                            ticketData: result,
+                            saveToBook,
+                            ticketImage: ultraCompressed
+                        }
+                    });
+                    return;
+                }
+
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
@@ -198,22 +307,26 @@ const MakeTicketPage = () => {
                     filter,
                     ticketData: result,
                     saveToBook,
-                    ticketImage: dataUrl
+                    ticketImage: finalDataUrl
                 }
             });
 
-            // 이후 로컬 다운로드 및 세션 저장 등은 생략
         } catch (error) {
             console.error("백엔드 업로드 중 오류:", error);
-            alert("티켓 업로드에 실패했습니다.");
+
+            if (error.message.includes('413')) {
+                alert("이미지 크기가 너무 큽니다. 잠시 후 다시 시도해주세요.");
+            } else {
+                alert("티켓 업로드에 실패했습니다.");
+            }
         }
     };
 
     const getBackgroundOpacity = () => {
         if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
-            return '80'; // 태블릿에서만 80 (50% 투명도) 추가
+            return '80';
         }
-        return ''; // 데스크탑은 그대로
+        return '';
     };
 
     return (
@@ -244,8 +357,8 @@ const MakeTicketPage = () => {
                     fillColor={fillColor}
                     frameIndex={selectedFrame}
                     patternUrl={patternUrl}
-                    textColor={textColor} // 텍스트 색상 prop 추가
-                    fontFamily={fontFamily} // 글꼴 prop 추가
+                    textColor={textColor}
+                    fontFamily={fontFamily}
                     stickers={selectedStickers}
                     onStickerUpdate={setSelectedStickers}
                     filter={filter}
@@ -334,7 +447,7 @@ const MakeTicketPage = () => {
                         );
                     })}
                 </MakePaletter>
-                {/* 하단 확인 박스 */}
+
                 <div className="ticketConfirmBox">
                     <label className="customCheckbox">
                         <input
@@ -353,7 +466,6 @@ const MakeTicketPage = () => {
                 </div>
             </div>
         </div>
-
     );
 };
 
